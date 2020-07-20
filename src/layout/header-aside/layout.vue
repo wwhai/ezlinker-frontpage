@@ -112,7 +112,8 @@ export default {
       // [侧边栏宽度] 正常状态
       asideWidth: '200px',
       // [侧边栏宽度] 折叠状态
-      asideWidthCollapse: '65px'
+      asideWidthCollapse: '65px',
+      ezlinkerLogo: 'ezlinker.png'
     }
   },
   computed: {

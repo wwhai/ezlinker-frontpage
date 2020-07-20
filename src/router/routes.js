@@ -29,7 +29,14 @@ const frameIn = [
           title: '页面 1',
           auth: true
         },
-        component: _import('demo/page1')
+        component: _import('user/page1')
+      },
+      // 编辑个人账户
+      {
+        path: 'self/edit',
+        name: 'selfedit',
+        hidden: true,
+        component: _import('self/edit')
       },
       {
         path: 'page2',
@@ -38,7 +45,7 @@ const frameIn = [
           title: '页面 2',
           auth: true
         },
-        component: _import('demo/page2')
+        component: _import('user/page2')
       },
       {
         path: 'page3',
@@ -47,7 +54,7 @@ const frameIn = [
           title: '页面 3',
           auth: true
         },
-        component: _import('demo/page3')
+        component: _import('user/page3')
       },
       // 系统 前端日志
       {
