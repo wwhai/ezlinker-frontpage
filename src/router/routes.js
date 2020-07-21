@@ -21,41 +21,40 @@ const frameIn = [
         },
         component: _import('system/index')
       },
-      // 演示页面
       {
-        path: 'page1',
-        name: 'page1',
+        path: 'resource/project',
+        name: 'resource-project',
         meta: {
-          title: '页面 1',
+          title: '项目管理',
           auth: true
         },
-        component: _import('user/page1')
+        component: _import('resource/project')
       },
       // 编辑个人账户
       {
         path: 'self/edit',
-        name: 'selfedit',
+        name: 'self-edit',
         hidden: true,
         component: _import('self/edit')
       },
       {
-        path: 'page2',
-        name: 'page2',
+        path: 'resource/product',
+        name: 'resource-product',
         meta: {
-          title: '页面 2',
+          title: '产品搜索',
           auth: true
         },
-        component: _import('user/page2')
+        component: _import('resource/product')
       },
-      {
-        path: 'page3',
-        name: 'page3',
-        meta: {
-          title: '页面 3',
-          auth: true
-        },
-        component: _import('user/page3')
-      },
+      // {
+      //   path: 'page3',
+      //   name: 'page3',
+      //   meta: {
+      //     title: '页面 3',
+      //     auth: true
+      //   },
+      //   component: _import('user/page3')
+      // },
       // 系统 前端日志
       {
         path: 'log',

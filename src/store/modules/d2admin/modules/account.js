@@ -25,7 +25,7 @@ export default {
       const info = await api.USER_INFO()
 
       // 设置 vuex 用户信息
-      await dispatch('d2admin/user/set', { name: info.nickName }, { root: true })
+      await dispatch('d2admin/user/set', { name: info.realName }, { root: true })
       // 用户登录后从持久化数据加载一系列的设置
       await dispatch('load')
 
