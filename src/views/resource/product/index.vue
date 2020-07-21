@@ -1,12 +1,15 @@
 <template>
   <d2-container>
-    <template slot="header">Page 3 header</template>
-    Hello World
+      产品管理
   </d2-container>
 </template>
 
 <script>
 export default {
-  name: 'page3'
+    name: 'resource-product',
 }
 </script>
+
+<style>
+
+</style>

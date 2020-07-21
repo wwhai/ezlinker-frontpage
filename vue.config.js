@@ -38,7 +38,14 @@ module.exports = {
   lintOnSave: true,
   devServer: {
     publicPath, // 和 publicPath 保持一致
-    disableHostCheck: process.env.NODE_ENV === 'development' // 关闭 host check，方便使用 ngrok 之类的内网转发工具
+    disableHostCheck: process.env.NODE_ENV === 'development', // 关闭 host check，方便使用 ngrok 之类的内网转发工具
+    proxy: {
+      '/': {
+        target: 'http://localhost:2500/ezlinker/',
+        ws: true,
+        changeOrigin: true
+      }
+    }
   },
   css: {
     loaderOptions: {

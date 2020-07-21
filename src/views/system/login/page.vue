@@ -154,8 +154,8 @@ export default {
       ],
       // 表单
       formLogin: {
-        username: 'admin',
-        password: 'admin',
+        username: 'ezlinker',
+        password: 'password',
         code: 'v9am'
       },
       // 表单校验
@@ -220,7 +220,8 @@ export default {
           // 具体需要传递的数据请自行修改代码
           this.login({
             username: this.formLogin.username,
-            password: this.formLogin.password
+            password: this.formLogin.password,
+            verifyCode: this.formLogin.code
           })
             .then(() => {
               // 重定向对象不存在则返回顶层路径

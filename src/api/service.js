@@ -3,6 +3,7 @@ import Adapter from 'axios-mock-adapter'
 import { get } from 'lodash'
 import util from '@/libs/util'
 import { errorLog, errorCreate } from './tools'
+import { TokenKey } from '@/libs/const.js'
 
 /**
  * @description 创建请求实例
@@ -24,6 +25,8 @@ function createService () {
     response => {
       // dataAxios 是 axios 返回数据中的 data
       const dataAxios = response.data
+      console.log('service', dataAxios)
+
       // 这个状态码是和后端约定的
       const { code } = dataAxios
       // 根据 code 进行判断
@@ -33,29 +36,36 @@ function createService () {
       } else {
         // 有 code 代表这是一个后端接口 可以进行进一步的判断
         switch (code) {
-          case 0:
+          case 200:
             // [ 示例 ] code === 0 代表没有错误
             return dataAxios.data
-          case 'xxx':
+          // case 'xxx':
             // [ 示例 ] 其它和后台约定的 code
-            errorCreate(`[ code: xxx ] ${dataAxios.msg}: ${response.config.url}`)
-            break
+            // errorCreate(`[ code: xxx ] ${dataAxios.msg}: ${response.config.url}`)
+            // break
           default:
             // 不是正确的 code
-            errorCreate(`${dataAxios.msg}: ${response.config.url}`)
+            console.log('service', dataAxios)
+            // errorCreate(`${dataAxios.message}: ${response.config.url}`)
             break
         }
       }
     },
     error => {
+      const resp = error.response
+      var message = ''
+      if (resp != undefined && resp.data != undefined && resp.data.message != undefined) {
+        message = ': ' + resp.data.message
+      }
+      // console.log('message:',message, resp)
       const status = get(error, 'response.status')
       switch (status) {
-        case 400: error.message = '请求错误'; break
-        case 401: error.message = '未授权，请登录'; break
+        case 400: error.message = '请求错误' + message; break
+        case 401: error.message = '未授权，请登录' + message; break
         case 403: error.message = '拒绝访问'; break
         case 404: error.message = `请求地址出错: ${error.response.config.url}`; break
         case 408: error.message = '请求超时'; break
-        case 500: error.message = '服务器内部错误'; break
+        case 500: error.message = '服务器内部错误' + message; break
         case 501: error.message = '服务未实现'; break
         case 502: error.message = '网关错误'; break
         case 503: error.message = '服务不可用'; break
@@ -76,10 +86,10 @@ function createService () {
  */
 function createRequestFunction (service) {
   return function (config) {
-    const token = util.cookies.get('token')
+    const token = util.cookies.get(TokenKey)
     const configDefault = {
       headers: {
-        Authorization: token,
+        token: token,
         'Content-Type': get(config, 'headers.Content-Type', 'application/json')
       },
       timeout: 5000,
