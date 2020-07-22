@@ -33,7 +33,7 @@
         </div>
     </div>
     <!-- 修改项目详情 -->
-    <!-- FIXME 弹出窗存在bug，显示的信息固定为第一个点开的卡片 -->
+    <!-- FIXME  弹出框存在bug，内容只显示第一次打开的卡片-->
     <el-dialog title="项目详情" :close="editClose" :visible.sync="project.detail.visible">
         <ProjectEdit :data="project.detail.data" :handle="editSubmit"/>
     </el-dialog>
