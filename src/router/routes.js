@@ -32,19 +32,39 @@ const frameIn = [
       },
       // 编辑个人账户
       {
-        path: 'self/edit',
-        name: 'self-edit',
-        hidden: true,
-        component: _import('self/edit')
-      },
-      {
-        path: 'resource/product',
-        name: 'resource-product',
+        path: 'account',
+        name: 'account',
         meta: {
-          title: '产品搜索',
+          title: '个人中心',
           auth: true
         },
-        component: _import('resource/product')
+        component: _import('account')
+      },
+      {
+        path: 'account/edit',
+        name: 'account-edit',
+        hidden: true,
+        component: _import('account/edit')
+      },
+      {
+        path: 'project/:projectId/product',
+        name: 'project-product',
+        hidden: true,
+        meta: {
+          title: '产品设计',
+          auth: true
+        },
+        component: _import('resource/project/pages/product')
+      },
+      {
+        path: 'project/:projectId/device',
+        name: 'project-device',
+        hidden: true,
+        meta: {
+          title: '设备管理',
+          auth: true
+        },
+        component: _import('resource/project/pages/device')
       },
       // {
       //   path: 'page3',

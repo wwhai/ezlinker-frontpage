@@ -1,8 +1,8 @@
 <template>
     <d2-container>
-        <el-form ref="infoForm" label-position="top"
-            :rules="rules" :model="user">
-            <el-form-item prop="nickName" label="用户昵称" label-width="400px">
+        <el-form ref="infoForm" label-position="top" class="user-edit-form"
+            :rules="rules" :model="user" label-width="80px" size="medium">
+            <el-form-item prop="nickName" label="用户昵称" >
                 <el-input type="text"
                 v-model="user.nickName"
                 placeholder="用户昵称">
@@ -102,6 +102,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang='scss'>
+.user-edit-form{
+  width: 80%;
+  .el-form-item {
+    width: 45%;
+  }
+}
 </style>

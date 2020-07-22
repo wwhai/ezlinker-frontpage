@@ -25,7 +25,7 @@ function createService () {
     response => {
       // dataAxios 是 axios 返回数据中的 data
       const dataAxios = response.data
-      console.log('service', dataAxios)
+      // console.log('service', dataAxios)
 
       // 这个状态码是和后端约定的
       const { code } = dataAxios
@@ -45,7 +45,7 @@ function createService () {
             // break
           default:
             // 不是正确的 code
-            console.log('service', dataAxios)
+            // console.log('service', dataAxios)
             // errorCreate(`${dataAxios.message}: ${response.config.url}`)
             break
         }

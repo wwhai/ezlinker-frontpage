@@ -35,7 +35,7 @@ export default {
       })
     },
     toSelfEdit () {
-      this.$router.push({ path: '/self/edit' })
+      this.$router.push({ path: '/account' })
     }
   }
 }
