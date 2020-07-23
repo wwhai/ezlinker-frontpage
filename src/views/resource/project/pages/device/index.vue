@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    name: 'project-product'
+    name: 'project-device'
 }
 </script>
 
