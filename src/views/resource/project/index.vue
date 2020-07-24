@@ -153,11 +153,13 @@ export default {
       }
       if (id!=undefined){
         api.PROJECT_UPDATE(id, data).then(res=>{
+          that.projectList()
           that.editClose()
         })
         return
       }
       api.PROJECT_CREATE(data).then(res=>{
+          that.projectList()
           that.editClose()
       })
     },
