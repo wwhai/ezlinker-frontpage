@@ -8,7 +8,7 @@
     <el-input v-model="project.type" autocomplete="off"></el-input>
   </el-form-item>
   <el-form-item label="描述" prop="description">
-    <el-input type="textarea" v-model="project.description"></el-input>
+    <el-input type="textarea" v-model="data.description"></el-input>
   </el-form-item>
   <el-form-item label="图标" prop="logo" class="label icon">
       <div class="icon-box">
@@ -29,12 +29,7 @@ export default {
   name: 'project-edit',
   data () {
     return {
-      project: {
-        name: this.data.name,
-        type:this.data.type,
-        description: this.datadescription,
-        logo: this.data.logo
-    },
+      project: this.data,
       rules: {
           name:[{
               required: true, message: '内容不可为空', trigger: 'blur' 
