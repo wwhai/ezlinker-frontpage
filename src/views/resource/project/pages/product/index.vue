@@ -107,7 +107,6 @@
           <el-form-item label="类型" prop="type">
             <el-select v-model="detail.data.type" no-match-text='请选择' placeholder="请选择">
               <el-option label="通用" :value="1"></el-option>
-              <!-- <el-option label="批量项目" :value="2"></el-option> -->
             </el-select>
           </el-form-item>
           <!-- 产品属性 -->

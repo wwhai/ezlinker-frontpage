@@ -42,6 +42,7 @@ module.exports = {
     proxy: {
       '/': {
         target: 'http://localhost:2500/ezlinker/',
+        // target:'http://wwh-frp.wobbled.cn:8080/ezlinker/',
         ws: true,
         changeOrigin: true
       }
