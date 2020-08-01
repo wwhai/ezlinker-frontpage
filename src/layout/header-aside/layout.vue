@@ -9,7 +9,7 @@
         <router-link
           to="/index"
           :class="{'logo-group': true, 'logo-transition': asideTransition}"
-          :style="{width: asideCollapse ? asideWidthCollapse : asideWidth}"
+          :style="{width: asideCollapse ? asideWidthCollapse : asideWidth, 'font-size':asideCollapse?'16px':'30px'}"
           style="height: 65px;color: #334455;font-size: 30px;line-height: 65px;text-align: center;transition: all 0.3s;border: 1px solid #eeeeee;"
           flex-box="0">
           EzLinker
@@ -23,13 +23,13 @@
         <!-- 顶栏右侧 -->
         <div class="d2-header-right" flex-box="0">
           <!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
-          <d2-header-search @click="handleSearchClick"/>
+          <!-- <d2-header-search @click="handleSearchClick"/>
           <d2-header-log/>
           <d2-header-fullscreen/>
           <d2-header-theme/>
           <d2-header-size/>
           <d2-header-locales/>
-          <d2-header-color/>
+          <d2-header-color/> -->
           <d2-header-user/>
         </div>
       </div>

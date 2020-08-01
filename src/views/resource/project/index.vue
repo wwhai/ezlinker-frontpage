@@ -126,10 +126,13 @@ export default {
       })
     },
     newProject () {
-        this.detail.data = {name:'', type:0,description:'',logo:''}
+        this.detail.data = {name:'', type:'',description:'',logo:''}
         this. detail.visible = true
     },
     editProject (item) {
+      if (item.type!=1&&item.type!=2){
+        item.type = ''
+      }
       this.detail.data = {...item}
       this.detail.visible = true
     },

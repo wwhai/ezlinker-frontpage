@@ -2,7 +2,7 @@
  <d2-container class="account-container">
   <el-tabs class="tab-list">
     <el-tab-pane label="账户信息" class="tab">
-        <div class="form userForm">
+        <!-- <div class="form userForm">
             <div class="item">
                 <div class="title">用户名:</div>
                 <div class="content">{{user.username}}</div>
@@ -19,10 +19,6 @@
                 <div class="title">真实姓名:</div>
                 <div class="content">{{user.realName}}</div>
             </div>
-            <!-- <div class="item">
-                <div class="title">用户类型:</div>
-                <div class="content">{{user.userType}}</div>
-            </div> -->
             <div class="item">
                 <div class="title">用户昵称:</div>
                 <div class="content">{{user.nickName}}</div>
@@ -51,7 +47,7 @@
                 <div class="title">登录时间:</div>
                 <div class="content">{{user.lastLoginTime}}</div>
             </div>
-        </div>
+        </div> -->
     </el-tab-pane>
     <el-tab-pane label="更改账户" class="tab">
         <el-form  ref="infoForm" :model="detail.data" status-icon :rules="detail.rules" 
