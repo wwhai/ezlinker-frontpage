@@ -856,5 +856,14 @@ export default {
      } 
     }
   }
+  .icon-dialog{
+  .list{
+    .item{
+      width: 48px;
+      height: 48px;
+      margin: 5px 10px;
+    }
+  }
+}
 }
 </style>
