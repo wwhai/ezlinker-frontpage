@@ -1,6 +1,6 @@
 <template>
   <el-dropdown size="small" class="d2-mr">
-    <span class="btn-text">{{info.name ? `你好 ${info.name}` : '未登录'}}</span>
+    <span class="btn-text">{{info.name ? ` ${info.name}` : '未登录'}}</span>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item @click.native="toSelfEdit">
         <d2-icon name="edit" class="d2-mr-5"/>

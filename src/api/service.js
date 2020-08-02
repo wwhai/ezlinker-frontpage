@@ -68,7 +68,7 @@ function createService () {
         case 500: error.message = '服务器内部错误' + message; break
         case 501: error.message = '服务未实现'; break
         case 502: error.message = '网关错误'; break
-        case 503: error.message = '服务不可用'; break
+        case 503: error.message = `服务不可用: ${message}`; break
         case 504: error.message = '网关超时'; break
         case 505: error.message = 'HTTP版本不受支持'; break
         default: break
