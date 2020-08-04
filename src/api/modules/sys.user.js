@@ -46,7 +46,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       data
     })
   },
-  UPDATE_PWD(data) {
+  UPDATE_PWD (data) {
     return request({
       url: '/users/resetPassword',
       method: 'put',

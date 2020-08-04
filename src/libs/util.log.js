@@ -23,6 +23,7 @@ function typeColor (type = 'default') {
  * @param {String} info info text
  * @param {String} type style
  */
+
 log.capsule = function (title, info, type = 'primary') {
   console.log(
     `%c ${title} %c ${info} %c`,

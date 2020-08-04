@@ -31,28 +31,28 @@ export default {
     return {
       project: this.data,
       rules: {
-          name:[{
-              required: true, message: '内容不可为空', trigger: 'blur' 
-          }],
-          description:[{
-              required: true, message: '内容不可为空', trigger: 'blur' 
-          }]
+        name: [{
+          required: true, message: '内容不可为空', trigger: 'blur'
+        }],
+        description: [{
+          required: true, message: '内容不可为空', trigger: 'blur'
+        }]
       }
     }
   },
   props: {
     data: Object,
-    handle: Function,
+    handle: Function
   },
   methods: {
-      submit(){
-        const that = this
-        that.$refs.projectEditForm.validate((valid) => {
-            if (valid) {
-                that.handle(that.data)
-            }
-        })
-      }
+    submit () {
+      const that = this
+      that.$refs.projectEditForm.validate((valid) => {
+        if (valid) {
+          that.handle(that.data)
+        }
+      })
+    }
   }
 }
 </script>

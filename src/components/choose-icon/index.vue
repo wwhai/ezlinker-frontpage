@@ -7,7 +7,7 @@
     <el-dialog title="选择图标" class="icon-dialog"
       :visible.sync="visible" :modal='false'>
       <div class="list" >
-        <img class="item" v-for="(item,index) in list" :key="'icon'+index" 
+        <img class="item" v-for="(item,index) in list" :key="'icon'+index"
         @click="choose(item)" :src="item"/>
       </div>
     </el-dialog>
@@ -17,34 +17,34 @@
 <script>
 import api from '@/api'
 export default {
-    name:'choose-icon',
-    props:{
-      init: String,
-      handle: Function
-    },
-    data() {
-      return {
-        list:[],
-        curr: '',
-        visible: false
-      }
-    },
-    mounted(){
-      this.curr = this.init?this.init:''
-      this.getIcon()
-    },
-    methods:{
-      getIcon(){
-        api.PROJECT_ICON().then(res=>{
-          this.list = res
-        })
-      },
-      choose(item){
-        // console.log('click',e)
-        this.curr = item
-        this.handle(item)
-      }
+  name: 'choose-icon',
+  props: {
+    init: String,
+    handle: Function
+  },
+  data () {
+    return {
+      list: [],
+      curr: '',
+      visible: false
     }
+  },
+  mounted () {
+    this.curr = this.init ? this.init : ''
+    this.getIcon()
+  },
+  methods: {
+    getIcon () {
+      api.PROJECT_ICON().then(res => {
+        this.list = res
+      })
+    },
+    choose (item) {
+      // console.log('click',e)
+      this.curr = item
+      this.handle(item)
+    }
+  }
 }
 </script>
 

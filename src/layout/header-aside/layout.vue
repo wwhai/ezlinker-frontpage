@@ -156,5 +156,4 @@ export default {
 // 注册主题
 @import '~@/assets/style/theme/register.scss';
 
-
 </style>
