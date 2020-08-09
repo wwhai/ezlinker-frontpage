@@ -1,28 +1,12 @@
 <template>
   <div class="canvas-pros-container">
+    <!-- 工具栏 -->
+    <div class="tool">
+        <el-button type="primary" @click="hanldeSave">保存</el-button>
+        <el-button @click="goBack">取消</el-button>
+      </div>
     <!-- 选中为空 -->
     <div v-if="!props.node && !props.line && !props.multi">
-      <!-- <div class="title">欢迎使用le5le-topology！</div>
-      <div class="group">
-        <a class="star" href="https://github.com/le5le-com/topology" target="_blank">喜欢，点击这里打个star吧</a>
-        <a href="https://www.yuque.com/alsmile/topology" target="_blank">使用教程</a>
-        <br />
-        <a
-          href="http://topology.le5le.com/assets/img/topology_wechat.jpg?t=1"
-          target="_blank"
-        >微信交流群（大群）</a>
-        <br />
-        <a href="http://topology.le5le.com/assets/img/topology_wechat2.jpg" target="_blank">微信交流群2</a>
-        <br />
-        <a href="https://www.yuque.com/alsmile/topology/faq#EVbCgt" target="_blank">联系我们</a>
-      </div>
-      <div class="title">[Todo] 未来规划</div>
-      <ul class="group">
-        <li>Github issues</li>
-        <li>React demo</li>
-        <li>Vue3 demo</li>
-        <li>系列教程</li>
-      </ul> -->
       <div class="bottom">
         <div class="title">小提示</div>
         <ul class="group">
@@ -230,6 +214,12 @@ export default {
     },
     isJson (obj) {
       return typeof (obj) === 'object' && Object.prototype.toString.call(obj).toLowerCase() == '[object object]' && !obj.length
+    },
+    goBack(){
+      this.$router.back(-1)
+    },
+    hanldeSave(){
+      this.$emit('hanlde')
     }
   }
 }
@@ -237,7 +227,10 @@ export default {
 
 <style lang="scss">
 .canvas-pros-container{
-
+  .tool{
+    padding: 10px 20px;
+    text-align: center;
+  }
   .star {
     display: block;
     color: #f60 !important;

@@ -69,7 +69,8 @@
             <div class="operate">
               <span @click="editProduct(p)">编辑</span>
               <span>
-                详情
+                  <router-link class="design-btn" :to="{path:'/product/'+p.id+'/detail'}">
+                详情</router-link>
                 </span>
                 <span>
                   <router-link class="design-btn" :to="{path:'/product/'+p.id+'/design'}">
@@ -636,6 +637,9 @@ export default {
             span{
               cursor: pointer;
               padding: 0 8px;
+              a{
+                color: #2a314e;
+              }
             }
             span + span{
               border-left: 1px solid #ddd;

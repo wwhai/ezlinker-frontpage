@@ -19,7 +19,7 @@
     </div>
     <div id="topology-canvas" class="canvas" @contextmenu="onContextMenu($event)"></div>
     <div class="props" :style="props.expand ? 'overflow: visible' : ''">
-      <CanvasProps :props.sync="props" @change="onUpdateProps"></CanvasProps>
+      <CanvasProps :props.sync="props" @change="onUpdateProps" @hanlde="handle_save"></CanvasProps>
     </div>
     <div class="context-menu" v-if="contextmenu.left" :style="this.contextmenu">
       <CanvasContextMenu :canvas="canvas" :props.sync="props"></CanvasContextMenu>
@@ -75,16 +75,6 @@ export default {
       'event'
     ])
   },
-  watch: {
-    event (curVal) {
-      if (this['handle_' + curVal.name]) {
-        this['handle_' + curVal.name](curVal.data)
-      }
-    },
-    $route (val) {
-      this.open()
-    }
-  },
   created () {
     if (process.client && window.echartsData) {
       for (const key in window.echartsData) {
@@ -93,38 +83,34 @@ export default {
       window.echartsData = {}
     }
     canvasRegister()
-    // if (process.client) {
-      document.onclick = event => {
-        this.contextmenu = {
-          left: null,
-          top: null,
-          bottom: null
-        }
+    document.onclick = event => {
+      this.contextmenu = {
+        left: null,
+        top: null,
+        bottom: null
       }
-    // }
+    }
   },
   mounted () {
     canvasOptions.on = this.onMessage
     this.canvas = new Topology('topology-canvas', canvasOptions)
-    
-    this.open()
+
+    //页面挂载时显示设计图
+    // this.open()
   },
   methods: {
     ...mapActions('d2admin/canvas', [
       'data'
     ]),
-    async open () {
-      if (!this.$route.query.id) {
-        return
-      }
-      const data = await this.$axios.$get(
-        '/api/topology/' + this.$route.query.id
-      )
-      if (data && data.id) {
-        this.canvas.open(data.data)
-      }
+    open (data) {
+        this.canvas.open(data)
     },
-
+    handle_save () {
+        // 画布数据的json序列化
+        const data = JSON.stringify(this.canvas.data)
+        console.log("save data")
+        console.log(this.canvas.data)
+    },
     onDrag (event, node) {
       event.dataTransfer.setData('Text', JSON.stringify(node.data))
     },
@@ -276,15 +262,6 @@ export default {
         }
       }
       input.click()
-    },
-
-    handle_save (data) {
-      FileSaver.saveAs(
-        new Blob([JSON.stringify(this.canvas.data)], {
-          type: 'text/plain;charset=utf-8'
-        }),
-        'le5le.topology.json'
-      )
     },
 
     handle_savePng (data) {
