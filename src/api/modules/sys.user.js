@@ -52,5 +52,13 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       method: 'put',
       data
     })
+  },
+
+  USER_LOG(params){
+    return request({
+      url: 'userLogs',
+      method: 'get',
+      params
+    })
   }
 })

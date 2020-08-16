@@ -54,7 +54,7 @@ export default {
     width: 100px;
     height: 100px;
     text-align: center;
-    line-height: 100px;
+    // line-height: 100px;
     border: 1px solid #ccc;
     &:hover{
       border-color: #999;

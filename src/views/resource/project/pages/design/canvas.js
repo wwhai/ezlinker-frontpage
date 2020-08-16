@@ -1,6 +1,6 @@
 import { register as registerFlow } from '@topology/flow-diagram'
-import { register as registerActivity } from '@topology/activity-diagram'
-import { register as registerSequence } from '@topology/sequence-diagram'
+// import { register as registerActivity } from '@topology/activity-diagram'
+// import { register as registerSequence } from '@topology/sequence-diagram'
 
 // import { register as registerClass } from '~/class-diagram/index'
 
@@ -479,438 +479,508 @@ export const Tools = [
     ]
   },
   {
-    group: '活动图',
-    children: [
-      {
-        name: '开始',
-        icon: 'icon-inital',
-        data: {
-          text: '',
-          rect: {
-            width: 30,
-            height: 30
-          },
-          name: 'circle',
-          fillStyle: '#555',
-          strokeStyle: 'transparent'
-        }
-      },
-      {
-        name: '结束',
-        icon: 'icon-final',
-        data: {
-          text: '',
-          rect: {
-            width: 30,
-            height: 30
-          },
-          name: 'activityFinal'
-        }
-      },
-      {
-        name: '活动',
-        icon: 'icon-action',
-        data: {
-          text: '活动',
-          rect: {
-            width: 120,
-            height: 50
-          },
-          borderRadius: 0.25,
-          name: 'rectangle'
-        }
-      },
-      {
-        name: '决策/合并',
-        icon: 'icon-diamond',
-        data: {
-          text: '决策',
-          rect: {
-            width: 120,
-            height: 50
-          },
-          name: 'diamond'
-        }
-      },
-      {
-        name: '垂直泳道',
-        icon: 'icon-swimlane-v',
-        data: {
-          text: '垂直泳道',
-          rect: {
-            width: 200,
-            height: 500
-          },
-          name: 'swimlaneV'
-        }
-      },
-      {
-        name: '水平泳道',
-        icon: 'icon-swimlane-h',
-        data: {
-          text: '水平泳道',
-          rect: {
-            width: 500,
-            height: 200
-          },
-          name: 'swimlaneH'
-        }
-      },
-      {
-        name: '垂直分岔/汇合',
-        icon: 'icon-fork-v',
-        data: {
-          text: '',
-          rect: {
-            width: 10,
-            height: 150
-          },
-          name: 'forkV',
-          fillStyle: '#555',
-          strokeStyle: 'transparent'
-        }
-      },
-      {
-        name: '水平分岔/汇合',
-        icon: 'icon-fork',
-        data: {
-          text: '',
-          rect: {
-            width: 150,
-            height: 10
-          },
-          name: 'forkH',
-          fillStyle: '#555',
-          strokeStyle: 'transparent'
-        }
+    group: 'EZLINKER',
+    children: [{
+      name: '监控',
+      icon: 'icon-jiankong',
+      data: {
+        text: '',
+        rect: {
+          width: 30,
+          height: 30
+        },
+        name: 'circle',
+        fillStyle: '#555',
+        strokeStyle: 'transparent'
       }
-    ]
-  },
-  {
-    group: '时序图和类图',
-    children: [
-      {
-        name: '生命线',
-        icon: 'icon-lifeline',
-        data: {
-          text: '生命线',
-          rect: {
-            width: 150,
-            height: 400
-          },
-          name: 'lifeline'
-        }
-      },
-      {
-        name: '激活',
-        icon: 'icon-focus',
-        data: {
-          text: '',
-          rect: {
-            width: 12,
-            height: 200
-          },
-          name: 'sequenceFocus'
-        }
-      },
-      {
-        name: '简单类',
-        icon: 'icon-simple-class',
-        data: {
-          text: 'Topolgoy',
-          rect: {
-            width: 270,
-            height: 200
-          },
-          paddingTop: 40,
-          font: {
-            fontFamily: 'Arial',
-            color: '#222',
-            fontWeight: 'bold'
-          },
-          fillStyle: '#ffffba',
-          strokeStyle: '#7e1212',
-          name: 'simpleClass',
-          children: [
-            {
-              text: '- name: string\n+ setName(name: string): void',
-              name: 'text',
-              paddingLeft: 10,
-              paddingRight: 10,
-              paddingTop: 10,
-              paddingBottom: 10,
-              rectInParent: {
-                x: 0,
-                y: 0,
-                width: '100%',
-                height: '100%',
-                rotate: 0
-              },
-              font: {
-                fontFamily: 'Arial',
-                color: '#222',
-                textAlign: 'left',
-                textBaseline: 'top'
-              }
-            }
-          ]
-        }
-      },
-      {
-        name: '类',
-        icon: 'icon-class',
-        data: {
-          text: 'Topolgoy',
-          rect: {
-            width: 270,
-            height: 200
-          },
-          paddingTop: 40,
-          font: {
-            fontFamily: 'Arial',
-            color: '#222',
-            fontWeight: 'bold'
-          },
-          fillStyle: '#ffffba',
-          strokeStyle: '#7e1212',
-          name: 'interfaceClass',
-          children: [
-            {
-              text: '- name: string',
-              name: 'text',
-              paddingLeft: 10,
-              paddingRight: 10,
-              paddingTop: 10,
-              paddingBottom: 10,
-              rectInParent: {
-                x: 0,
-                y: 0,
-                width: '100%',
-                height: '50%',
-                rotate: 0
-              },
-              font: {
-                fontFamily: 'Arial',
-                color: '#222',
-                textAlign: 'left',
-                textBaseline: 'top'
-              }
-            },
-            {
-              text: '+ setName(name: string): void',
-              name: 'text',
-              paddingLeft: 10,
-              paddingRight: 10,
-              paddingTop: 10,
-              paddingBottom: 10,
-              rectInParent: {
-                x: 0,
-                y: '50%',
-                width: '100%',
-                height: '50%',
-                rotate: 0
-              },
-              font: {
-                fontFamily: 'Arial',
-                color: '#222',
-                textAlign: 'left',
-                textBaseline: 'top'
-              }
-            }
-          ]
-        }
+    },{
+      name: '硬盘',
+      icon: 'icon-ecs-disk',
+      data: {
+        text: '',
+        rect: {
+          width: 30,
+          height: 30
+        },
+        name: 'circle',
+        fillStyle: '#555',
+        strokeStyle: 'transparent'
       }
-    ]
-  },
-  {
-    group: '图表控件',
-    children: [
-      {
-        name: '折线图',
-        icon: 'icon-line-chart',
-        data: {
-          text: '折线图',
-          rect: {
-            width: 300,
-            height: 200
-          },
-          name: 'echarts',
-          data: {
-            echarts: {
-              option: {
-                xAxis: {
-                  type: 'category',
-                  data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                },
-                yAxis: {
-                  type: 'value'
-                },
-                series: [
-                  {
-                    data: [820, 932, 901, 934, 1290, 1330, 1320],
-                    type: 'line'
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      {
-        name: '柱状图',
-        icon: 'icon-bar-chart',
-        data: {
-          text: '柱状图',
-          rect: {
-            width: 300,
-            height: 200
-          },
-          name: 'echarts',
-          data: {
-            echarts: {
-              option: {
-                color: ['#3398DB'],
-                tooltip: {
-                  trigger: 'axis',
-                  axisPointer: {
-                    // 坐标轴指示器，坐标轴触发有效
-                    type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-                  }
-                },
-                grid: {
-                  left: '3%',
-                  right: '4%',
-                  bottom: '3%',
-                  containLabel: true
-                },
-                xAxis: [
-                  {
-                    type: 'category',
-                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                    axisTick: {
-                      alignWithLabel: true
-                    }
-                  }
-                ],
-                yAxis: [
-                  {
-                    type: 'value'
-                  }
-                ],
-                series: [
-                  {
-                    name: '直接访问',
-                    type: 'bar',
-                    barWidth: '60%',
-                    data: [10, 52, 200, 334, 390, 330, 220]
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      {
-        name: '饼图',
-        icon: 'icon-pie-chart',
-        data: {
-          text: '饼图',
-          rect: {
-            width: 200,
-            height: 200
-          },
-          name: 'echarts',
-          data: {
-            echarts: {
-              option: {
-                tooltip: {
-                  trigger: 'item',
-                  formatter: '{a} <br/>{b}: {c} ({d}%)'
-                },
-                legend: {
-                  orient: 'vertical',
-                  x: 'left',
-                  data: [
-                    '直接访问',
-                    '邮件营销',
-                    '联盟广告',
-                    '视频广告',
-                    '搜索引擎'
-                  ]
-                },
-                series: [
-                  {
-                    name: '访问来源',
-                    type: 'pie',
-                    radius: ['50%', '70%'],
-                    avoidLabelOverlap: false,
-                    label: {
-                      normal: {
-                        show: false,
-                        position: 'center'
-                      },
-                      emphasis: {
-                        show: true,
-                        textStyle: {
-                          fontSize: '30',
-                          fontWeight: 'bold'
-                        }
-                      }
-                    },
-                    labelLine: {
-                      normal: {
-                        show: false
-                      }
-                    },
-                    data: [
-                      { value: 335, name: '直接访问' },
-                      { value: 310, name: '邮件营销' },
-                      { value: 234, name: '联盟广告' },
-                      { value: 135, name: '视频广告' },
-                      { value: 1548, name: '搜索引擎' }
-                    ]
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      {
-        name: '仪表盘',
-        icon: 'icon-dashboard-chart',
-        data: {
-          text: '仪表盘',
-          rect: {
-            width: 300,
-            height: 300
-          },
-          name: 'echarts',
-          data: {
-            echarts: {
-              option: {
-                tooltip: {
-                  formatter: '{a} <br/>{b} : {c}%'
-                },
-                toolbox: {
-                  feature: {
-                    restore: {},
-                    saveAsImage: {}
-                  }
-                },
-                series: [
-                  {
-                    name: '业务指标',
-                    type: 'gauge',
-                    detail: { formatter: '{value}%' },
-                    data: [{ value: 50, name: '完成率' }]
-                  }
-                ]
-              }
-            }
-          }
-        }
+    },{
+      name: '按钮组',
+      icon: 'icon-anniuzu',
+      data: {
+        text: '',
+        rect: {
+          width: 30,
+          height: 30
+        },
+        name: 'circle',
+        fillStyle: '#555',
+        strokeStyle: 'transparent'
       }
-    ]
+    },{
+      name: '按钮',
+      icon: 'icon-anniu',
+      data: {
+        text: '',
+        rect: {
+          width: 30,
+          height: 30
+        },
+        name: 'circle',
+        fillStyle: '#555',
+        strokeStyle: 'transparent'
+      }
+    },{
+      name: '进度条',
+      icon: 'icon-jindutiao',
+      data: {
+        text: '',
+        rect: {
+          width: 30,
+          height: 30
+        },
+        name: 'circle',
+        fillStyle: '#555',
+        strokeStyle: 'transparent'
+      }
+    }]
+
   }
+  // {
+  //   group: '活动图',
+  //   children: [
+  //     {
+  //       name: '开始',
+  //       icon: 'icon-inital',
+  //       data: {
+  //         text: '',
+  //         rect: {
+  //           width: 30,
+  //           height: 30
+  //         },
+  //         name: 'circle',
+  //         fillStyle: '#555',
+  //         strokeStyle: 'transparent'
+  //       }
+  //     },
+  //     {
+  //       name: '结束',
+  //       icon: 'icon-final',
+  //       data: {
+  //         text: '',
+  //         rect: {
+  //           width: 30,
+  //           height: 30
+  //         },
+  //         name: 'activityFinal'
+  //       }
+  //     },
+  //     {
+  //       name: '活动',
+  //       icon: 'icon-action',
+  //       data: {
+  //         text: '活动',
+  //         rect: {
+  //           width: 120,
+  //           height: 50
+  //         },
+  //         borderRadius: 0.25,
+  //         name: 'rectangle'
+  //       }
+  //     },
+  //     {
+  //       name: '决策/合并',
+  //       icon: 'icon-diamond',
+  //       data: {
+  //         text: '决策',
+  //         rect: {
+  //           width: 120,
+  //           height: 50
+  //         },
+  //         name: 'diamond'
+  //       }
+  //     },
+  //     {
+  //       name: '垂直泳道',
+  //       icon: 'icon-swimlane-v',
+  //       data: {
+  //         text: '垂直泳道',
+  //         rect: {
+  //           width: 200,
+  //           height: 500
+  //         },
+  //         name: 'swimlaneV'
+  //       }
+  //     },
+  //     {
+  //       name: '水平泳道',
+  //       icon: 'icon-swimlane-h',
+  //       data: {
+  //         text: '水平泳道',
+  //         rect: {
+  //           width: 500,
+  //           height: 200
+  //         },
+  //         name: 'swimlaneH'
+  //       }
+  //     },
+  //     {
+  //       name: '垂直分岔/汇合',
+  //       icon: 'icon-fork-v',
+  //       data: {
+  //         text: '',
+  //         rect: {
+  //           width: 10,
+  //           height: 150
+  //         },
+  //         name: 'forkV',
+  //         fillStyle: '#555',
+  //         strokeStyle: 'transparent'
+  //       }
+  //     },
+  //     {
+  //       name: '水平分岔/汇合',
+  //       icon: 'icon-fork',
+  //       data: {
+  //         text: '',
+  //         rect: {
+  //           width: 150,
+  //           height: 10
+  //         },
+  //         name: 'forkH',
+  //         fillStyle: '#555',
+  //         strokeStyle: 'transparent'
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   group: '时序图和类图',
+  //   children: [
+  //     {
+  //       name: '生命线',
+  //       icon: 'icon-lifeline',
+  //       data: {
+  //         text: '生命线',
+  //         rect: {
+  //           width: 150,
+  //           height: 400
+  //         },
+  //         name: 'lifeline'
+  //       }
+  //     },
+  //     {
+  //       name: '激活',
+  //       icon: 'icon-focus',
+  //       data: {
+  //         text: '',
+  //         rect: {
+  //           width: 12,
+  //           height: 200
+  //         },
+  //         name: 'sequenceFocus'
+  //       }
+  //     },
+  //     {
+  //       name: '简单类',
+  //       icon: 'icon-simple-class',
+  //       data: {
+  //         text: 'Topolgoy',
+  //         rect: {
+  //           width: 270,
+  //           height: 200
+  //         },
+  //         paddingTop: 40,
+  //         font: {
+  //           fontFamily: 'Arial',
+  //           color: '#222',
+  //           fontWeight: 'bold'
+  //         },
+  //         fillStyle: '#ffffba',
+  //         strokeStyle: '#7e1212',
+  //         name: 'simpleClass',
+  //         children: [
+  //           {
+  //             text: '- name: string\n+ setName(name: string): void',
+  //             name: 'text',
+  //             paddingLeft: 10,
+  //             paddingRight: 10,
+  //             paddingTop: 10,
+  //             paddingBottom: 10,
+  //             rectInParent: {
+  //               x: 0,
+  //               y: 0,
+  //               width: '100%',
+  //               height: '100%',
+  //               rotate: 0
+  //             },
+  //             font: {
+  //               fontFamily: 'Arial',
+  //               color: '#222',
+  //               textAlign: 'left',
+  //               textBaseline: 'top'
+  //             }
+  //           }
+  //         ]
+  //       }
+  //     },
+  //     {
+  //       name: '类',
+  //       icon: 'icon-class',
+  //       data: {
+  //         text: 'Topolgoy',
+  //         rect: {
+  //           width: 270,
+  //           height: 200
+  //         },
+  //         paddingTop: 40,
+  //         font: {
+  //           fontFamily: 'Arial',
+  //           color: '#222',
+  //           fontWeight: 'bold'
+  //         },
+  //         fillStyle: '#ffffba',
+  //         strokeStyle: '#7e1212',
+  //         name: 'interfaceClass',
+  //         children: [
+  //           {
+  //             text: '- name: string',
+  //             name: 'text',
+  //             paddingLeft: 10,
+  //             paddingRight: 10,
+  //             paddingTop: 10,
+  //             paddingBottom: 10,
+  //             rectInParent: {
+  //               x: 0,
+  //               y: 0,
+  //               width: '100%',
+  //               height: '50%',
+  //               rotate: 0
+  //             },
+  //             font: {
+  //               fontFamily: 'Arial',
+  //               color: '#222',
+  //               textAlign: 'left',
+  //               textBaseline: 'top'
+  //             }
+  //           },
+  //           {
+  //             text: '+ setName(name: string): void',
+  //             name: 'text',
+  //             paddingLeft: 10,
+  //             paddingRight: 10,
+  //             paddingTop: 10,
+  //             paddingBottom: 10,
+  //             rectInParent: {
+  //               x: 0,
+  //               y: '50%',
+  //               width: '100%',
+  //               height: '50%',
+  //               rotate: 0
+  //             },
+  //             font: {
+  //               fontFamily: 'Arial',
+  //               color: '#222',
+  //               textAlign: 'left',
+  //               textBaseline: 'top'
+  //             }
+  //           }
+  //         ]
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   group: '图表控件',
+  //   children: [
+  //     {
+  //       name: '折线图',
+  //       icon: 'icon-line-chart',
+  //       data: {
+  //         text: '折线图',
+  //         rect: {
+  //           width: 300,
+  //           height: 200
+  //         },
+  //         name: 'echarts',
+  //         data: {
+  //           echarts: {
+  //             option: {
+  //               xAxis: {
+  //                 type: 'category',
+  //                 data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  //               },
+  //               yAxis: {
+  //                 type: 'value'
+  //               },
+  //               series: [
+  //                 {
+  //                   data: [820, 932, 901, 934, 1290, 1330, 1320],
+  //                   type: 'line'
+  //                 }
+  //               ]
+  //             }
+  //           }
+  //         }
+  //       }
+  //     },
+  //     {
+  //       name: '柱状图',
+  //       icon: 'icon-bar-chart',
+  //       data: {
+  //         text: '柱状图',
+  //         rect: {
+  //           width: 300,
+  //           height: 200
+  //         },
+  //         name: 'echarts',
+  //         data: {
+  //           echarts: {
+  //             option: {
+  //               color: ['#3398DB'],
+  //               tooltip: {
+  //                 trigger: 'axis',
+  //                 axisPointer: {
+  //                   // 坐标轴指示器，坐标轴触发有效
+  //                   type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+  //                 }
+  //               },
+  //               grid: {
+  //                 left: '3%',
+  //                 right: '4%',
+  //                 bottom: '3%',
+  //                 containLabel: true
+  //               },
+  //               xAxis: [
+  //                 {
+  //                   type: 'category',
+  //                   data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  //                   axisTick: {
+  //                     alignWithLabel: true
+  //                   }
+  //                 }
+  //               ],
+  //               yAxis: [
+  //                 {
+  //                   type: 'value'
+  //                 }
+  //               ],
+  //               series: [
+  //                 {
+  //                   name: '直接访问',
+  //                   type: 'bar',
+  //                   barWidth: '60%',
+  //                   data: [10, 52, 200, 334, 390, 330, 220]
+  //                 }
+  //               ]
+  //             }
+  //           }
+  //         }
+  //       }
+  //     },
+  //     {
+  //       name: '饼图',
+  //       icon: 'icon-pie-chart',
+  //       data: {
+  //         text: '饼图',
+  //         rect: {
+  //           width: 200,
+  //           height: 200
+  //         },
+  //         name: 'echarts',
+  //         data: {
+  //           echarts: {
+  //             option: {
+  //               tooltip: {
+  //                 trigger: 'item',
+  //                 formatter: '{a} <br/>{b}: {c} ({d}%)'
+  //               },
+  //               legend: {
+  //                 orient: 'vertical',
+  //                 x: 'left',
+  //                 data: [
+  //                   '直接访问',
+  //                   '邮件营销',
+  //                   '联盟广告',
+  //                   '视频广告',
+  //                   '搜索引擎'
+  //                 ]
+  //               },
+  //               series: [
+  //                 {
+  //                   name: '访问来源',
+  //                   type: 'pie',
+  //                   radius: ['50%', '70%'],
+  //                   avoidLabelOverlap: false,
+  //                   label: {
+  //                     normal: {
+  //                       show: false,
+  //                       position: 'center'
+  //                     },
+  //                     emphasis: {
+  //                       show: true,
+  //                       textStyle: {
+  //                         fontSize: '30',
+  //                         fontWeight: 'bold'
+  //                       }
+  //                     }
+  //                   },
+  //                   labelLine: {
+  //                     normal: {
+  //                       show: false
+  //                     }
+  //                   },
+  //                   data: [
+  //                     { value: 335, name: '直接访问' },
+  //                     { value: 310, name: '邮件营销' },
+  //                     { value: 234, name: '联盟广告' },
+  //                     { value: 135, name: '视频广告' },
+  //                     { value: 1548, name: '搜索引擎' }
+  //                   ]
+  //                 }
+  //               ]
+  //             }
+  //           }
+  //         }
+  //       }
+  //     },
+  //     {
+  //       name: '仪表盘',
+  //       icon: 'icon-dashboard-chart',
+  //       data: {
+  //         text: '仪表盘',
+  //         rect: {
+  //           width: 300,
+  //           height: 300
+  //         },
+  //         name: 'echarts',
+  //         data: {
+  //           echarts: {
+  //             option: {
+  //               tooltip: {
+  //                 formatter: '{a} <br/>{b} : {c}%'
+  //               },
+  //               toolbox: {
+  //                 feature: {
+  //                   restore: {},
+  //                   saveAsImage: {}
+  //                 }
+  //               },
+  //               series: [
+  //                 {
+  //                   name: '业务指标',
+  //                   type: 'gauge',
+  //                   detail: { formatter: '{value}%' },
+  //                   data: [{ value: 50, name: '完成率' }]
+  //                 }
+  //               ]
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   ]
+  // }
 ]

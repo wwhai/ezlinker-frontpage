@@ -35,13 +35,16 @@
     <!-- 修改项目详情 -->
     <el-dialog title="项目详情" class="project-edit-container"
       :close="editClose" :visible.sync="detail.visible">
+      <project-edit :data='detail.data' :handle='editSubmit'></project-edit>
+    </el-dialog>
+    <!-- <el-dialog title="项目详情" class="project-edit-container"
+      :close="editClose" :visible.sync="detail.visible">
         <el-form :model="detail.data" status-icon :rules="project.detailrules" label-width="50px"
           ref="projectEditForm" class="project-edit-form">
           <el-form-item label="名称" prop="name">
             <el-input v-model="detail.data.name" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="类型" prop="type">
-            <!-- <el-input v-model="detail.data.type" autocomplete="off"></el-input> -->
               <el-select v-model="detail.data.type" no-match-text='请选择' placeholder="请选择">
                 <el-option label="自由项目" :value="1"></el-option>
                 <el-option label="批量项目" :value="2"></el-option>
@@ -52,7 +55,6 @@
           </el-form-item>
           <el-form-item label="图标" prop="logo" class="label icon">
               <div class="icon-add-btn">
-                  <!-- <img v-if="detail.data.logo&&detail.data.logo.length>0" :src="detail.data.logo"> -->
                   <div class="icon-box" @click="icon.visible=true">
                     <img class="img" v-if="detail.data.logo&&detail.data.logo.length>0"
                     :src="detail.data.logo"/>
@@ -64,25 +66,26 @@
             <el-button type="primary" @click="editSubmit">提交</el-button>
           </el-form-item>
         </el-form>
-    </el-dialog>
-    <el-dialog title="选择图标" class="icon-dialog"
+    </el-dialog> -->
+    <!-- 选择图标 -->
+    <!-- <el-dialog title="选择图标" class="icon-dialog"
       :visible.sync="icon.visible" >
       <div class="list" >
         <img class="item" v-for="(item,index) in icon.list" :key="'icon'+index"
         @click="chooseIcon(item)" :src="item"/>
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </d2-container>
 </template>
 
 <script>
 import api from '@/api'
-// import ProjectEdit from './components/edit'
+import ProjectEdit from './components/edit'
 export default {
   name: 'resource-project',
-  // components: {
-  //   ProjectEdit
-  // },
+  components: {
+    ProjectEdit
+  },
   data () {
     return {
       project: {
@@ -144,15 +147,15 @@ export default {
     chooseIcon (img) {
       this.detail.data.logo = img
     },
-    editSubmit () {
+    editSubmit (item) {
       const that = this
-
-      const id = that.detail.data.id
+      // console.log(item)
+      const id = item.id
       const data = {
-        name: that.detail.data.name,
-        type: that.detail.data.type,
-        description: that.detail.data.description,
-        logo: that.detail.data.logo
+        name: item.name,
+        type: item.type,
+        description: item.description,
+        logo: item.logo
       }
       if (id != undefined) {
         api.PROJECT_UPDATE(id, data).then(res => {

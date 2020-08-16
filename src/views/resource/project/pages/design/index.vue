@@ -1,7 +1,17 @@
 <template>
   <!-- <d2-container class=""> -->
-      <div class="design-container">
+  <div class="design-container">
     <div class="tools">
+      <div class="info">
+          <div class="btn">
+            <el-button type='primary' size='medium'>提交</el-button>
+            <el-button size='medium'>取消</el-button>
+          </div>
+          <div class="name">产品: {{ product.name }}</div>
+          <div class="desc">简介: {{ product.description }}</div>
+        <div>
+        </div>
+      </div>
       <div v-for="(item, index) in tools" :key="index">
         <div class="title">{{ item.group }}</div>
         <div class="buttons">
@@ -18,9 +28,9 @@
       </div>
     </div>
     <div id="topology-canvas" class="canvas" @contextmenu="onContextMenu($event)"></div>
-    <div class="props" :style="props.expand ? 'overflow: visible' : ''">
+    <!-- <div class="props" :style="props.expand ? 'overflow: visible' : ''">
       <CanvasProps :props.sync="props" @change="onUpdateProps" @hanlde="handle_save"></CanvasProps>
-    </div>
+    </div> -->
     <div class="context-menu" v-if="contextmenu.left" :style="this.contextmenu">
       <CanvasContextMenu :canvas="canvas" :props.sync="props"></CanvasContextMenu>
     </div>
@@ -46,6 +56,7 @@ const canvasOptions = {
 export default {
   data () {
     return {
+      product:{},
       tools: Tools,
       props: {
         node: null,
@@ -95,13 +106,22 @@ export default {
     canvasOptions.on = this.onMessage
     this.canvas = new Topology('topology-canvas', canvasOptions)
 
+    this.product.id = this.$route.params.productId
     //页面挂载时显示设计图
     // this.open()
+    this.getProduct()
   },
   methods: {
     ...mapActions('d2admin/canvas', [
       'data'
     ]),
+    getProduct(){
+      const that = this
+      this.$api.PRODUCT_INFO(this.product.id).then(res=>{
+        that.product = res 
+        console.log(that.product)
+      })
+    },
     open (data) {
         this.canvas.open(data)
     },
@@ -363,6 +383,8 @@ export default {
 //引入toplogy所需字体文件
 @import 'http://at.alicdn.com/t/font_1113798_nklzr6lk7z.css';
 @import 'http://at.alicdn.com/t/font_1331132_5lvbai88wkb.css';
+@import 'http://at.alicdn.com/t/font_1995444_i4ahvgbgeka.css';
+
 .design-container {
     width: 100%;
     height: 100%;
@@ -376,7 +398,23 @@ export default {
     border-right: 1px solid #d9d9d9;
     overflow-y: auto;
     padding: 10px;
-    .title {
+    .info{
+      .btn{
+        text-align: center;
+        .button + .button{
+          margin-left: 20px;
+        }
+      }
+      .name{
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #7777;
+      }
+      .desc{
+        margin-top: 6px;
+      }
+    }
+    .title {  
       color: #0d1a26;
       font-weight: 600;
       font-size: 18px;

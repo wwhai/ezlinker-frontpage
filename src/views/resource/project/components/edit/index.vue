@@ -1,42 +1,50 @@
 <template>
-<el-form :model="project" status-icon :rules="rules" label-width="50px"
-  ref="projectEditForm" class="project-edit-container">
-  <el-form-item label="名称" prop="name">
-    <el-input v-model="project.name" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="类型" prop="type">
-    <el-input v-model="project.type" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="描述" prop="description">
-    <el-input type="textarea" v-model="data.description"></el-input>
-  </el-form-item>
-  <el-form-item label="图标" prop="logo" class="label icon">
-      <div class="icon-box">
-          <img v-if="project.logo&&project.logo.length>0" :src="data.logo">
-      </div>
-  </el-form-item>
-  <el-form-item>
-    <el-button type="primary" @click="submit">提交</el-button>
-  </el-form-item>
-</el-form>
+        <el-form :model="data" status-icon :rules="rules" label-width="50px"
+          ref="projectEditForm" class="project-edit-form">
+          <el-form-item label="名称" prop="name">
+            <el-input v-model="data.name" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="类型" prop="type">
+              <el-select v-model="data.type" no-match-text='请选择' placeholder="请选择">
+                <el-option label="自由项目" :value="1"></el-option>
+                <el-option label="批量项目" :value="2"></el-option>
+              </el-select>
+          </el-form-item>
+          <el-form-item label="描述" prop="description">
+            <el-input type="textarea" v-model="data.description"></el-input>
+          </el-form-item>
+          <el-form-item label="图标" prop="logo" class="label icon">
+            <choose-icon :init='data.logo' :handle='chooseIcon'>
+            </choose-icon>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submit">提交</el-button>
+          </el-form-item>
+        </el-form>
 </template>
 
 <script>
 import api from '@/api'
 import { title } from 'faker/lib/locales/zh_CN'
+import ChooseIcon from '@/components/choose-icon'
 
 export default {
   name: 'project-edit',
+  components:{
+    ChooseIcon
+  },
   data () {
     return {
-      project: this.data,
+      // project: this.data,
       rules: {
-        name: [{
-          required: true, message: '内容不可为空', trigger: 'blur'
-        }],
-        description: [{
-          required: true, message: '内容不可为空', trigger: 'blur'
-        }]
+        rules: {
+          name: [{
+            required: true, message: '内容不可为空', trigger: 'blur'
+          }],
+          description: [{
+            required: true, message: '内容不可为空', trigger: 'blur'
+          }]
+        }
       }
     }
   },
@@ -45,6 +53,9 @@ export default {
     handle: Function
   },
   methods: {
+    chooseIcon(item){
+      this.data.logo = item
+    },
     submit () {
       const that = this
       that.$refs.projectEditForm.validate((valid) => {

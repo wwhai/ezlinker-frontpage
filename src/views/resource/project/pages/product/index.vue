@@ -1,35 +1,11 @@
 <template>
   <d2-container class="product-container">
-    <!-- 统计信息 -->
-    <!-- <div class="stat">
-      <div class="item">
-        <div class="title">全部产品</div>
-        <div class="count">6</div>
-      </div>
-      <div class="item">
-        <div class="title">开发中</div>
-        <div class="count">1</div>
-      </div>
-      <div class="item">
-        <div class="title">运行中</div>
-        <div class="count">2</div>
-      </div>
-      <div class="item">
-        <div class="title">已锁定</div>
-        <div class="count">3</div>
-      </div>
-    </div> -->
     <!-- 产品列表 -->
     <div class="list-box">
       <div class="list-head">
         <div class="title">产品列表</div>
         <div class="right">
-          <!-- <span class="type-list" @click="chooseType">
-            <span :class="{active: product.select==='0'}" data-type='0'>全部产品</span>
-            <span :class="{active: product.select==='1'}" data-type='1'>开发中</span>
-            <span :class="{active: product.select==='2'}" data-type='2'>运行中</span>
-            <span :class="{active: product.select==='3'}" data-type='3'>已锁定</span>
-          </span> -->
+          <!-- 数据检索 -->
           <span class="input-box">
             <el-input placeholder="搜索产品" v-model="product.key"
               class="input-with-select" size="small">
@@ -72,11 +48,11 @@
                   <router-link class="design-btn" :to="{path:'/product/'+p.id+'/detail'}">
                 详情</router-link>
                 </span>
-                <span>
+                <!-- <span>
                   <router-link class="design-btn" :to="{path:'/product/'+p.id+'/design'}">
                   设计
                   </router-link>
-                </span>
+                </span> -->
               <span @click="openModule(p.id)">模块</span>
               <span >删除</span>
             </div>
@@ -91,7 +67,8 @@
     <!-- 编辑产品弹窗 -->
     <el-dialog title="编辑产品" class="product-edit-dialog"
       :visible.sync="detail.visible" >
-        <el-form :model="detail.data" status-icon :rules="detail.rules" label-width="50px"
+      <product-edit :data='detail.data' :handle='editSubmit'></product-edit>
+        <!-- <el-form :model="detail.data" status-icon :rules="detail.rules" label-width="50px"
           ref="productEditForm" class="product-edit-form">
           <el-form-item label="名称" prop="name">
             <el-input v-model="detail.data.name" autocomplete="off"></el-input>
@@ -118,7 +95,6 @@
               <el-option label="通用" value="1"></el-option>
             </el-select>
           </el-form-item>
-          <!-- 产品属性 -->
           <el-form-item label="属性" class="param">
             <div class="param-box">
               <div class="item" v-for="(p, i) in detail.data.parameters" :key="'param'+i">
@@ -158,7 +134,7 @@
             <el-button type="primary" @click="editSubmit">提交</el-button>
             <el-button @click="detail.visible=false">取消</el-button>
           </el-form-item>
-        </el-form>
+        </el-form> -->
     </el-dialog>
     <!-- 选择图标弹窗 -->
     <el-dialog title="选择图标" class="icon-dialog"
@@ -258,8 +234,13 @@
 
 <script>
 import api from '@/api'
+import ProductEdit from './components/edit'
+
 export default {
   name: 'project-product',
+  components:{
+    ProductEdit
+  },
   data () {
     return {
       id: 0,
@@ -349,7 +330,7 @@ export default {
       if (item.type != 1) {
         item.type = ''
       }
-      this.detail.data = item
+      this.detail.data = {...item}
       this.detail.visible = true
     },
     addParam () {
@@ -363,9 +344,9 @@ export default {
     chooseIcon (item) {
       this.detail.data.logo = item
     },
-    editSubmit () {
+    editSubmit (data) {
       const that = this
-      const data = that.detail.data
+      // const data = that.detail.data
 
       const id = data.id
       const d = {
