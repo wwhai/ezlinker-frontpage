@@ -5,7 +5,7 @@
     <!-- 主体内容 -->
     <div class="d2-layout-header-aside-content" flex="dir:top">
       <!-- 顶栏 -->
-      <div class="d2-theme-header" :style="{ opacity: this.searchActive ? 0.5 : 1 }" flex-box="0" flex>
+      <div class="d2-theme-header" style="" :style="{ opacity: this.searchActive ? 0.5 : 1 }" flex-box="0" flex>
         <router-link
           to="/index"
           :class="{'logo-group': true, 'logo-transition': asideTransition}"
@@ -19,7 +19,8 @@
         <div class="toggle-aside-btn" @click="handleToggleAside" flex-box="0">
           <d2-icon name="bars"/>
         </div>
-        <d2-menu-header flex-box="1"/>
+        <div style="width:100%"></div>
+        <!-- <d2-menu-header flex-box="1"/> -->
         <!-- 顶栏右侧 -->
         <div class="d2-header-right" flex-box="0">
           <!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
@@ -58,11 +59,11 @@
           <transition name="fade-scale">
             <div v-if="!searchActive" class="d2-theme-container-main-layer" flex="dir:top">
               <!-- tab -->
-              <div class="d2-theme-container-main-header" flex-box="0">
+              <!-- <div class="d2-theme-container-main-header" flex-box="0">
                 <d2-tabs/>
-              </div>
+              </div> -->
               <!-- 页面 -->
-              <div class="d2-theme-container-main-body" flex-box="1">
+              <div class="d2-theme-container-main-body" style="border-top: 1px solid #cfd7e5;" flex-box="1">
                 <transition :name="transitionActive ? 'fade-transverse' : ''">
                   <keep-alive :include="keepAlive">
                     <router-view/>
@@ -155,6 +156,5 @@ export default {
 <style lang="scss">
 // 注册主题
 @import '~@/assets/style/theme/register.scss';
-
 
 </style>

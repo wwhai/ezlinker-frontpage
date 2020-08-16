@@ -21,11 +21,11 @@
                 </div>
             </div>
             <div class="bot">
-              <router-link class="device" 
+              <router-link class="device"
               :to="{path:'/project/'+item.id+'/device'}">
                 设备管理
               </router-link>
-              <router-link class="product" 
+              <router-link class="product"
               :to="{path:'/project/'+item.id+'/product'}">
               产品设计
               </router-link>
@@ -33,7 +33,11 @@
         </div>
     </div>
     <!-- 修改项目详情 -->
-    <el-dialog title="项目详情" class="project-edit-container" 
+    <el-dialog title="项目详情" class="project-edit-container"
+      :close="editClose" :visible.sync="detail.visible">
+      <project-edit :data='detail.data' :handle='editSubmit'></project-edit>
+    </el-dialog>
+    <!-- <el-dialog title="项目详情" class="project-edit-container"
       :close="editClose" :visible.sync="detail.visible">
         <el-form :model="detail.data" status-icon :rules="project.detailrules" label-width="50px"
           ref="projectEditForm" class="project-edit-form">
@@ -41,7 +45,6 @@
             <el-input v-model="detail.data.name" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="类型" prop="type">
-            <!-- <el-input v-model="detail.data.type" autocomplete="off"></el-input> -->
               <el-select v-model="detail.data.type" no-match-text='请选择' placeholder="请选择">
                 <el-option label="自由项目" :value="1"></el-option>
                 <el-option label="批量项目" :value="2"></el-option>
@@ -52,9 +55,8 @@
           </el-form-item>
           <el-form-item label="图标" prop="logo" class="label icon">
               <div class="icon-add-btn">
-                  <!-- <img v-if="detail.data.logo&&detail.data.logo.length>0" :src="detail.data.logo"> -->
                   <div class="icon-box" @click="icon.visible=true">
-                    <img class="img" v-if="detail.data.logo&&detail.data.logo.length>0" 
+                    <img class="img" v-if="detail.data.logo&&detail.data.logo.length>0"
                     :src="detail.data.logo"/>
                     <d2-icon v-else name='plus'/>
                   </div>
@@ -64,47 +66,48 @@
             <el-button type="primary" @click="editSubmit">提交</el-button>
           </el-form-item>
         </el-form>
-    </el-dialog>
-    <el-dialog title="选择图标" class="icon-dialog"
+    </el-dialog> -->
+    <!-- 选择图标 -->
+    <!-- <el-dialog title="选择图标" class="icon-dialog"
       :visible.sync="icon.visible" >
       <div class="list" >
-        <img class="item" v-for="(item,index) in icon.list" :key="'icon'+index" 
+        <img class="item" v-for="(item,index) in icon.list" :key="'icon'+index"
         @click="chooseIcon(item)" :src="item"/>
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </d2-container>
 </template>
 
 <script>
 import api from '@/api'
-// import ProjectEdit from './components/edit'
+import ProjectEdit from './components/edit'
 export default {
   name: 'resource-project',
-  // components: {
-  //   ProjectEdit
-  // },
+  components: {
+    ProjectEdit
+  },
   data () {
     return {
       project: {
         list: [],
         current: 1,
         size: 10,
-        total: 0,
+        total: 0
       },
       detail: {
         data: {},
         visible: false,
         rules: {
-        name:[{
-            required: true, message: '内容不可为空', trigger: 'blur' 
-        }],
-        description:[{
-            required: true, message: '内容不可为空', trigger: 'blur' 
-        }]
+          name: [{
+            required: true, message: '内容不可为空', trigger: 'blur'
+          }],
+          description: [{
+            required: true, message: '内容不可为空', trigger: 'blur'
+          }]
         }
       },
-      icon:{
-        list:[],
+      icon: {
+        list: [],
         visible: false
       }
     }
@@ -126,49 +129,49 @@ export default {
       })
     },
     newProject () {
-        this.detail.data = {name:'', type:'',description:'',logo:''}
-        this. detail.visible = true
-    },
-    editProject (item) {
-      if (item.type!=1&&item.type!=2){
-        item.type = ''
-      }
-      this.detail.data = {...item}
+      this.detail.data = { name: '', type: '', description: '', logo: '' }
       this.detail.visible = true
     },
-    getIcon(){
-      api.PROJECT_ICON().then(res=>{
+    editProject (item) {
+      if (item.type != 1 && item.type != 2) {
+        item.type = ''
+      }
+      this.detail.data = { ...item }
+      this.detail.visible = true
+    },
+    getIcon () {
+      api.PROJECT_ICON().then(res => {
         this.icon.list = res
       })
     },
-    chooseIcon(img){
+    chooseIcon (img) {
       this.detail.data.logo = img
     },
-    editSubmit(){
+    editSubmit (item) {
       const that = this
-
-      const id = that.detail.data.id
+      // console.log(item)
+      const id = item.id
       const data = {
-        name: that.detail.data.name, 
-        type: that.detail.data.type,
-        description: that.detail.data.description,
-        logo: that.detail.data.logo
+        name: item.name,
+        type: item.type,
+        description: item.description,
+        logo: item.logo
       }
-      if (id!=undefined){
-        api.PROJECT_UPDATE(id, data).then(res=>{
+      if (id != undefined) {
+        api.PROJECT_UPDATE(id, data).then(res => {
           that.projectList()
           that.editClose()
         })
         return
       }
-      api.PROJECT_CREATE(data).then(res=>{
-          that.projectList()
-          that.editClose()
+      api.PROJECT_CREATE(data).then(res => {
+        that.projectList()
+        that.editClose()
       })
     },
-    editClose(){
-        this.detail.data = {}
-        this. detail.visible = false
+    editClose () {
+      this.detail.data = {}
+      this.detail.visible = false
     },
     projectDevice (id) {
       console.log('projectDevice', id)
@@ -186,7 +189,7 @@ export default {
     flex-wrap: wrap;
     .project-card{
         width: 28%;
-        // margin-right: 40px;
+        max-width: 300px;
         margin: 10px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
         border-radius: 2px;
@@ -287,7 +290,7 @@ export default {
     }
 }
 .project-edit-container{
-    .project-edit-form{ 
+    .project-edit-form{
       .icon{
         .icon-add-btn{
           border: 1px solid #ccc;
@@ -299,7 +302,7 @@ export default {
             border-color: #777;
           }
           .icon-box{
-       
+
               .img{
                   width: 100%;
               }

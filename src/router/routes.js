@@ -51,10 +51,30 @@ const frameIn = [
         name: 'project-product',
         hidden: true,
         meta: {
-          title: '产品设计',
+          title: '产品管理',
           auth: true
         },
         component: _import('resource/project/pages/product')
+      },
+      {
+        path: 'product/:productId/design',
+        name: 'product-design',
+        hidden: true,
+        meta: {
+          title: '产品设计',
+          auth: true
+        },
+        component: _import('resource/project/pages/design')
+      },
+      {
+        path: 'product/:productId/detail',
+        name: 'product-detail',
+        hidden: true,
+        meta: {
+          title: '产品详情',
+          auth: true
+        },
+        component: _import('resource/project/pages/product/detail')
       },
       {
         path: 'project/:projectId/device',

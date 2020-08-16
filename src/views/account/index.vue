@@ -50,7 +50,7 @@
         </div> -->
     </el-tab-pane>
     <el-tab-pane label="更改账户" class="tab">
-        <el-form  ref="infoForm" :model="detail.data" status-icon :rules="detail.rules" 
+        <el-form  ref="infoForm" :model="detail.data" status-icon :rules="detail.rules"
             label-width="80px" class="form accountForm">
             <el-form-item prop="nickName" label="用户昵称" >
                 <el-input type="text"
@@ -76,7 +76,7 @@
                 </el-input>
             </el-form-item>
             <el-form-item>
-                <!-- <el-button size="default" 
+                <!-- <el-button size="default"
                     @click="reset" class="btn-reset">
                     重置
                 </el-button> -->
@@ -88,7 +88,7 @@
         </el-form>
     </el-tab-pane>
     <el-tab-pane label="修改密码" class="tab">
-        <el-form  ref="pwdForm" :model="pwd.data" status-icon :rules="pwd.rules" 
+        <el-form  ref="pwdForm" :model="pwd.data" status-icon :rules="pwd.rules"
             label-width="80px" class="form accountForm">
             <el-form-item prop="oldPassword" label="旧密码" >
                 <el-input type="password"
@@ -108,7 +108,7 @@
                 </el-input>
             </el-form-item>
             <el-form-item>
-                <el-button size="default" 
+                <el-button size="default"
                     @click="reset('pwdForm')" class="btn-reset">
                     重置
                 </el-button>
@@ -127,82 +127,82 @@
 import api from '@/api'
 
 export default {
-    name: 'account',
-    data(){
-        return {
-            user:{},
-            detail:{
-                // 表单校验
-                data:{},
-                rules: {
-                    phone: [{required: true,message: '请输入电话',trigger: 'blur'}],
-                    email: [{required: true,message: '请输入邮箱',trigger: 'blur'}],
-                    realName: [{required: true,message: '请输入真实姓名',trigger: 'blur'}],
-                    nickName: [{required: true,message: '请输入昵称',trigger: 'blur'}]
-                }
-            },
-            pwd:{
-                data:{
-                    oldPassword: '',
-                    newPassword: '',
-                    passwordRetry: '',
-                },
-                rules: {
-                    oldPassword: [{required: true,message: '请输入密码',trigger: 'blur'}],
-                    newPassword: [{required: true,message: '请输入密码',trigger: 'blur'}],
-                    passwordRetry: [{required: true,message: '请输入密码',trigger: 'blur'}],
-                }
-            }
+  name: 'account',
+  data () {
+    return {
+      user: {},
+      detail: {
+        // 表单校验
+        data: {},
+        rules: {
+          phone: [{ required: true, message: '请输入电话', trigger: 'blur' }],
+          email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
+          realName: [{ required: true, message: '请输入真实姓名', trigger: 'blur' }],
+          nickName: [{ required: true, message: '请输入昵称', trigger: 'blur' }]
         }
-    },
-    mounted(){
-        this.getUserInfo()
-    },
-    methods:{
-        getUserInfo(){
-            const that = this
-            api.USER_INFO().then(res=>{
-                that.user = res
-                that.detail.data = {
-                        phone: res.phone, 
-                        email: res.email, 
-                        realName: res.realName, 
-                        nickName: res.nickName, 
-                    }
-                console.log(res)
-            })
+      },
+      pwd: {
+        data: {
+          oldPassword: '',
+          newPassword: '',
+          passwordRetry: ''
         },
-        submit () {
-            const that = this
-            this.$refs.infoForm.validate((valid) => {
-                if (valid) {
-                    const data = {...that.detail.data}
-                    that.$api.UPDATE_USER_INFO(data).then(res => {
-                        that.$message(res)
-                    })
-                }
-            })
-        },
-        submitPwd(){
-            const that = this
-            this.$refs.pwdForm.validate((valid) => {
-                if (valid) {
-                    const data = {
-                        ...that.pwd.data   
-                    }
-                    this.$api.UPDATE_PWD(data).then(res=>{
-                        that.$message(res)
-                        that.reset('pwdForm')
-                    })
-                }
-            })
-        },
-        reset(formName){
-            //重置字段值
-            this.$refs[formName].resetFields()
-            // this.getUserInfo()
+        rules: {
+          oldPassword: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+          newPassword: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+          passwordRetry: [{ required: true, message: '请输入密码', trigger: 'blur' }]
         }
+      }
     }
+  },
+  mounted () {
+    this.getUserInfo()
+  },
+  methods: {
+    getUserInfo () {
+      const that = this
+      api.USER_INFO().then(res => {
+        that.user = res
+        that.detail.data = {
+          phone: res.phone,
+          email: res.email,
+          realName: res.realName,
+          nickName: res.nickName
+        }
+        console.log(res)
+      })
+    },
+    submit () {
+      const that = this
+      this.$refs.infoForm.validate((valid) => {
+        if (valid) {
+          const data = { ...that.detail.data }
+          that.$api.UPDATE_USER_INFO(data).then(res => {
+            that.$message(res)
+          })
+        }
+      })
+    },
+    submitPwd () {
+      const that = this
+      this.$refs.pwdForm.validate((valid) => {
+        if (valid) {
+          const data = {
+            ...that.pwd.data
+          }
+          this.$api.UPDATE_PWD(data).then(res => {
+            that.$message(res)
+            that.reset('pwdForm')
+          })
+        }
+      })
+    },
+    reset (formName) {
+      // 重置字段值
+      this.$refs[formName].resetFields()
+      // this.getUserInfo()
+    }
+  }
 
 }
 </script>

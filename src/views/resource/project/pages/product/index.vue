@@ -1,37 +1,13 @@
 <template>
   <d2-container class="product-container">
-    <!-- 统计信息 -->
-    <!-- <div class="stat">
-      <div class="item">
-        <div class="title">全部产品</div>
-        <div class="count">6</div>
-      </div>
-      <div class="item">
-        <div class="title">开发中</div>
-        <div class="count">1</div>
-      </div>
-      <div class="item">
-        <div class="title">运行中</div>
-        <div class="count">2</div>
-      </div>
-      <div class="item">
-        <div class="title">已锁定</div>
-        <div class="count">3</div>
-      </div>
-    </div> -->
     <!-- 产品列表 -->
     <div class="list-box">
       <div class="list-head">
         <div class="title">产品列表</div>
         <div class="right">
-          <!-- <span class="type-list" @click="chooseType">
-            <span :class="{active: product.select==='0'}" data-type='0'>全部产品</span>
-            <span :class="{active: product.select==='1'}" data-type='1'>开发中</span>
-            <span :class="{active: product.select==='2'}" data-type='2'>运行中</span>
-            <span :class="{active: product.select==='3'}" data-type='3'>已锁定</span>
-          </span> -->
+          <!-- 数据检索 -->
           <span class="input-box">
-            <el-input placeholder="搜索产品" v-model="product.key" 
+            <el-input placeholder="搜索产品" v-model="product.key"
               class="input-with-select" size="small">
               <el-button slot="append" icon="el-icon-search"></el-button>
             </el-input>
@@ -68,7 +44,15 @@
             </div>
             <div class="operate">
               <span @click="editProduct(p)">编辑</span>
-              <span>设计</span>
+              <span>
+                  <router-link class="design-btn" :to="{path:'/product/'+p.id+'/detail'}">
+                详情</router-link>
+                </span>
+                <!-- <span>
+                  <router-link class="design-btn" :to="{path:'/product/'+p.id+'/design'}">
+                  设计
+                  </router-link>
+                </span> -->
               <span @click="openModule(p.id)">模块</span>
               <span >删除</span>
             </div>
@@ -83,7 +67,8 @@
     <!-- 编辑产品弹窗 -->
     <el-dialog title="编辑产品" class="product-edit-dialog"
       :visible.sync="detail.visible" >
-        <el-form :model="detail.data" status-icon :rules="detail.rules" label-width="50px"
+      <product-edit :data='detail.data' :handle='editSubmit'></product-edit>
+        <!-- <el-form :model="detail.data" status-icon :rules="detail.rules" label-width="50px"
           ref="productEditForm" class="product-edit-form">
           <el-form-item label="名称" prop="name">
             <el-input v-model="detail.data.name" autocomplete="off"></el-input>
@@ -94,7 +79,7 @@
           <el-form-item label="标签" prop="tag">
             <el-select v-model="detail.data.tags"
               multiple filterable allow-create default-first-option
-              placeholder="请添加产品标签">    
+              placeholder="请添加产品标签">
             </el-select>
           </el-form-item>
           <el-form-item label="协议" prop="protocol">
@@ -110,7 +95,6 @@
               <el-option label="通用" value="1"></el-option>
             </el-select>
           </el-form-item>
-          <!-- 产品属性 -->
           <el-form-item label="属性" class="param">
             <div class="param-box">
               <div class="item" v-for="(p, i) in detail.data.parameters" :key="'param'+i">
@@ -140,7 +124,7 @@
             <div class="icon-add-btn">
                   <img v-if="detail.data.logo&&detail.data.logo.length>0" :src="detail.data.logo">
                   <div class="icon-box" @click="icon.visible=true">
-                    <img class="img" v-if="detail.data.logo&&detail.data.logo.length>0" 
+                    <img class="img" v-if="detail.data.logo&&detail.data.logo.length>0"
                     :src="detail.data.logo"/>
                     <d2-icon v-else name='plus'/>
                   </div>
@@ -150,13 +134,13 @@
             <el-button type="primary" @click="editSubmit">提交</el-button>
             <el-button @click="detail.visible=false">取消</el-button>
           </el-form-item>
-        </el-form>
+        </el-form> -->
     </el-dialog>
     <!-- 选择图标弹窗 -->
     <el-dialog title="选择图标" class="icon-dialog"
       :visible.sync="icon.visible" >
       <div class="list" >
-        <img class="item" v-for="(item,index) in icon.list" :key="'icon'+index" 
+        <img class="item" v-for="(item,index) in icon.list" :key="'icon'+index"
         @click="chooseIcon(item)" :src="item"/>
       </div>
     </el-dialog>
@@ -250,114 +234,119 @@
 
 <script>
 import api from '@/api'
+import ProductEdit from './components/edit'
+
 export default {
   name: 'project-product',
-  data(){
+  components:{
+    ProductEdit
+  },
+  data () {
     return {
       id: 0,
-      stat:{
+      stat: {
         all: 0,
         dev: 0,
         run: 0,
-        lock: 0,
+        lock: 0
       },
-      product:{
-        list:[],
+      product: {
+        list: [],
         select: '0',
         key: '',
         current: 1,
         size: 10,
         total: 0
       },
-      detail:{
+      detail: {
         data: {},
         visible: false,
-        rules:{}
+        rules: {}
       },
-      icon:{
-        list:[],
+      icon: {
+        list: [],
         visible: false
       },
-      module:{
-        productId:0,
-        data:[],
+      module: {
+        productId: 0,
+        data: [],
         current: 1,
         size: 10,
         total: 0,
         visible: false,
-        detail:{
-          data:{},
-          visible:false,
+        detail: {
+          data: {},
+          visible: false
         },
-        template:{
-          data:[],
-          visible:false
+        template: {
+          data: [],
+          visible: false
         }
       }
     }
   },
-  mounted(){
+  mounted () {
     this.id = this.$route.params.projectId
     this.productList()
     this.getIcon()
   },
-  methods:{
-    getIcon(){
+  methods: {
+    getIcon () {
 
     },
-    productList(){
+    productList () {
       const that = this
       const params = {
         projectId: that.id,
         current: that.product.current,
-        size: that.product.size,
+        size: that.product.size
       }
-      api.PRODUCT_LIST(params).then(res=>{
+      api.PRODUCT_LIST(params).then(res => {
         that.product.list = res.records
         that.product.total = res.total
         console.log(that.product)
       })
     },
-    chooseType(event){
+    chooseType (event) {
       const type = event.target.dataset.type
-      if (type){
+      if (type) {
         this.product.select = type
-        //TODO 检索操作
+        // TODO 检索操作
       }
     },
-    newProduct(){
+    newProduct () {
       this.detail.data = {
-        "name": "",
-        "type": '1',
-        "logo": "",
-        "tags": "",
-        'protocol': 0,
-        "parameters": [],
-        "description": ""
+        name: '',
+        type: '1',
+        logo: '',
+        tags: '',
+        protocol: 0,
+        parameters: [],
+        description: ''
       }
       this.detail.visible = true
     },
-    editProduct(item){
-      if (item.type!=1){
+    editProduct (item) {
+      if (item.type != 1) {
         item.type = ''
       }
-      this.detail.data = item
+      this.detail.data = {...item}
       this.detail.visible = true
     },
-    addParam(){
+    addParam () {
       this.detail.data.parameters.push({
-        field:'', type:1, defaultValue:'', description:'',
+        field: '', type: 1, defaultValue: '', description: ''
       })
     },
-    removeParam(index){
+    removeParam (index) {
       this.detail.data.parameters.splice(index, 1)
     },
-    chooseIcon(item){
+    chooseIcon (item) {
       this.detail.data.logo = item
     },
-    editSubmit(){
+    editSubmit (data) {
       const that = this
-      const data = that.detail.data
+      // const data = that.detail.data
 
       const id = data.id
       const d = {
@@ -368,55 +357,54 @@ export default {
         tags: data.tags,
         protocol: data.protocol,
         parameters: data.parameters,
-        description: data.description,
+        description: data.description
       }
-      if (id==undefined){
-        api.PRODUCT_CREATE(d).then(res=>{
+      if (id == undefined) {
+        api.PRODUCT_CREATE(d).then(res => {
           that.detail.visible = false
           that.productList()
         })
         return
       }
-      api.PRODUCT_UPDATE(id, d).then(res=>{
+      api.PRODUCT_UPDATE(id, d).then(res => {
         that.detail.visible = false
         that.productList()
       })
     },
-    //打开产品模块
-    openModule(id){
+    // 打开产品模块
+    openModule (id) {
       const that = this
       const params = {
         productId: id,
         current: that.module.current,
-        size: that.module.size,
+        size: that.module.size
       }
-      this.$api.MODULE_LIST(params).then(res=>{
-        
+      this.$api.MODULE_LIST(params).then(res => {
         that.module.data = res.records
         that.module.total = res.total
         that.module.visible = true
         that.module.productId = id
       })
     },
-    moduleTemplateAll(){
+    moduleTemplateAll () {
       const that = this
-      this.$api.MODULE_TYPE_ALL().then(res=>{
+      this.$api.MODULE_TYPE_ALL().then(res => {
         var data = []
-        for(const o of res) {
+        for (const o of res) {
           data.push({
-            "icon": o.icon,
-            "type": o.name,
-            "name": o.label,
-            "protocol": o.protocol,
-            "model": o.model,
-            "description": o.description,
-            "dataAreas":[]
+            icon: o.icon,
+            type: o.name,
+            name: o.label,
+            protocol: o.protocol,
+            model: o.model,
+            description: o.description,
+            dataAreas: []
           })
         }
         that.module.template.data = data
       })
     },
-    newModule() {
+    newModule () {
       // const data = {
       //   "type": 1,
       //   "name": "",
@@ -430,34 +418,34 @@ export default {
       this.moduleTemplateAll()
       this.module.template.visible = true
     },
-    editModule(item){
-      this.module.detail.data = {...item}
-      this.module.template.visible = false  
+    editModule (item) {
+      this.module.detail.data = { ...item }
+      this.module.template.visible = false
       this.module.detail.visible = true
     },
-    addModuleParam(){
+    addModuleParam () {
       this.module.detail.data.dataAreas.push({
-        field:'', type:1, defaultValue:'', description:'',
+        field: '', type: 1, defaultValue: '', description: ''
       })
     },
-    removeModuleParam(index){
+    removeModuleParam (index) {
       this.module.detail.data.dataAreas.splice(index, 1)
     },
-    submitModule(){
+    submitModule () {
       const that = this
       const id = that.module.detail.data.id
       const data = {
-        productId:that.module.productId,
+        productId: that.module.productId,
         ...that.module.detail.data
       }
-      if (id==undefined) {
-        that.$api.MODULE_TEMPLATE_CREATE(data).then(res=>{
+      if (id == undefined) {
+        that.$api.MODULE_TEMPLATE_CREATE(data).then(res => {
           that.module.detail.data = {}
           that.module.detail.visible = false
         })
         return
       }
-      that.$api.MODULE_TEMPLATE_UPDATE(id,data).then(res=>{
+      that.$api.MODULE_TEMPLATE_UPDATE(id, data).then(res => {
         that.module.detail.data = {}
         that.module.detail.visible = false
         that.module.visible = false
@@ -630,6 +618,9 @@ export default {
             span{
               cursor: pointer;
               padding: 0 8px;
+              a{
+                color: #2a314e;
+              }
             }
             span + span{
               border-left: 1px solid #ddd;
@@ -697,7 +688,7 @@ export default {
            }
          }
        }
-     } 
+     }
      .icon-add-btn{
           border: 1px solid #ccc;
           width: 100px;
@@ -708,7 +699,7 @@ export default {
             border-color: #777;
           }
           .icon-box{
-       
+
               .img{
                   width: 100%;
               }
@@ -853,7 +844,7 @@ export default {
            }
          }
        }
-     } 
+     }
     }
   }
   .icon-dialog{

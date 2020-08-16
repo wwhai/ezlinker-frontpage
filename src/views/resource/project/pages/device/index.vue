@@ -1,12 +1,12 @@
 <template>
   <d2-container>
-      product-design
+      device-manage
   </d2-container>
 </template>
 
 <script>
 export default {
-    name: 'project-device'
+  name: 'project-device'
 }
 </script>
 
