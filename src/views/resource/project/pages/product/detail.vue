@@ -37,12 +37,11 @@
             </div>
         </div>
         <div class="expand-box">
-            <!-- v-if="detail.parameters&&detail.parameters.length>0" -->
             <div class="box param-box" v-loading='detail.loading'>
                 <div class="wrapper param">
                     <div class="title">产品参数</div>
                     <div class="list param-list">
-                        <el-table :data="detail.data.parameters" size='medium'>
+                        <el-table :data="detail.data.parameters" size='medium'  max-height='100%'>
                             <el-table-column prop="field" label="字段" >
                             </el-table-column>
                             <el-table-column label="类型" >
@@ -54,12 +53,11 @@
                     </div>
                 </div>
             </div>
-            <!-- v-if="module.data&&module.data.length>0" -->
             <div class="box module-box"  v-loading='module.loading'>
                 <div class="wrapper">
                     <div class="title">模块信息</div>
                     <div class="list module-list">
-                        <el-table class="module-table" :data="module.data">
+                        <el-table class="module-table" :data="module.data" max-height='100%'>
                             <el-table-column type="expand">
                                 <template slot-scope="props">
                                     <el-table class="module-table" :data="props.row.dataAreas">
@@ -154,6 +152,8 @@ export default {
 .producct-detail-container{
     .product-wrapper{
         height: 100%;
+        display: flex;
+        flex-flow: column;
         .box{
             // width: 60%;
             box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
@@ -169,10 +169,6 @@ export default {
                 margin-top: 10px;
                 font-size: 14px; 
             }
-        }
-        .box + .box{
-            // border-top: 1px solid #eee;
-            // margin-top: 20px;
         }
         .product-box{
             padding: 24px;
@@ -217,10 +213,11 @@ export default {
         }
         .expand-box{
             margin-top: 20px;
+            height: 100%;
+            flex: 1;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            // height: 100%;
             .wrapper{
                 padding: 24px;
             }
