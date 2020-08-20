@@ -34,7 +34,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       data
     })
   },
-  MODULE_LOGS(params) {
+  MODULE_LOGS (params) {
     return request({
       url: 'modules/logs',
       method: 'get',

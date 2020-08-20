@@ -56,7 +56,7 @@ const canvasOptions = {
 export default {
   data () {
     return {
-      product:{},
+      product: {},
       tools: Tools,
       props: {
         node: null,
@@ -71,7 +71,7 @@ export default {
         top: null,
         bottom: null
       },
-      canvas:{}
+      canvas: {}
     }
   },
   components: {
@@ -107,7 +107,7 @@ export default {
     this.canvas = new Topology('topology-canvas', canvasOptions)
 
     this.product.id = this.$route.params.productId
-    //页面挂载时显示设计图
+    // 页面挂载时显示设计图
     // this.open()
     this.getProduct()
   },
@@ -115,21 +115,21 @@ export default {
     ...mapActions('d2admin/canvas', [
       'data'
     ]),
-    getProduct(){
+    getProduct () {
       const that = this
-      this.$api.PRODUCT_INFO(this.product.id).then(res=>{
-        that.product = res 
+      this.$api.PRODUCT_INFO(this.product.id).then(res => {
+        that.product = res
         console.log(that.product)
       })
     },
     open (data) {
-        this.canvas.open(data)
+      this.canvas.open(data)
     },
     handle_save () {
-        // 画布数据的json序列化
-        const data = JSON.stringify(this.canvas.data)
-        console.log("save data")
-        console.log(this.canvas.data)
+      // 画布数据的json序列化
+      const data = JSON.stringify(this.canvas.data)
+      console.log('save data')
+      console.log(this.canvas.data)
     },
     onDrag (event, node) {
       event.dataTransfer.setData('Text', JSON.stringify(node.data))
@@ -414,7 +414,7 @@ export default {
         margin-top: 6px;
       }
     }
-    .title {  
+    .title {
       color: #0d1a26;
       font-weight: 600;
       font-size: 18px;

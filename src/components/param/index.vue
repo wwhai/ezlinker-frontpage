@@ -1,6 +1,6 @@
 <template>
 <div class="param-box">
-    <div class="item" v-for="(p, i) in detail.data.parameters" :key="'param'+i">
+    <div class="item" v-for="(p, i) in value" :key="'param'+i">
     <span class="elem field">
         <el-input placeholder="字段名" v-model="p.field"/>
     </span>
@@ -26,20 +26,23 @@
 
 <script>
 export default {
-    name: 'param',
-    data(){
-        
+  name: 'parameter',
+  props: {
+    value: Array
+  },
+  mounted () {
+    console.log(this.data)
+  },
+  methods: {
+    addParam () {
+      this.value.push({
+        field: '', type: 1, defaultValue: '', description: ''
+      })
     },
-    methods: {
-        addParam () {
-            this.module.detail.data.dataAreas.push({
-                field: '', type: 1, defaultValue: '', description: ''
-            })
-        },
-        removeParam (index) {
-            this.module.detail.data.dataAreas.splice(index, 1)
-        },
+    removeParam (index) {
+      this.value.splice(index, 1)
     }
+  }
 }
 </script>
 
