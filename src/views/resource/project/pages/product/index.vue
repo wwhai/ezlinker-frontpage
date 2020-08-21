@@ -23,44 +23,36 @@
         </div>
         <!-- 有数据时显示 -->
         <div v-if="product.list&&(product.list.length>0)" class="list">
-          <div class="item" v-for="(p,i) in product.list" :key="'product'+i">
-            <div class="meta-box">
-              <div class="icon">
-                <img v-if="p.logo&&p.logo.length>0" :src="p.logo"/>
-                <d2-icon v-else name='file-o'/>
-              </div>
-              <div class="meta">
-                <div class="name">{{p.name}}</div>
-                <div class="desc">{{p.description}}</div>
-              </div>
-            </div>
-            <div class="tags">
-              <div class="title">标签</div>
-              <div class="content">
-                <span class="tag" v-for="(t,j) in p.tags" :key="'tag'+j">
-                  {{ t }}
-                </span>
-              </div>
-            </div>
-            <div class="time">
-              <div class="title">创建时间</div>
-              <div class="content">{{p.createTime}}</div>
-            </div>
-            <div class="operate">
-              <span @click="editProduct(p)">编辑</span>
-              <span>
-                  <router-link class="design-btn" :to="{path:'/product/'+p.id+'/detail'}">
-                详情</router-link>
-                </span>
+          <el-table :data="product.list">
+            <el-table-column label="产品图标">
+              <template slot-scope="scope">
+                <div class="icon">
+                  <img :src="scope.row.logo" alt="icon"/>
+                </div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="name" label="产品名称"></el-table-column>
+            <el-table-column prop="description" label="产品简介"></el-table-column>
+            <el-table-column prop="createTime" label="创建时间"></el-table-column>
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <div class="tool">
+                <span @click="editProduct(scope.row)">编辑</span>
+                <span><router-link class="design-btn" 
+                :to="{path:'/product/'+scope.row.id+'/detail'}">
+                详情
+                </router-link></span>
                 <!-- <span>
                   <router-link class="design-btn" :to="{path:'/product/'+p.id+'/design'}">
                   设计
                   </router-link>
                 </span> -->
-              <span @click="openModule(p.id)">模块</span>
+              <span @click="openModule(scope.row.id)">模块</span>
               <span >删除</span>
-            </div>
-          </div>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
         <!-- 无数据提示 -->
         <div v-else class="no-data">
@@ -320,79 +312,104 @@ export default {
         }
       }
       .list{
-        .item{
-          display: flex;
-          justify-content: space-between;
-          margin-top: 20px ;
-          font-size: 14px;
-          .meta-box{
-            display: flex;
-              width: 40%;
-            .icon{
-              width: 48px;
-              height: 48px;
-              text-align: center;
-              line-height: 50px;
-              color: #999;
-              border: 1px solid #ddd;
-              border-radius: 5px;
-              img{
-                width: 100%;
-              }
-              .fa{
-                font-size: 24px;
-              }
-            }
-            .meta{
-              margin-left: 16px;
-              right: 0px;
-              .name{
-                color: rgba(0, 0, 0, 0.65);
-                margin-bottom: 4px;
-              }
-              .desc{
-                color: rgba(54, 48, 48, 0.45);
-              }
-            }
-          }
-          .tags, .time{
-            flex: 0 0 auto;
-            margin-left: 20px;
-            color: rgba(54, 48, 48, 0.45);
-            text-align: right;
-            .title{
-              margin-bottom: 4px;
-            }
-          }
-          .tags{
-            width: 24%;
-            .content{
-              .tag{
-                border: 1px solid #ccc;
-                margin-left: 8px;
-                padding: 0 7px;
-                color: rgba(0,0,0,0.65);
-                background-color: #FAFAFA;
-              }
-            }
-          }
-          .operate{
-            color: #2a314e;
+        margin-top: 10px;
+        // border-top: 1px solid #ddd;
+        .el-table{
+          .icon{
+            width: 48px;
+            height: 48px;
+            text-align: center;
             line-height: 50px;
-            padding: 0 10px;
-            flex: 0 0 auto;
+            color: #999;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            img{
+              width: 100%;
+            }
+          }
+          .tool{
             span{
               cursor: pointer;
-              padding: 0 8px;
+              padding-right: 6px;
               a{
-                color: #2a314e;
+                color: #606266;
               }
-            }
-            span + span{
-              border-left: 1px solid #ddd;
             }
           }
         }
+        // .item{
+        //   display: flex;
+        //   justify-content: space-between;
+        //   margin-top: 20px ;
+        //   font-size: 14px;
+        //   .meta-box{
+        //     display: flex;
+        //       width: 40%;
+        //     .icon{
+        //       width: 48px;
+        //       height: 48px;
+        //       text-align: center;
+        //       line-height: 50px;
+        //       color: #999;
+        //       border: 1px solid #ddd;
+        //       border-radius: 5px;
+        //       img{
+        //         width: 100%;
+        //       }
+        //       .fa{
+        //         font-size: 24px;
+        //       }
+        //     }
+        //     .meta{
+        //       margin-left: 16px;
+        //       right: 0px;
+        //       .name{
+        //         color: rgba(0, 0, 0, 0.65);
+        //         margin-bottom: 4px;
+        //       }
+        //       .desc{
+        //         color: rgba(54, 48, 48, 0.45);
+        //       }
+        //     }
+        //   }
+        //   // .tags, .time{
+        //   //   flex: 0 0 auto;
+        //   //   margin-left: 20px;
+        //   //   color: rgba(54, 48, 48, 0.45);
+        //   //   text-align: right;
+        //   //   .title{
+        //   //     margin-bottom: 4px;
+        //   //   }
+        //   // }
+        //   // .tags{
+        //   //   width: 24%;
+        //   //   .content{
+        //   //     .tag{
+        //   //       border: 1px solid #ccc;
+        //   //       margin-left: 8px;
+        //   //       padding: 0 7px;
+        //   //       color: rgba(0,0,0,0.65);
+        //   //       background-color: #FAFAFA;
+        //   //     }
+        //   //   }
+        //   // }
+        //   .operate{
+        //     color: #2a314e;
+        //     line-height: 50px;
+        //     padding: 0 10px;
+        //     flex: 0 0 auto;
+        //     span{
+        //       cursor: pointer;
+        //       padding: 0 8px;
+        //       a{
+        //         color: #2a314e;
+        //       }
+        //     }
+        //     span + span{
+        //       border-left: 1px solid #ddd;
+        //     }
+        //   }
+        // }
       }
       .product-page{
         margin-top: 20px;

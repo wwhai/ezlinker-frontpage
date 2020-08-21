@@ -206,7 +206,7 @@ export default {
     // justify-content: space-between;
     .account{
       min-width: 280px;
-      width: 20%;
+      width: 25%;
       box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
       padding: 16px;
       .account-box{
@@ -229,12 +229,13 @@ export default {
       }
       .info{
         margin-top: 26px;
+        padding: 0 10px;
         .item{
           
             .title{
                 // width: 70px;
                 text-align: right;
-                padding-left: 24px;
+                padding-left: 44px;
                 padding-right: 4px;
             }
             .content{
@@ -245,13 +246,13 @@ export default {
             }
         }
         .item + .item{
-          margin-top: 16px;
+          margin-top: 20px;
         } 
       }
     }
     .tab-list{
       margin-left: 40px;
-      width: 55%;
+      width: 70%;
       box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
       .el-tabs__header{
         .el-tabs__nav-wrap{
