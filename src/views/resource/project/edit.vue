@@ -14,8 +14,7 @@
             <el-input type="textarea" v-model="data.description"></el-input>
           </el-form-item>
           <el-form-item label="图标" prop="logo" class="label icon">
-            <choose-icon :init='data.logo' :handle='chooseIcon'>
-            </choose-icon>
+            <choose-icon class="choose-icon" :init='data.logo' :handle='chooseIcon'></choose-icon>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit">提交</el-button>
@@ -24,13 +23,11 @@
 </template>
 
 <script>
-import api from '@/api'
-import { title } from 'faker/lib/locales/zh_CN'
 import ChooseIcon from '@/components/choose-icon'
 
 export default {
   name: 'project-edit',
-  components:{
+  components: {
     ChooseIcon
   },
   data () {
@@ -53,7 +50,7 @@ export default {
     handle: Function
   },
   methods: {
-    chooseIcon(item){
+    chooseIcon (item) {
       this.data.logo = item
     },
     submit () {
@@ -69,18 +66,13 @@ export default {
 </script>
 
 <style lang='scss'>
-.project-edit-container{
-    .label{
-
+.project-edit-form{
+  .choose-icon{
+    .icon-box{
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
     }
-    .icon{
-        .icon-box{
-            width: 48px;
-            height: 48px;
-            img{
-                height: 100%;
-            }
-        }
-    }
+  }
 }
 </style>

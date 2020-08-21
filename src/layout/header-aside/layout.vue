@@ -5,14 +5,15 @@
     <!-- 主体内容 -->
     <div class="d2-layout-header-aside-content" flex="dir:top">
       <!-- 顶栏 -->
-      <div class="d2-theme-header" style="" :style="{ opacity: this.searchActive ? 0.5 : 1 }" flex-box="0" flex>
+      <div class="d2-theme-header" style="background-color:white;" :style="{ opacity: this.searchActive ? 0.5 : 1 }" flex-box="0" flex>
         <router-link
           to="/index"
           :class="{'logo-group': true, 'logo-transition': asideTransition}"
-          :style="{width: asideCollapse ? asideWidthCollapse : asideWidth, 'font-size':asideCollapse?'16px':'30px'}"
-          style="height: 65px;color: #334455;font-size: 30px;line-height: 65px;text-align: center;transition: all 0.3s;border: 1px solid #eeeeee;"
+          :style="{width: asideCollapse ? asideWidthCollapse : asideWidth, 'font-size':asideCollapse?'12px':'30px'}"
+          style="background-color: rgb(235, 241, 246);height: 60px;color: #334455;font-size: 30px;line-height: 60px;text-align: center;transition: all 0.3s;    border-bottom: 1px solid rgb(207, 215, 229);
+    border-right: 1px solid rgb(207, 215, 229);"
           flex-box="0">
-          EzLinker
+          EZLINKER
           <!-- <img v-if="asideCollapse" :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/icon-only.png`">
           <img v-else :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/all.png`"> -->
         </router-link>
@@ -63,7 +64,7 @@
                 <d2-tabs/>
               </div> -->
               <!-- 页面 -->
-              <div class="d2-theme-container-main-body" style="border-top: 1px solid #cfd7e5;" flex-box="1">
+              <div class="d2-theme-container-main-body" flex-box="1">
                 <transition :name="transitionActive ? 'fade-transverse' : ''">
                   <keep-alive :include="keepAlive">
                     <router-view/>

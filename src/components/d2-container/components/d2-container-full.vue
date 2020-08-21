@@ -3,7 +3,7 @@
     <div v-if="$slots.header" class="d2-container-full__header" ref="header">
       <slot name="header"/>
     </div>
-    <div class="d2-container-full__body" ref="body">
+    <div class="d2-container-full__body" style="border-top: 1px solid #cfd7e5;" ref="body">
       <slot/>
     </div>
     <div v-if="$slots.footer" class="d2-container-full__footer" ref="footer">

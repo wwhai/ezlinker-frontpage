@@ -22,8 +22,8 @@ const frameIn = [
         component: _import('system/index')
       },
       {
-        path: 'resource/project',
-        name: 'resource-project',
+        path: 'project',
+        name: 'project',
         meta: {
           title: '项目管理',
           auth: true
@@ -44,7 +44,7 @@ const frameIn = [
         path: 'account/edit',
         name: 'account-edit',
         hidden: true,
-        component: _import('account/edit')
+        component: _import('account/edit.vue')
       },
       {
         path: 'project/:projectId/product',

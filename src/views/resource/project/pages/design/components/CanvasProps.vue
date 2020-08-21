@@ -215,10 +215,10 @@ export default {
     isJson (obj) {
       return typeof (obj) === 'object' && Object.prototype.toString.call(obj).toLowerCase() == '[object object]' && !obj.length
     },
-    goBack(){
+    goBack () {
       this.$router.back(-1)
     },
-    hanldeSave(){
+    hanldeSave () {
       this.$emit('hanlde')
     }
   }

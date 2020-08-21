@@ -9,13 +9,12 @@ const ProtocolList = ['TCP', 'MQTT', 'HTTP', 'COAP']
 // 获取协议字符串
 const ProtoToStr = (index) => (index < 0 || index > 3 ? '' : ProtocolList[index])
 
-
 const Number = 1
 const String = 2
 const Boolean = 3
 const JSON = 4
 const FieldTypeList = ['Number', 'String', 'Boolean', 'JSON']
-const FieldTypeToStr = (index) => (index<0||index>=FieldTypeList.length?'':FieldTypeList[index])
+const FieldTypeToStr = (index) => (index < 0 || index >= FieldTypeList.length ? '' : FieldTypeList[index])
 export {
   TokenKey,
   TCP,

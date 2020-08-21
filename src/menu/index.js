@@ -30,14 +30,14 @@ export const menuHeader = supplementPath([
 
 export const menuAside = supplementPath([
   { path: '/index', title: '首页', icon: 'home' },
-  {
-    title: '资源管理',
-    icon: 'folder-o',
-    children: [
-      { path: '/resource/project', title: '项目管理' }
-      // { path: '/resource/product', title: '产品搜索' }
-      // { path: '/page3', title: '页面 3' }
-    ]
-  },
-  { path: '/account', title: '个人中心', icon: 'fa-user-o' }
+  // {
+  //   title: '资源管理',
+  //   icon: 'folder-o',
+  //   children: [
+  // { path: '/resource/product', title: '产品搜索' }
+  // { path: '/page3', title: '页面 3' }
+  // ]
+  // },
+  { path: '/project', title: '项目管理', icon: 'folder-o' },
+  // { path: '/account', title: '个人中心', icon: 'user-o' }
 ])

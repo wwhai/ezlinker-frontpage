@@ -493,7 +493,7 @@ export const Tools = [
         fillStyle: '#555',
         strokeStyle: 'transparent'
       }
-    },{
+    }, {
       name: '硬盘',
       icon: 'icon-ecs-disk',
       data: {
@@ -506,7 +506,7 @@ export const Tools = [
         fillStyle: '#555',
         strokeStyle: 'transparent'
       }
-    },{
+    }, {
       name: '按钮组',
       icon: 'icon-anniuzu',
       data: {
@@ -519,7 +519,7 @@ export const Tools = [
         fillStyle: '#555',
         strokeStyle: 'transparent'
       }
-    },{
+    }, {
       name: '按钮',
       icon: 'icon-anniu',
       data: {
@@ -532,7 +532,7 @@ export const Tools = [
         fillStyle: '#555',
         strokeStyle: 'transparent'
       }
-    },{
+    }, {
       name: '进度条',
       icon: 'icon-jindutiao',
       data: {
