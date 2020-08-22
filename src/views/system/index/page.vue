@@ -40,12 +40,16 @@
     </div>
     <div class="chart">
       <div class="left">
-        <div class="title">系统负载</div>
-         <ve-line :data="chart.system" ></ve-line>
+        <div class="box">
+          <div class="title">系统负载</div>
+          <ve-line :data="chart.system" ></ve-line>
+        </div>
       </div>
       <div class="right">
-        <div class="title">网络IO</div>
-         <ve-line :data="chart.io" ></ve-line>
+        <div class="box">
+          <div class="title">网络IO</div>
+          <ve-line :data="chart.io" ></ve-line>
+        </div>
       </div>
     </div>
   <!-- emq节点状态 -->
@@ -328,15 +332,17 @@ export default {
     margin-top: 30px;
     .left, .right{
       box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-      width: 50%;
-      padding: 10px;
+      width: 48%;
+      // padding-bottom: 10px;
       text-align: center;
-      padding-bottom: 10px;
+      .box{
+        padding: 10px;
+      }
     }
     .left{
     }
     .right{
-      margin-left: 40px;
+      // margin-left: 40px;
     // box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
       // width: 50%;
     }
@@ -374,7 +380,7 @@ export default {
     justify-content: space-between;
     .log-item {
       box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-      width: 50%;
+      width: 48%;
       .title{
         padding: 6px;
         padding-top: 10px;
@@ -385,7 +391,7 @@ export default {
       }
     }
     .log-item + .log-item{
-      margin-left: 40px;
+      // margin-left: 40px;
     }
   }
 }
