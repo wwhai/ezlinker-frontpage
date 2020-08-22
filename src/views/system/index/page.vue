@@ -78,7 +78,14 @@
         </el-table-column>
         <el-table-column prop="description" label="节点描述">
         </el-table-column>
-        <el-table-column prop="state" label="运行状态">
+        <el-table-column label="运行状态">
+          <template slot-scope="scope">
+            <template v-if="scope.row.state==1||scope.row.state==0">
+              <el-tag v-if="scope.row.state==1">在线</el-tag>
+              <el-tag v-else type="danger">离线</el-tag>
+            </template>
+            <template v-else>未知</template>
+          </template>
         </el-table-column>
         <el-table-column
           label="连接数">
