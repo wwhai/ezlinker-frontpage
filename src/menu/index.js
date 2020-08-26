@@ -16,7 +16,7 @@ function supplementPath (menu) {
 }
 
 export const menuHeader = supplementPath([
-  { path: '/index', title: '首页', icon: 'home' }
+  { path: '/index', title: '系统首页', icon: 'home' }
   // {
   //   title: '页面',
   //   icon: 'folder-o',
@@ -29,7 +29,7 @@ export const menuHeader = supplementPath([
 ])
 
 export const menuAside = supplementPath([
-  { path: '/index', title: '首页', icon: 'home' },
+  { path: '/index', title: '系统首页', icon: 'home' },
   // {
   //   title: '资源管理',
   //   icon: 'folder-o',
@@ -38,6 +38,10 @@ export const menuAside = supplementPath([
   // { path: '/page3', title: '页面 3' }
   // ]
   // },
-  { path: '/project', title: '项目管理', icon: 'folder-o' },
-  // { path: '/account', title: '个人中心', icon: 'user-o' }
+  { path: '/project', title: '项目管理', icon: 'bars' },
+  { path: '/product', title: '产品管理', icon: 'microchip' },
+  { path: '/device', title: '设备管理', icon: 'connectdevelop' },
+  { path: '/schedule', title: '调度任务', icon: 'braille' },
+  { path: '/cloudfunc', title: '云端函数', icon: 'rocket' },
+  { path: '/rewriter', title: '分发引擎', icon: 'assistive-listening-systems' },
 ])
