@@ -1,59 +1,6 @@
 <template>
   <d2-container class="producct-detail-container">
-    <el-dialog
-      title="创建设备"
-      :visible.sync="showCreateDeviceDialog"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <el-form :model="newDevice" status-icon :rules="rules" ref="newDeviceForm" label-width="100px">
-        <el-form-item label="设备名称" prop="name">
-          <el-input type="text" v-model="newDevice.name"></el-input>
-        </el-form-item>
-        <el-form-item label="设备厂家" prop="industry">
-          <el-input type="text" v-model="newDevice.industry"></el-input>
-        </el-form-item>
-        <el-form-item label="设备型号" prop="model">
-          <el-input type="text" v-model="newDevice.model"></el-input>
-        </el-form-item>
-        <el-form-item label="设备描述" prop="description">
-          <el-input type="text" v-model="newDevice.description"></el-input>
-        </el-form-item>
 
-        <el-form-item label="生产类型" prop="createType">
-          <el-select v-model="createType" placeholder="请选择" @change="onCreateTypeChange">
-            <el-option
-              v-for="item in createTypes"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="生产数量" prop="createCount">
-          <el-input-number
-            v-model="newDevice.createCount"
-            @change="handleCreateCountChange"
-            :min="1"
-            :max="100"
-            :disabled="!showCreateCountInput"
-          ></el-input-number>
-        </el-form-item>
-      </el-form>
-
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="showCreateDeviceDialog = false">取 消</el-button>
-        <el-button type="primary" @click="createDevice">确 定</el-button>
-      </span>
-    </el-dialog>
-
-    <el-header style="text-align: right; font-size: 12px">
-      <span>
-        <el-button type="primary" @click="showCreateDeviceDialog = true">创建设备</el-button>
-      </span>
-      <hr />
-    </el-header>
     <div class="product-wrapper">
       <div class="box product-box" v-loading="detail.loading">
         <!-- <div class="title">产品信息</div> -->
@@ -163,25 +110,7 @@ export default {
   name: "producct-detail",
   data() {
     return {
-      // 新建设备
-      showCreateCountInput: false,
-      showCreateDeviceDialog: false,
-      // new device
-      newDevice: {
-        productId: this.$route.params.productId,
-        name: "新设备",
-        location: "0,0",
-        industry: "厂家",
-        model: "型号",
-        createCount: 1,
-        description: "产品描述",
-      },
-      //1 量产；2 单个
-      createType: 2,
-      createTypes: [
-        { label: "批量生产", value: 1 },
-        { label: "单个设备", value: 2 },
-      ],
+
       id: 0,
       detail: {
         data: {},
@@ -306,22 +235,7 @@ export default {
         },
         loading: false,
       },
-      rules: {
-        name: [
-          {
-            required: true,
-            message: "内容不可为空",
-            trigger: "blur",
-          },
-        ],
-        productId: [
-          {
-            required: true,
-            message: "内容不可为空",
-            trigger: "blur",
-          },
-        ],
-      },
+      
     };
   },
   mounted() {
@@ -331,52 +245,7 @@ export default {
     this.getProtocol();
   },
   methods: {
-    //创建设备
-    createDevice() {
-      that.$refs.newDeviceForm.validate((valid) => {
-        if (valid) {
-          this.createDeviceAPI();
-        }
-      });
-    },
-    createDeviceAPI() {
-      let _this = this;
-      this.$api
-        .DEVICE_CREATE(this.newDevice)
-        .then((res) => {
-          if (res.id > 0) {
-            this.$message({
-              message: "设备创建成功",
-              type: "success",
-            });
-            _this.showCreateDeviceDialog = false;
-          } else {
-            this.$message({
-              message: "设备创建失败",
-              type: "error",
-            });
-          }
-        })
-        .catch((e) => {
-          this.$message({
-            message: "设备创建失败",
-            type: "error",
-          });
-        });
-    },
-    //
-    onCreateTypeChange(createType) {
-      console.log(createType);
-      if (createType == 1) {
-        this.showCreateCountInput = true;
-      }
-      if (createType == 2) {
-        this.showCreateCountInput = false;
-      }
-    },
-    handleCreateCountChange(createCount) {
-      this.newDevice.createCount = createCount;
-    },
+ 
     typeToStr(index) {
       return FieldTypeToStr(index);
     },

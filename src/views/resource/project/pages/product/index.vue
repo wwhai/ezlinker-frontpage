@@ -1,5 +1,54 @@
 <template>
   <d2-container class="product-container" v-loading="product.loading">
+    <el-dialog title="创建设备" :visible.sync="showCreateDeviceDialog" width="30%">
+      <el-form
+        :model="newDevice"
+        status-icon
+        :rules="rules"
+        ref="newDeviceForm"
+        label-width="100px"
+      >
+        <el-form-item label="设备名称" prop="name">
+          <el-input type="text" v-model="newDevice.name"></el-input>
+        </el-form-item>
+        <el-form-item label="设备厂家" prop="industry">
+          <el-input type="text" v-model="newDevice.industry"></el-input>
+        </el-form-item>
+        <el-form-item label="设备型号" prop="model">
+          <el-input type="text" v-model="newDevice.model"></el-input>
+        </el-form-item>
+        <el-form-item label="设备描述" prop="description">
+          <el-input type="text" v-model="newDevice.description"></el-input>
+        </el-form-item>
+
+        <el-form-item label="生产类型" prop="createType">
+          <el-select v-model="createType" placeholder="请选择" @change="onCreateTypeChange">
+            <el-option
+              v-for="item in createTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="生产数量" prop="createCount">
+          <el-input-number
+            v-model="newDevice.createCount"
+            @change="handleCreateCountChange"
+            :min="1"
+            :max="100"
+            :disabled="!showCreateCountInput"
+          ></el-input-number>
+        </el-form-item>
+      </el-form>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button type="warning" @click="showCreateDeviceDialog = false">取 消</el-button>
+        <el-button type="primary" @click="createDevice">确 定</el-button>
+      </span>
+    </el-dialog>
+
     <!-- 产品列表 -->
     <div class="list-box">
       <!-- 表头 -->
@@ -8,8 +57,12 @@
         <div class="right">
           <!-- 数据检索 -->
           <span class="input-box">
-            <el-input placeholder="搜索产品" v-model="product.key"
-              class="input-with-select" size="small">
+            <el-input
+              placeholder="搜索产品"
+              v-model="product.key"
+              class="input-with-select"
+              size="small"
+            >
               <el-button slot="append" icon="el-icon-search"></el-button>
             </el-input>
           </span>
@@ -19,7 +72,9 @@
       <div class="list-body">
         <!-- 新增按钮 -->
         <div class="add-btn" @click="newProduct">
-            <span class="btn"><d2-icon name="plus"/>新增</span>
+          <span class="btn">
+            <d2-icon name="plus" />新增
+          </span>
         </div>
         <!-- 有数据时显示 -->
         <div v-if="product.list&&(product.list.length>0)" class="list">
@@ -27,9 +82,9 @@
             <el-table-column label="产品图标">
               <template slot-scope="scope">
                 <div class="icon">
-                  <img :src="scope.row.logo" alt="icon"/>
+                  <img :src="scope.row.logo" alt="icon" />
                 </div>
-                </template>
+              </template>
             </el-table-column>
             <el-table-column prop="name" label="产品名称"></el-table-column>
             <el-table-column prop="description" label="产品简介"></el-table-column>
@@ -37,18 +92,10 @@
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <div class="tool">
-                <span @click="editProduct(scope.row)">编辑</span>
-                <span><router-link class="design-btn" 
-                :to="{path:'/product/'+scope.row.id+'/detail'}">
-                详情
-                </router-link></span>
-                <!-- <span>
-                  <router-link class="design-btn" :to="{path:'/product/'+p.id+'/design'}">
-                  设计
-                  </router-link>
-                </span> -->
-              <span @click="openModule(scope.row.id)">模块</span>
-              <span >删除</span>
+                  <el-link type="primary" @click="editProduct(scope.row)">编辑</el-link>
+                  <el-link type="info" @click="gotoDetailPage(scope.row.id)">详情</el-link>
+                  <el-link type="success" @click="openModule(scope.row.id)">模块管理</el-link>
+                  <el-link type="warning" @click="showCreateDeviceDialog = true">创建设备</el-link>
                 </div>
               </template>
             </el-table-column>
@@ -56,53 +103,81 @@
         </div>
         <!-- 无数据提示 -->
         <div v-else class="no-data">
-          <d2-icon name="file-o"/><div class="text">No data</div>
+          <d2-icon name="file-o" />
+          <div class="text">No data</div>
         </div>
         <!-- 产品分页 -->
-        <el-pagination v-if="product.total>product.size" class="product-page" layout="prev, pager, next"
-        :page-size="product.size" :total="product.total"></el-pagination>
+        <el-pagination
+          v-if="product.total>product.size"
+          class="product-page"
+          layout="prev, pager, next"
+          :page-size="product.size"
+          :total="product.total"
+        ></el-pagination>
       </div>
     </div>
     <!-- 编辑产品弹窗 -->
-    <el-dialog title="编辑产品" class="product-edit-dialog" :visible.sync="detail.visible" >
-      <product-edit :data='detail.data' :handle='editSubmit'></product-edit>
+    <el-dialog title="编辑产品" class="product-edit-dialog" :visible.sync="detail.visible">
+      <product-edit :data="detail.data" :handle="editSubmit"></product-edit>
     </el-dialog>
     <!-- 模块抽屉 -->
-    <el-drawer title="模块管理" class="module-drawer"
-      :visible.sync="module.visible">
-      <module :data="module.data" :id="module.productId"/>
+    <el-drawer title="模块管理" class="module-drawer" :visible.sync="module.visible">
+      <module :data="module.data" :id="module.productId" />
     </el-drawer>
   </d2-container>
 </template>
 
 <script>
-import api from '@/api'
-import ProductEdit from './edit.vue'
-import Module from './components/module/module.vue'
-import ModuleEdit from './components/module/module_edit.vue'
-import ModuleTemplate from './components/module/module_template.vue'
+import api from "@/api";
+import ProductEdit from "./edit.vue";
+import Module from "./components/module/module.vue";
+import ModuleEdit from "./components/module/module_edit.vue";
+import ModuleTemplate from "./components/module/module_template.vue";
 
 export default {
-  name: 'project-product',
+  name: "project-product",
   components: {
     ProductEdit,
     Module,
     ModuleEdit,
-    ModuleTemplate
+    ModuleTemplate,
   },
-  data () {
+  data() {
     return {
+      //
+      currentSelectedRow: 0,
+      // 新建设备
+      showCreateCountInput: false,
+      showCreateDeviceDialog: false,
+      // new device
+      newDevice: {
+        productId: this.$route.params.productId,
+        name: "新设备",
+        location: "0,0",
+        industry: "厂家",
+        model: "型号",
+        createCount: 1,
+        description: "产品描述",
+      },
+      //1 量产；2 单个
+      createType: 2,
+      createTypes: [
+        { label: "批量生产", value: 1 },
+        { label: "单个设备", value: 2 },
+      ],
+      //
+      //-------
       id: 0, //projectId
       stat: {
         all: 0,
         dev: 0,
         run: 0,
-        lock: 0
+        lock: 0,
       },
       product: {
         list: [],
-        select: '0',
-        key: '',
+        select: "0",
+        key: "",
         current: 1,
         size: 10,
         total: 0,
@@ -111,7 +186,7 @@ export default {
       detail: {
         data: {},
         visible: false,
-        rules: {}
+        rules: {},
       },
       module: {
         productId: 0,
@@ -119,54 +194,126 @@ export default {
         current: 1,
         size: 10,
         total: 0,
-        visible: false
-      }
-    }
+        visible: false,
+      },
+      rules: {
+        name: [
+          {
+            required: true,
+            message: "内容不可为空",
+            trigger: "blur",
+          },
+        ],
+        productId: [
+          {
+            required: true,
+            message: "内容不可为空",
+            trigger: "blur",
+          },
+        ],
+      },
+    };
   },
-  mounted () {
-    this.id = this.$route.params.projectId
-    this.productList()
+  mounted() {
+    this.id = this.$route.params.projectId;
+    this.productList();
   },
   methods: {
-    productList () {
-      const that = this
+    //
+    gotoDetailPage(id) {
+      this.$router.push("/product/" + id + "/detail");
+    },
+    //创建设备
+    createDevice() {
+      this.$refs.newDeviceForm.validate((valid) => {
+        if (valid) {
+          this.newDevice.productId = this.id;
+          this.createDeviceAPI();
+        }
+      });
+    },
+    createDeviceAPI() {
+      let _this = this;
+      console.log(this.newDevice);
+      this.$api
+        .DEVICE_CREATE(this.newDevice)
+        .then((res) => {
+          if (res.id > 0) {
+            this.$message({
+              message: "设备创建成功",
+              type: "success",
+            });
+            _this.showCreateDeviceDialog = false;
+          } else {
+            this.$message({
+              message: "设备创建失败",
+              type: "error",
+            });
+          }
+        })
+        .catch((e) => {
+          this.$message({
+            message: "设备创建失败",
+            type: "error",
+          });
+        });
+    },
+    //
+    onCreateTypeChange(createType) {
+      console.log(createType);
+      if (createType == 1) {
+        this.showCreateCountInput = true;
+      }
+      if (createType == 2) {
+        this.showCreateCountInput = false;
+      }
+    },
+    handleCreateCountChange(createCount) {
+      this.newDevice.createCount = createCount;
+    },
+    ///-------------------------------------------------
+    productList() {
+      const that = this;
       const params = {
         projectId: that.id,
         current: that.product.current,
-        size: that.product.size
-      }
-      that.product.loading = true
-      api.PRODUCT_LIST(params).then(res => {
-        that.product.list = res.records
-        that.product.total = res.total
-        that.product.loading = false
-      }).catch(err=>{
-       that.product.loading = false
-      })
+        size: that.product.size,
+      };
+      that.product.loading = true;
+      api
+        .PRODUCT_LIST(params)
+        .then((res) => {
+          that.product.list = res.records;
+          that.product.total = res.total;
+          that.product.loading = false;
+        })
+        .catch((err) => {
+          that.product.loading = false;
+        });
     },
-    newProduct () {
+    newProduct() {
       this.detail.data = {
-        name: '',
-        type: '1',
-        logo: '',
-        tags: '',
+        name: "",
+        type: "1",
+        logo: "",
+        tags: "",
         protocol: 0,
         parameters: [],
-        description: ''
-      }
-      this.detail.visible = true
+        description: "",
+      };
+      this.detail.visible = true;
     },
-    editProduct (item) {
+    editProduct(item) {
       if (item.type != 1) {
-        item.type = ''
+        item.type = "";
       }
-      const data = { ...item, parameters: [...item.parameters] }
-      this.detail.data = data
-      this.detail.visible = true
+      const data = { ...item, parameters: [...item.parameters] };
+      this.detail.data = data;
+      this.detail.visible = true;
     },
-    editSubmit (item) {
-      const that = this
-      const id = item.id
+    editSubmit(item) {
+      const that = this;
+      const id = item.id;
       const data = {
         projectId: that.id,
         name: item.name,
@@ -175,82 +322,84 @@ export default {
         tags: item.tags,
         protocol: item.protocol,
         parameters: item.parameters,
-        description: item.description
-      }
+        description: item.description,
+      };
       if (id == undefined) {
-        api.PRODUCT_CREATE(data).then(res => {
-          that.detail.visible = false
-          that.productList()
-        })
-        return
+        api.PRODUCT_CREATE(data).then((res) => {
+          that.detail.visible = false;
+          that.productList();
+        });
+        return;
       }
-      api.PRODUCT_UPDATE(id, data).then(res => {
-        that.detail.visible = false
-        that.productList()
-      })
+      api.PRODUCT_UPDATE(id, data).then((res) => {
+        that.detail.visible = false;
+        that.productList();
+      });
     },
     // 打开产品模块
-    openModule (id) {
-      const that = this
+    openModule(id) {
+      const that = this;
       const params = {
         productId: id,
         current: that.module.current,
-        size: that.module.size
-      }
-      that.loading = true
-      this.$api.MODULE_LIST(params).then(res => {
-        that.module.data = res.records
-        that.module.total = res.total
-        that.module.visible = true
-        that.module.productId = id
-        that.loading = false
-      }).catch(err => {
-        console.log(err)
-        that.loading = false
-      })
-    }
-  }
-}
+        size: that.module.size,
+      };
+      that.loading = true;
+      this.$api
+        .MODULE_LIST(params)
+        .then((res) => {
+          that.module.data = res.records;
+          that.module.total = res.total;
+          that.module.visible = true;
+          that.module.productId = id;
+          that.loading = false;
+        })
+        .catch((err) => {
+          console.log(err);
+          that.loading = false;
+        });
+    },
+  },
+};
 </script>
 
 <style lang='scss'>
-.product-container{
-  .stat{
+.product-container {
+  .stat {
     display: flex;
     justify-content: space-between;
     padding: 24px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    .item{
+    .item {
       text-align: center;
       width: 25%;
-      .title{
+      .title {
         font-size: 14px;
         color: rgba(0, 0, 0, 0.45);
         margin-bottom: 5px;
       }
-      .count{
+      .count {
         font-size: 24px;
-
       }
     }
-    .item + .item{
+    .item + .item {
       border-left: 1px solid #f0f0f0;
     }
   }
-  .list-box{
+  .list-box {
     margin-top: 28px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     padding: 24px;
 
-    .list-head{
+    .list-head {
       line-height: 32px;
       display: flex;
       justify-content: space-between;
-      .title{}
-      .right{
-
-        .type-list{
-          span{
+      .title {
+      }
+      .right {
+        .type-list {
+          span {
             color: rgba(0, 0, 0, 0.65);
             border: 1px solid #d7dae2;
             box-sizing: border-box;
@@ -259,32 +408,32 @@ export default {
             display: inline-block;
             position: relative;
             cursor: pointer;
-            &:hover{
+            &:hover {
               z-index: 1;
               border: 1px solid #303133;
               color: #303133;
             }
           }
-          span + span{
+          span + span {
             // border-left: 1px solid #d7dae2;
             margin-left: -1px;
           }
-          .active{
+          .active {
             z-index: 1;
             border: 1px solid #303133;
             color: #303133;
           }
         }
-        .input-box{
+        .input-box {
           width: 240px;
           margin-left: 20px;
           display: inline-block;
         }
       }
     }
-    .list-body{
+    .list-body {
       margin-top: 20px;
-      .add-btn{
+      .add-btn {
         display: inline-block;
         border: 1px dashed #d9d9d9;
         text-align: center;
@@ -293,29 +442,29 @@ export default {
         font-size: 14px;
         color: rgba(0, 0, 0, 0.65);
         cursor: pointer;
-        &:hover{
+        &:hover {
           border: 1px dashed #40475c;
           color: #40475c;
         }
-        .btn{
-          .fa{
+        .btn {
+          .fa {
             margin-right: 6px;
           }
         }
       }
-      .no-data{
+      .no-data {
         text-align: center;
         padding: 20px 0;
         color: #aaa;
-        .text{
-          margin-top:10px
+        .text {
+          margin-top: 10px;
         }
       }
-      .list{
+      .list {
         margin-top: 10px;
         // border-top: 1px solid #ddd;
-        .el-table{
-          .icon{
+        .el-table {
+          .icon {
             width: 48px;
             height: 48px;
             text-align: center;
@@ -323,15 +472,15 @@ export default {
             color: #999;
             border: 1px solid #ddd;
             border-radius: 5px;
-            img{
+            img {
               width: 100%;
             }
           }
-          .tool{
-            span{
+          .tool {
+            span {
               cursor: pointer;
               padding-right: 6px;
-              a{
+              a {
                 color: #606266;
               }
             }
@@ -411,7 +560,7 @@ export default {
         //   }
         // }
       }
-      .product-page{
+      .product-page {
         margin-top: 20px;
       }
     }
