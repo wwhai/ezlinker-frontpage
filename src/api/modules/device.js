@@ -7,6 +7,13 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         method: 'get'
       })
     },
+    DEVICE_QUERY_FOR_PAGE (params) {
+      return request({
+        url: 'devices/',
+        method: 'get',
+        params
+      })
+    },
     DEVICE_CREATE (data) {
       return request({
         url: 'devices',

@@ -38,7 +38,7 @@
         </div>
         </div>
     </div>
-    <div class="chart">
+    <!-- <div class="chart">
       <div class="left">
         <div class="box">
           <div class="title">系统负载</div>
@@ -51,7 +51,7 @@
           <ve-line :data="chart.io" ></ve-line>
         </div>
       </div>
-    </div>
+    </div> -->
   <!-- emq节点状态 -->
     <div class="nodes">
       <div class="title">EMQ节点</div>
@@ -141,14 +141,16 @@
           <el-table-column
             prop="ip"
             label="IP"
-            width="80">
+            width="150">
           </el-table-column>
           <el-table-column
             prop="location"
+            width="200"
             label="地址">
           </el-table-column>
           <el-table-column
             prop="createTime"
+            width="150"
             label="时间">
           </el-table-column>
         </el-table>
@@ -199,8 +201,8 @@ export default {
     this.getEMQ()
     this.getUserLog()
     this.getDeviceLog()
-    this.getSystemInfo()
-    this.getNetworkRunning()
+    // this.getSystemInfo()
+    // this.getNetworkRunning()
   },
   methods: {
     getStat () {
@@ -253,30 +255,29 @@ export default {
       const that = this
       // const date =
       // 心跳获取系统负载信息
-      setInterval(() => {
-        that.$api.EZLINKER_INFO().then(res => {
-          const rows = []
-          const len = that.chart.system.rows.length
-          const start = len - 19
-          for (var i = start >= 0 ? start : 0; i < len; i++) {
-            rows.push(that.chart.system.rows[i])
-          }
-          rows.push({
-            日期: new Date().toLocaleTimeString(),
-            memory: 100 * ((res.memory.total - res.memory.free) / res.memory.total),
-            cpu: 100 * res.cpuLoad
-          })
+      // setInterval(() => {
+      //   that.$api.EZLINKER_INFO().then(res => {
+      //     const rows = []
+      //     const len = that.chart.system.rows.length
+      //     const start = len - 19
+      //     for (var i = start >= 0 ? start : 0; i < len; i++) {
+      //       rows.push(that.chart.system.rows[i])
+      //     }
+      //     rows.push({
+      //       日期: new Date().toLocaleTimeString(),
+      //       memory: 100 * ((res.memory.total - res.memory.free) / res.memory.total),
+      //       cpu: 100 * res.cpuLoad
+      //     })
 
-          that.chart.system.rows = rows
-        }).catch(err => {
+      //     that.chart.system.rows = rows
+      //   }).catch(err => {
 
-        })
-      }, 5000)
+      //   })
+      // }, 5000)
     },
     getNetworkRunning () {
       const that = this
       that.$api.NETWORK_RUNNING().then(res => {
-        console.log('io', res)
         var rows = []
         for (var i = 0; i < res.createTime.length; i++) {
           rows.push({

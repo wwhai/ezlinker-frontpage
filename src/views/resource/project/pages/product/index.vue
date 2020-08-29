@@ -1,5 +1,8 @@
 <template>
   <d2-container class="product-container" v-loading="product.loading">
+    <div slot="header" class="clearfix">
+      <el-page-header @back="goBack" content="产品管理"></el-page-header>
+    </div>
     <el-dialog title="创建设备" :visible.sync="showCreateDeviceDialog" width="30%">
       <el-form
         :model="newDevice"
@@ -51,31 +54,20 @@
 
     <!-- 产品列表 -->
     <div class="list-box">
-      <!-- 表头 -->
-      <div class="list-head">
-        <div class="title">产品列表</div>
-        <div class="right">
-          <!-- 数据检索 -->
-          <span class="input-box">
-            <el-input
-              placeholder="搜索产品"
-              v-model="product.key"
-              class="input-with-select"
-              size="small"
-            >
-              <el-button slot="append" icon="el-icon-search"></el-button>
-            </el-input>
-          </span>
-        </div>
-      </div>
+      <el-form :inline="true" :model="searchParam" class="demo-form-inline">
+        <el-form-item label="查询设备">
+          <el-input v-model="searchParam.user" placeholder="名称/型号/SN"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">查询</el-button>
+        </el-form-item>
+        <el-form-item style="text-align:right">
+          <el-button @click="newProduct" type="success">创建产品</el-button>
+        </el-form-item>
+      </el-form>
+
       <!-- 列表 -->
       <div class="list-body">
-        <!-- 新增按钮 -->
-        <div class="add-btn" @click="newProduct">
-          <span class="btn">
-            <d2-icon name="plus" />新增
-          </span>
-        </div>
         <!-- 有数据时显示 -->
         <div v-if="product.list&&(product.list.length>0)" class="list">
           <el-table :data="product.list">
@@ -144,6 +136,7 @@ export default {
   },
   data() {
     return {
+      searchParam: {},
       //
       currentSelectedRow: 0,
       // 新建设备
@@ -387,16 +380,14 @@ export default {
     }
   }
   .list-box {
-    margin-top: 28px;
+    //margin-top: 4px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    padding: 24px;
+    //padding: 4px;
 
     .list-head {
       line-height: 32px;
       display: flex;
       justify-content: space-between;
-      .title {
-      }
       .right {
         .type-list {
           span {

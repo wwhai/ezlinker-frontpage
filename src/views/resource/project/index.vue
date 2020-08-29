@@ -27,7 +27,7 @@
             <router-link :to="{path:'/project/'+item.id+'/device'}"
             class="device" >设备管理</router-link>
             <router-link :to="{path:'/project/'+item.id+'/product'}"
-              class="product">产品设计</router-link>
+              class="product">产品管理</router-link>
           </div>
         </div>
     </div>
