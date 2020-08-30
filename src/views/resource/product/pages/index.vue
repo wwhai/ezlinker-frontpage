@@ -227,36 +227,36 @@ export default {
 
 <style lang="scss">
 .product-container {
-  .stat {
-    display: flex;
-    justify-content: space-between;
-    padding: 24px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  // .stat {
+  //   display: flex;
+  //   justify-content: space-between;
+  //   padding: 24px;
+  //   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 
-    .item {
-      text-align: center;
-      width: 25%;
+  //   .item {
+  //     text-align: center;
+  //     width: 25%;
 
-      .title {
-        font-size: 14px;
-        color: rgba(0, 0, 0, 0.45);
-        margin-bottom: 5px;
-      }
+  //     .title {
+  //       font-size: 14px;
+  //       color: rgba(0, 0, 0, 0.45);
+  //       margin-bottom: 5px;
+  //     }
 
-      .count {
-        font-size: 24px;
-      }
-    }
+  //     .count {
+  //       font-size: 24px;
+  //     }
+  //   }
 
-    .item + .item {
-      border-left: 1px solid #f0f0f0;
-    }
-  }
+  //   .item + .item {
+  //     border-left: 1px solid #f0f0f0;
+  //   }
+  // }
 
   .list-box {
-    margin-top: 28px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    padding: 24px;
+    // margin-top: 28px;
+    // box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    // padding: 24px;
 
     .list-head {
       line-height: 32px;

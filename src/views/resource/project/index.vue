@@ -45,7 +45,7 @@
 <script>
 import api from '@/api'
 import ProjectEdit from './edit.vue'
-import { Loading } from 'element-ui';
+import { Loading } from 'element-ui'
 
 export default {
   name: 'resource-project',
@@ -60,7 +60,7 @@ export default {
         current: 1,
         size: 12,
         total: 0,
-        loading: false,
+        loading: false
       },
       // 项目编辑的数据
       detail: {
@@ -80,7 +80,6 @@ export default {
   },
   mounted () {
     this.projectList()
-    this.getIcon()
   },
   methods: {
     projectList () {
@@ -94,7 +93,7 @@ export default {
         that.project.list = res.records
         that.project.total = res.total
         that.project.loading = false
-      }).catch(err=>{
+      }).catch(err => {
         console.log(err)
         that.project.loading = false
       })
@@ -127,7 +126,7 @@ export default {
           that.projectList()
           that.editClose()
           // loading.close()
-        }).catch(err=>{
+        }).catch(err => {
           // loading.close()
         })
         return
@@ -136,9 +135,9 @@ export default {
       api.PROJECT_CREATE(data).then(res => {
         that.projectList()
         that.editClose()
-          // loading.close()
-      }).catch(err=>{
-          // loading.close()
+        // loading.close()
+      }).catch(err => {
+        // loading.close()
       })
     },
     editClose () {

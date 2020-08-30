@@ -1,56 +1,13 @@
 <template>
-  <d2-container class="product-container" v-loading="product.loading">
+  <d2-container class="project-product-container" v-loading="product.loading">
+    <el-card class="box-card" >
+      <!-- <div slot="header" class="clearfix">
+        <el-page-header @back="goBack" content="设备列表"></el-page-header>
+      </div> -->
+    <!-- 页头 -->
     <div slot="header" class="clearfix">
       <el-page-header @back="goBack" content="产品管理"></el-page-header>
     </div>
-    <el-dialog title="创建设备" :visible.sync="showCreateDeviceDialog" width="30%">
-      <el-form
-        :model="newDevice"
-        status-icon
-        :rules="rules"
-        ref="newDeviceForm"
-        label-width="100px"
-      >
-        <el-form-item label="设备名称" prop="name">
-          <el-input type="text" v-model="newDevice.name"></el-input>
-        </el-form-item>
-        <el-form-item label="设备厂家" prop="industry">
-          <el-input type="text" v-model="newDevice.industry"></el-input>
-        </el-form-item>
-        <el-form-item label="设备型号" prop="model">
-          <el-input type="text" v-model="newDevice.model"></el-input>
-        </el-form-item>
-        <el-form-item label="设备描述" prop="description">
-          <el-input type="text" v-model="newDevice.description"></el-input>
-        </el-form-item>
-
-        <el-form-item label="生产类型" prop="createType">
-          <el-select v-model="createType" placeholder="请选择" @change="onCreateTypeChange">
-            <el-option
-              v-for="item in createTypes"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="生产数量" prop="createCount">
-          <el-input-number
-            v-model="newDevice.createCount"
-            @change="handleCreateCountChange"
-            :min="1"
-            :max="100"
-            :disabled="!showCreateCountInput"
-          ></el-input-number>
-        </el-form-item>
-      </el-form>
-
-      <span slot="footer" class="dialog-footer">
-        <el-button type="warning" @click="showCreateDeviceDialog = false">取 消</el-button>
-        <el-button type="primary" @click="createDevice">确 定</el-button>
-      </span>
-    </el-dialog>
 
     <!-- 产品列表 -->
     <div class="list-box">
@@ -59,7 +16,7 @@
           <el-input v-model="searchParam.user" placeholder="名称/型号/SN"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">查询</el-button>
+          <el-button type="primary" @click="onSearch">查询</el-button>
         </el-form-item>
         <el-form-item style="text-align:right">
           <el-button @click="newProduct" type="success">创建产品</el-button>
@@ -86,8 +43,22 @@
                 <div class="tool">
                   <el-link type="primary" @click="editProduct(scope.row)">编辑</el-link>
                   <el-link type="info" @click="gotoDetailPage(scope.row.id)">详情</el-link>
-                  <el-link type="success" @click="openModule(scope.row.id)">模块管理</el-link>
-                  <el-link type="warning" @click="showCreateDeviceDialog = true">创建设备</el-link>
+                  <el-dropdown>
+                    <span class="el-dropdown-link">
+                      更多<em class="el-icon-arrow-down el-icon--right"></em>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item icon="el-icon-setting">
+                        <span type="success" @click="openModule(scope.row.id)">模块管理</span>
+                      </el-dropdown-item>
+                      <el-dropdown-item icon="el-icon-mobile-phone">
+                        <span type="warning" @click="newDevice(scope.row.id)">创建设备</span>
+                      </el-dropdown-item>
+
+                      <!-- <el-dropdown-item icon="el-icon-check">双皮奶</el-dropdown-item> -->
+                      <!-- <el-dropdown-item icon="el-icon-circle-check">蚵仔煎</el-dropdown-item> -->
+                    </el-dropdown-menu>
+                  </el-dropdown>
                 </div>
               </template>
             </el-table-column>
@@ -116,15 +87,21 @@
     <el-drawer title="模块管理" class="module-drawer" :visible.sync="module.visible">
       <module :data="module.data" :id="module.productId" />
     </el-drawer>
+    <!-- 新建设备 -->
+    <el-dialog title="创建设备" :visible.sync="device.visible" width="30%">
+      <device-edit :data='device.data' :submit="createDevice" :cancel="()=>{device.visible=false}"/>
+    </el-dialog>
+    </el-card>
   </d2-container>
 </template>
 
 <script>
 import api from "@/api";
 import ProductEdit from "./edit.vue";
-import Module from "./components/module/module.vue";
-import ModuleEdit from "./components/module/module_edit.vue";
-import ModuleTemplate from "./components/module/module_template.vue";
+import Module from "../../components/module/module.vue";
+import ModuleEdit from "../../components/module/module_edit.vue";
+import ModuleTemplate from "../../components/module/module_template.vue";
+import DeviceEdit from "../../components/device/device_edit.vue";
 
 export default {
   name: "project-product",
@@ -133,32 +110,11 @@ export default {
     Module,
     ModuleEdit,
     ModuleTemplate,
+    DeviceEdit,
   },
   data() {
     return {
       searchParam: {},
-      //
-      currentSelectedRow: 0,
-      // 新建设备
-      showCreateCountInput: false,
-      showCreateDeviceDialog: false,
-      // new device
-      newDevice: {
-        productId: this.$route.params.productId,
-        name: "新设备",
-        location: "0,0",
-        industry: "厂家",
-        model: "型号",
-        createCount: 1,
-        description: "产品描述",
-      },
-      //1 量产；2 单个
-      createType: 2,
-      createTypes: [
-        { label: "批量生产", value: 1 },
-        { label: "单个设备", value: 2 },
-      ],
-      //
       //-------
       id: 0, //projectId
       stat: {
@@ -176,6 +132,7 @@ export default {
         total: 0,
         loading: false,
       },
+      // product edit
       detail: {
         data: {},
         visible: false,
@@ -189,21 +146,9 @@ export default {
         total: 0,
         visible: false,
       },
-      rules: {
-        name: [
-          {
-            required: true,
-            message: "内容不可为空",
-            trigger: "blur",
-          },
-        ],
-        productId: [
-          {
-            required: true,
-            message: "内容不可为空",
-            trigger: "blur",
-          },
-        ],
+      device:{
+        data:{},
+        visible: false,
       },
     };
   },
@@ -212,59 +157,20 @@ export default {
     this.productList();
   },
   methods: {
-    //
+    goBack(){
+      this.$router.push({name:'project'})
+    },
+ 
     gotoDetailPage(id) {
-      this.$router.push("/product/" + id + "/detail");
+      // this.$router.push("/product/" + id + "/detail");
+      this.$router.push({name:'product-detail', params:{'productId': id}})
     },
-    //创建设备
-    createDevice() {
-      this.$refs.newDeviceForm.validate((valid) => {
-        if (valid) {
-          this.newDevice.productId = this.id;
-          this.createDeviceAPI();
-        }
-      });
+
+    // 关键字检索产品
+    onSearch(){
+
     },
-    createDeviceAPI() {
-      let _this = this;
-      console.log(this.newDevice);
-      this.$api
-        .DEVICE_CREATE(this.newDevice)
-        .then((res) => {
-          if (res.id > 0) {
-            this.$message({
-              message: "设备创建成功",
-              type: "success",
-            });
-            _this.showCreateDeviceDialog = false;
-          } else {
-            this.$message({
-              message: "设备创建失败",
-              type: "error",
-            });
-          }
-        })
-        .catch((e) => {
-          this.$message({
-            message: "设备创建失败",
-            type: "error",
-          });
-        });
-    },
-    //
-    onCreateTypeChange(createType) {
-      console.log(createType);
-      if (createType == 1) {
-        this.showCreateCountInput = true;
-      }
-      if (createType == 2) {
-        this.showCreateCountInput = false;
-      }
-    },
-    handleCreateCountChange(createCount) {
-      this.newDevice.createCount = createCount;
-    },
-    ///-------------------------------------------------
+    // ------产品--------
     productList() {
       const that = this;
       const params = {
@@ -272,9 +178,9 @@ export default {
         current: that.product.current,
         size: that.product.size,
       };
+
       that.product.loading = true;
-      api
-        .PRODUCT_LIST(params)
+      api.PRODUCT_LIST(params)
         .then((res) => {
           that.product.list = res.records;
           that.product.total = res.total;
@@ -329,6 +235,7 @@ export default {
         that.productList();
       });
     },
+    // ------模块-------
     // 打开产品模块
     openModule(id) {
       const that = this;
@@ -349,40 +256,71 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-          that.loading = false;
+          that.loading = false; 
         });
+    },
+    // --------设备-----------
+    newDevice(productId){
+      if (!productId){
+        this.$message({
+          message: "错误的productId",
+          type: "error",
+        });
+      }
+
+      this.device.data = {
+        projectId: this.id,
+        productId: productId,
+        name: "新设备",
+        location: "0,0",
+        industry: "厂家",
+        model: "型号",
+        createCount: 1,
+        description: "产品描述",
+      }
+      // console.log(this.device)
+      this.device.visible = true
+    },
+    createDevice(data) {
+      let _this = this;
+      // console.log(this.newDevice);
+      this.$api.DEVICE_CREATE(data)
+        .then((res) => {
+          if (res.id > 0) {
+            _this.$message({
+              message: "设备创建成功",
+              type: "success",
+            });
+            _this.device.data = {}
+            _this.device.visible = false;
+          } else {
+            this.$message({
+              message: "设备创建失败",
+              type: "error",
+            });
+          }
+        })
+        .catch((e) => {
+          this.$message({
+            message: "设备创建失败",
+            type: "error",
+          });
+        });
+    },
+    // --------调度任务-----------
+    newSchedule(productId){
+
     },
   },
 };
 </script>
 
 <style lang='scss'>
-.product-container {
-  .stat {
-    display: flex;
-    justify-content: space-between;
-    padding: 24px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    .item {
-      text-align: center;
-      width: 25%;
-      .title {
-        font-size: 14px;
-        color: rgba(0, 0, 0, 0.45);
-        margin-bottom: 5px;
-      }
-      .count {
-        font-size: 24px;
-      }
-    }
-    .item + .item {
-      border-left: 1px solid #f0f0f0;
-    }
+.project-product-container {
+  .box-card{
+    height: 99%;
   }
   .list-box {
-    //margin-top: 4px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    //padding: 4px;
 
     .list-head {
       line-height: 32px;
