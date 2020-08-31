@@ -31,9 +31,11 @@
           </div>
         </div>
     </div>
-    <!-- 项目分页 -->
-    <el-pagination v-if="project.total>12" class="project-page"
-      background layout="prev, pager, next" :total="project.total"></el-pagination>
+    <!-- 项目分页  project.total -->
+    <el-pagination v-if="project.total>12" class="project-page" 
+      background layout="prev, pager, next" @current-change='projectList'
+      :current-page.sync='project.current' :page-size='project.size'
+      :total="project.total"></el-pagination>
     <!-- 修改项目详情 -->
     <el-dialog title="项目详情" class="project-edit"
       :close="editClose" :visible.sync="detail.visible">
@@ -87,6 +89,7 @@ export default {
         current: this.project.current,
         size: this.project.size
       }
+      
       const that = this
       that.project.loading = true
       api.PROJECT_LIST(params).then(res => {

@@ -2,14 +2,26 @@
   <d2-container class="project-device-container">
     <el-card class="box-card" style="height:99%">
       <div slot="header" class="clearfix">
-        <el-page-header @back="goBack" content="设备列表"></el-page-header>
+        <el-page-header @back="goBack" :content='pageTitle'>
+        </el-page-header>
       </div>
+
+      <!-- 搜索条件 -->
       <el-form :inline="true" :model="searchParam" class="demo-form-inline">
-        <el-form-item label="查询设备">
-          <el-input v-model="searchParam.user" placeholder="名称/型号/SN"></el-input>
+        <el-form-item label="设备SN">
+          <el-input v-model="searchParam.sn" placeholder="SN"></el-input>
+        </el-form-item>
+        <el-form-item label="名称">
+          <el-input v-model="searchParam.name" placeholder="名称"></el-input>
+        </el-form-item>
+        <el-form-item label="型号">
+          <el-input v-model="searchParam.model" placeholder="型号"></el-input>
+        </el-form-item>
+        <el-form-item label="厂家">
+          <el-input v-model="searchParam.industry" placeholder="厂家"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSearch">查询</el-button>
+          <el-button type="primary" @click="search">查询</el-button>
         </el-form-item>
       </el-form>
       <el-table class="device-table" :stripe="true" :data="device.list" border >
@@ -50,7 +62,10 @@
         </el-table-column>
       </el-table>
       <div style="margin-top:20px;">
-        <el-pagination background layout="prev, pager, next" :total="100"></el-pagination>
+        <el-pagination background layout="total, prev, pager, next" 
+          @current-change="deviceList" :current-page.sync='device.current'
+          :page-size="device.size"
+          :total="device.total"></el-pagination>
       </div>
     </el-card>
     <!-- 调度任务 -->
@@ -73,6 +88,7 @@
         </el-table>
       </div>
     </el-dialog>
+    <!-- 添加任务 -->
     <el-dialog title="添加任务" width="600px" class="schedule-edit-dialog"
       :visible.sync="scheduleDetail.visible">
       <schedule-edit :data='scheduleDetail.data' :submit='editScheduleSubmit'/>
@@ -92,9 +108,31 @@ export default {
   },
   data(){
     return {
+      // 页面头部标题
+      pageTitle: "设备管理",
+      // 多个结果用XXXRecords
+      deviceRecords: {
+        current: 1,
+        size: 10,
+        total: 0,
+        pages: 0,
+        tableData: [],
+      },
+      //搜索条件
+      searchParam: {
+        productId: this.$route.params.projectId,
+        current: 1,
+        size: 10,
+        name: "",
+        sn: "",
+        model: "",
+        industry: "",
+      },
       projectId: 0,
-      searchParam:{},
       device:{
+        current: 1,
+        size: 10,
+        total: 0,
         list:[],
       },
       schedule: {
@@ -121,14 +159,18 @@ export default {
     goBack() {
       this.$router.push({name:'project'})
     },
-    onSearch(){},
     // ------设备--------
     deviceList(){
-      this.$api.DEVICE_QUERY_FOR_PAGE({ 
-          projectId: this.projectId 
-        })
+      const that = this
+      const params = {
+        current: that.device.current,
+        size: that.device.size,
+        projectId: this.projectId
+      }
+      this.$api.DEVICE_QUERY_FOR_PAGE(params)
         .then((res) => {
-          this.device.list = res.records;
+          that.device.list = res.records;
+          that.device.total = res.total
         })
         .catch((err) => {
           console.log(err)
@@ -191,8 +233,37 @@ export default {
             this.$message.error('添加任务出错');
           })
       }
+    },
+       // 分页事件响应
+    onCurrentPageChange(currentPage) {
+      this.searchParam.current = currentPage;
+      this.getDeviceData(this.searchParam);
+    },
+    // 加载数据函数，命名规范：getXXXData(参数)
+    // ！！！ 注意：在lambda表达式，this统一叫thiz；
+    getDeviceData(param) {
+      let thiz = this;
+      thiz.$api
+        .DEVICE_QUERY_FOR_PAGE(param)
+        .then((res) => {
+          //
+          thiz.deviceRecords.tableData = res.records;
+          thiz.deviceRecords.current = res.current;
+          thiz.deviceRecords.size = res.size;
+          thiz.deviceRecords.total = res.total;
+          thiz.deviceRecords.pages = res.pages;
+          //
+          thiz.searchParam.size = res.size;
+        })
+        .catch((err) => {
+          console.log(error);
+        });
+    },
+    // 条件检索
+    search() {
+      this.getDeviceData(this.searchParam);
+    },
 
-    }
   },
 };
 </script>
