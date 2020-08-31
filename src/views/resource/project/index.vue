@@ -31,9 +31,11 @@
           </div>
         </div>
     </div>
-    <!-- 项目分页 -->
-    <el-pagination v-if="project.total>12" class="project-page"
-      background layout="prev, pager, next" :total="project.total"></el-pagination>
+    <!-- 项目分页  project.total -->
+    <el-pagination v-if="project.total>12" class="project-page" 
+      background layout="prev, pager, next" @current-change='projectList'
+      :current-page.sync='project.current' :page-size='project.size'
+      :total="project.total"></el-pagination>
     <!-- 修改项目详情 -->
     <el-dialog title="项目详情" class="project-edit"
       :close="editClose" :visible.sync="detail.visible">
@@ -45,7 +47,7 @@
 <script>
 import api from '@/api'
 import ProjectEdit from './edit.vue'
-import { Loading } from 'element-ui';
+import { Loading } from 'element-ui'
 
 export default {
   name: 'resource-project',
@@ -60,7 +62,7 @@ export default {
         current: 1,
         size: 12,
         total: 0,
-        loading: false,
+        loading: false
       },
       // 项目编辑的数据
       detail: {
@@ -80,7 +82,6 @@ export default {
   },
   mounted () {
     this.projectList()
-    this.getIcon()
   },
   methods: {
     projectList () {
@@ -88,13 +89,14 @@ export default {
         current: this.project.current,
         size: this.project.size
       }
+      
       const that = this
       that.project.loading = true
       api.PROJECT_LIST(params).then(res => {
         that.project.list = res.records
         that.project.total = res.total
         that.project.loading = false
-      }).catch(err=>{
+      }).catch(err => {
         console.log(err)
         that.project.loading = false
       })
@@ -127,7 +129,7 @@ export default {
           that.projectList()
           that.editClose()
           // loading.close()
-        }).catch(err=>{
+        }).catch(err => {
           // loading.close()
         })
         return
@@ -136,9 +138,9 @@ export default {
       api.PROJECT_CREATE(data).then(res => {
         that.projectList()
         that.editClose()
-          // loading.close()
-      }).catch(err=>{
-          // loading.close()
+        // loading.close()
+      }).catch(err => {
+        // loading.close()
       })
     },
     editClose () {

@@ -25,4 +25,12 @@ export default {
 
 <style lang="scss">
 @import '~@/assets/style/public-class.scss';
+.el-drawer.rtl{
+  outline: none;
+}
+.el-drawer__header {
+  span, button {
+    outline: none;
+  }
+}
 </style>

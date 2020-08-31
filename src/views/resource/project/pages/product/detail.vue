@@ -2,7 +2,11 @@
   <d2-container class="producct-detail-container">
 
     <div class="product-wrapper">
-      <div class="box product-box" v-loading="detail.loading">
+      <!-- 产品信息 -->
+      <el-card class="box product-box" v-loading="detail.loading">
+        <div slot="header" class="clearfix">
+          <el-page-header @back="goBack" content="产品详情"></el-page-header>
+        </div>
         <!-- <div class="title">产品信息</div> -->
         <div class="list detail-box">
           <div class="item device-count">
@@ -33,7 +37,8 @@
             </div>
           </div>
         </div>
-      </div>
+      </el-card>
+      <!-- 协议接入点 -->
       <div class="box protocol-box" v-if="protocol.data&&protocol.data.length>0">
         <div class="title">接入点</div>
         <el-tabs class="protocol-tabs" :value="protocol.data[0].name">
@@ -55,6 +60,7 @@
         </el-tabs>
       </div>
       <div class="expand-box">
+        <!-- 产品参数 -->
         <div class="box param-box" v-loading="detail.loading">
           <div class="wrapper param">
             <div class="title">产品参数</div>
@@ -70,6 +76,7 @@
             </div>
           </div>
         </div>
+        <!-- 模块 -->
         <div class="box module-box" v-loading="module.loading">
           <div class="wrapper">
             <div class="title">模块信息</div>
@@ -99,18 +106,39 @@
           </div>
         </div>
       </div>
+      <!-- 调度任务 -->
+      <el-card class="box schedule-box">
+        <div class="title">调度任务</div>
+        <div class="list">
+          <el-table>
+            <!-- TODO 调度任务table -->
+            <el-table-column label='任务名' prop='jobName'></el-table-column>
+            <el-table-column label='描述' prop='description'></el-table-column>
+            <el-table-column label='Cron表达式' prop='cronExpression'></el-table-column>
+            <el-table-column label='关联设备' prop=''></el-table-column>
+            <el-table-column label='任务数据'>
+              <template slot-scope="scope">
+                {{ JSON.stringify(scope.row.scheduleData) }}
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination v-if="schedule.total>schedule.size" 
+            style='margin-top:20px;' layout="prev, pager, next" 
+            :current-page='schedule.current' :page-size='schedule.size' :total="schedule.total">
+          </el-pagination>
+        </div>
+      </el-card>
     </div>
   </d2-container>
 </template>
 
 <script>
 import { ProtoToStr, FieldTypeToStr } from "@/libs/const";
-import API from "@/api";
+
 export default {
   name: "producct-detail",
   data() {
     return {
-
       id: 0,
       detail: {
         data: {},
@@ -235,7 +263,13 @@ export default {
         },
         loading: false,
       },
-      
+      schedule: {
+        data: [],
+        current: 1,
+        size: 10,
+        total: 0,
+        loading: false,
+      }
     };
   },
   mounted() {
@@ -243,14 +277,18 @@ export default {
     this.getProduct();
     this.getModule();
     this.getProtocol();
+    // this.getSchedule();
   },
   methods: {
- 
     typeToStr(index) {
       return FieldTypeToStr(index);
     },
     protoToStr(index) {
       return ProtoToStr(index);
+    },
+    goBack(){
+      // 后退一步
+      this.$router.go(-1)
     },
     getProduct() {
       const that = this;
@@ -301,6 +339,26 @@ export default {
           that.protocol.loading = false;
         });
     },
+    getSchedule(){
+      const that = this
+      const params = {
+        current: that.schedule.current,
+        size: that.schedule.size,
+        // TODO link_id
+        // linkId: that.id,
+      }
+
+      that.schedule.loading = true
+      that.$api.SCHEDULE_INFO(params)
+        .then(res=>{
+          that.schedule.data = res.records
+          that.schedule.loading = false
+        })
+        .catch(err=>{
+          console.log(err)
+          that.schedule.loading = false
+        })
+    },
   },
 };
 </script>
@@ -332,10 +390,10 @@ export default {
     }
 
     .product-box {
-      padding: 24px;
-      height: 80px;
 
       .detail-box {
+        // padding: 24px;
+        height: 80px;
         display: flex;
 
         .device-count {
@@ -472,6 +530,9 @@ export default {
           }
         }
       }
+    }
+    .schedule-box{
+      margin-top: 20px;
     }
   }
 }
