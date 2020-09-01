@@ -80,7 +80,7 @@
       </div>
     </div>
     <!-- 编辑产品弹窗 -->
-    <el-dialog title="编辑产品" class="product-edit-dialog" :visible.sync="detail.visible">
+    <el-dialog title="编辑产品" class="product-edit-dialog" :visible.sync="detail.visible" width="40%">
       <product-edit :data="detail.data" :handle="editSubmit"></product-edit>
     </el-dialog>
     <!-- 模块抽屉 -->
@@ -88,7 +88,7 @@
       <module :data="module.data" :id="module.productId" />
     </el-drawer>
     <!-- 新建设备 -->
-    <el-dialog title="创建设备" :visible.sync="device.visible" width="30%">
+    <el-dialog title="创建设备" :visible.sync="device.visible" width="40%">
       <device-edit :data='device.data' :submit="createDevice" :cancel="()=>{device.visible=false}"/>
     </el-dialog>
     </el-card>
