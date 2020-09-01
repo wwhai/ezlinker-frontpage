@@ -12,7 +12,9 @@ import router from './router'
 import { menuHeader, menuAside } from '@/menu'
 import { frameInRoutes } from '@/router/routes'
 import VCharts from 'v-charts'
-
+import JsonEditor from 'vue-json-edit'
+  
+Vue.use(JsonEditor)
 Vue.use(VCharts)
 // 核心插件
 Vue.use(d2Admin)

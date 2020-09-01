@@ -1,13 +1,13 @@
 <template>
   <d2-container class="project-device-container">
-    <el-card class="box-card" style="height:99%">
+    <el-card class="box-card" style="min-height:99%">
       <div slot="header" class="clearfix">
         <el-page-header @back="goBack" :content='pageTitle'>
         </el-page-header>
       </div>
 
       <!-- 搜索条件 -->
-      <el-form :inline="true" :model="searchParam" class="demo-form-inline">
+      <el-form :inline="true" :model="searchParam" class="demo-form-inline" >
         <el-form-item label="设备SN">
           <el-input v-model="searchParam.sn" placeholder="SN"></el-input>
         </el-form-item>
@@ -24,7 +24,7 @@
           <el-button type="primary" @click="search">查询</el-button>
         </el-form-item>
       </el-form>
-      <el-table class="device-table" :stripe="true" :data="device.list" border >
+      <el-table class="device-table" :stripe="true" :data="device.list" border v-loading='device.loading'>
         <el-table-column prop="sn" label="设备SN" width="200"></el-table-column>
         <el-table-column prop="name" label="设备名称"></el-table-column>
         <el-table-column prop="model" label="设备型号"></el-table-column>
@@ -39,7 +39,8 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <div class="tool">
-            <el-button class="item" size="mini" plain type="primary" @click="handle(scope.row)">详情</el-button>
+            <el-button class="item" size="mini" plain type="primary" 
+            @click="handle(scope.row)">详情</el-button>
             <!-- <el-button size="mini" plain type="primary">新建任务</el-button> -->
             <el-dropdown class="item">
               <span class="el-dropdown-link">
@@ -91,7 +92,7 @@
     <!-- 添加任务 -->
     <el-dialog title="添加任务" width="600px" class="schedule-edit-dialog"
       :visible.sync="scheduleDetail.visible">
-      <schedule-edit :data='scheduleDetail.data' :submit='editScheduleSubmit'/>
+      <schedule-edit :data='scheduleDetail.data' :submit='editScheduleSubmit' :cancel='()=>{scheduleDetail.visible=false}'/>
     </el-dialog>
   </d2-container>
 </template>
@@ -134,6 +135,7 @@ export default {
         size: 10,
         total: 0,
         list:[],
+        loading: false,
       },
       schedule: {
         deviceId: 0,
@@ -167,13 +169,16 @@ export default {
         size: that.device.size,
         projectId: this.projectId
       }
+      that.device.loading = true
       this.$api.DEVICE_QUERY_FOR_PAGE(params)
         .then((res) => {
           that.device.list = res.records;
           that.device.total = res.total
+          that.device.loading = false
         })
         .catch((err) => {
           console.log(err)
+          that.device.loading = false
         });
     },
     // -----调度任务------
@@ -186,23 +191,23 @@ export default {
     scheduleList(){
       const that = this
       const params = {
-        linkId: that.schedule.deviceId,
+        deviceId: that.schedule.deviceId,
         current: that.schedule.current,
         size: that.schedule.size,
       }
       that.schedule.visible = true
-      // that.schedule.loading = true
-      // that.$api.SCHEDULE_INFO(params)
-      //   .then(res=>{
-      //     that.schedule.list = res.records
-      //     that.schedule.total = res.total
-      //     that.schedule.loading = false
-      //   })
-      //   .catch(err=>{
-      //     console.log(err)
-      //     that.$message.error('拉取数据失败')
-      //     that.schedule.loading = false
-      //   })
+      that.schedule.loading = true
+      that.$api.SCHEDULE_INFO(params)
+        .then(res=>{
+          that.schedule.list = res.records
+          that.schedule.total = res.total
+          that.schedule.loading = false
+        })
+        .catch(err=>{
+          console.log(err)
+          that.$message.error('拉取数据失败')
+          that.schedule.loading = false
+        })
     },
     newSchedule() {
       this.scheduleDetail.data = {
@@ -210,7 +215,7 @@ export default {
         jobName: '',
         cronExpression: '',
         // 转为json
-        scheduleData: '',
+        scheduleData: '{"key":"value"}',
         description: '',
       }
       this.scheduleDetail.visible = true

@@ -1,10 +1,6 @@
 <template>
   <d2-container class="project-product-container" v-loading="product.loading">
-    <el-card class="box-card" >
-      <!-- <div slot="header" class="clearfix">
-        <el-page-header @back="goBack" content="设备列表"></el-page-header>
-      </div> -->
-    <!-- 页头 -->
+    <el-card class="box-card"  style="min-height:99%">
     <div slot="header" class="clearfix">
       <el-page-header @back="goBack" content="产品管理"></el-page-header>
     </div>
