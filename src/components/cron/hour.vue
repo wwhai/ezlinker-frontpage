@@ -1,9 +1,9 @@
 <template lang="html">
-  <div :val="value_">
-    <div>
+  <div class='list hour-list' :val="value_" >
+    <div class='item'>
       <el-radio v-model="type" label="1" size="mini" border>每时</el-radio>
     </div>
-    <div>
+    <div class='item'>
       <el-radio v-model="type" label="2" size="mini" border>周期</el-radio>
       <span style="margin-left: 10px; margin-right: 5px;">从</span>
       <el-input-number @change="type = '2'" v-model="cycle.start" :min="0" :max="23" size="mini" style="width: 100px;"></el-input-number>
@@ -11,7 +11,7 @@
       <el-input-number @change="type = '2'" v-model="cycle.end" :min="2" :max="23" size="mini" style="width: 100px;"></el-input-number>
       时
     </div>
-    <div>
+    <div class='item'>
       <el-radio v-model="type" label="3" size="mini" border>循环</el-radio>
       <span style="margin-left: 10px; margin-right: 5px;">从</span>
       <el-input-number @change="type = '3'" v-model="loop.start" :min="0" :max="23" size="mini" style="width: 100px;"></el-input-number>
@@ -19,7 +19,7 @@
       <el-input-number @change="type = '3'" v-model="loop.end" :min="1" :max="23" size="mini" style="width: 100px;"></el-input-number>
       时执行一次
     </div>
-    <div>
+    <div class='item'>
       <el-radio v-model="type" label="4" size="mini" border>指定</el-radio>
       <el-checkbox-group v-model="appoint">
         <div  v-for="i in 3" :key="i" style="margin-left: 10px;  line-height: 25px;">

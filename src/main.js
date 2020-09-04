@@ -12,10 +12,13 @@ import router from './router'
 import { menuHeader, menuAside } from '@/menu'
 import { frameInRoutes } from '@/router/routes'
 import VCharts from 'v-charts'
-import JsonEditor from 'vue-json-edit'
-  
-Vue.use(JsonEditor)
+import draggable from 'vuedraggable'
+
+// 可拖拽组件
+Vue.component('draggable', draggable)
+
 Vue.use(VCharts)
+
 // 核心插件
 Vue.use(d2Admin)
 

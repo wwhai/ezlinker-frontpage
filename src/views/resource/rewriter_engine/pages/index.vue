@@ -68,7 +68,7 @@
 
         <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
         <el-table-column label="操作">
-          <template slot-scope="scope">
+          <template>
             <el-button size="mini" plain type="primary">详情</el-button>
           </template>
         </el-table-column>
@@ -124,6 +124,9 @@ export default {
     };
   },
   methods: {
+    goBack(){
+      this.$router.go(-1)
+    },
     // 分页事件响应
     onCurrentPageChange(currentPage) {
       this.searchParam.current = currentPage;
@@ -160,9 +163,9 @@ export default {
       this.getRwEngineData(this.searchParam);
     },
     // 历史回退
-    goBack() {
-      this.$router.push("/rewriteEngine");
-    },
+    // goBack() {
+    //   this.$router.push("/rewriteEngine");
+    // },
   },
 };
 </script>

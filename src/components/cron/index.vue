@@ -79,6 +79,11 @@ export default {
         this.$message.error('日期与星期不可以同时为“不指定”')
       }
       if (this.dVal !== '?' && this.weekVal !== '?') {
+        if(this.activeName=='d'){
+          this.weekVal = '?'
+        } else if(this.activeName=='week'){
+          this.dVal = '?'
+        }
         this.$message.error('日期与星期必须有一个为“不指定”')
       }
       let v = `${this.sVal} ${this.mVal} ${this.hVal} ${this.dVal} ${this.monthVal} ${this.weekVal} ${this.yearVal}`
@@ -112,12 +117,18 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="scss">
 .cron {
   text-align: left;
   padding: 10px;
   background: #fff;
   border: 1px solid #dcdfe6;
   /* box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04); */
+
+  .list{
+    .item{
+      padding: 4px 0;
+    }
+  }
 }
 </style>

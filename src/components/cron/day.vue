@@ -1,12 +1,12 @@
 <template lang="html">
-  <div :val="value_">
-    <div>
+  <div class='list day-list' :val="value_">
+    <div class='item'>
       <el-radio v-model="type" label="1" size="mini" border>每日</el-radio>
     </div>
-    <div>
+    <div class='item'>
       <el-radio v-model="type" label="5" size="mini" border>不指定</el-radio>
     </div>
-    <div>
+    <div class='item'>
       <el-radio v-model="type" label="2" size="mini" border>周期</el-radio>
       <span style="margin-left: 10px; margin-right: 5px;">从</span>
       <el-input-number @change="type = '2'" v-model="cycle.start" :min="1" :max="31" size="mini" style="width: 100px;"></el-input-number>
@@ -14,7 +14,7 @@
       <el-input-number @change="type = '2'" v-model="cycle.end" :min="2" :max="31" size="mini" style="width: 100px;"></el-input-number>
       日
     </div>
-    <div>
+    <div class='item'>
       <el-radio v-model="type" label="3" size="mini" border>循环</el-radio>
       <span style="margin-left: 10px; margin-right: 5px;">从</span>
       <el-input-number @change="type = '3'" v-model="loop.start" :min="1" :max="31" size="mini" style="width: 100px;"></el-input-number>
@@ -22,16 +22,16 @@
       <el-input-number @change="type = '3'" v-model="loop.end" :min="1" :max="31" size="mini" style="width: 100px;"></el-input-number>
       日执行一次
     </div>
-    <div>
+    <div class='item'>
       <el-radio v-model="type" label="8" size="mini" border>工作日</el-radio>
       <span style="margin-left: 10px; margin-right: 5px;">本月</span>
       <el-input-number @change="type = '8'" v-model="work" :min="1" :max="7" size="mini" style="width: 100px;"></el-input-number>
       号，最近的工作日
     </div>
-    <div>
+    <div class='item'>
       <el-radio v-model="type" label="6" size="mini" border>本月最后一天</el-radio>
     </div>
-    <div>
+    <div class='item'>
       <el-radio v-model="type" label="4" size="mini" border>指定</el-radio>
       <el-checkbox-group v-model="appoint">
         <div  v-for="i in 4" :key="i" style="margin-left: 10px;  line-height: 25px;">

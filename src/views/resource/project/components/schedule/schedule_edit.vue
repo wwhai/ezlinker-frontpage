@@ -24,9 +24,8 @@
             <cron v-model='data.cronExpression'></cron>
         </el-dialog>
         <el-dialog title="编辑任务数据" :visible.sync="scheduleData.visible" :modal='false' top="3vh" width='600px'>
-             <json-editor v-model="scheduleData.data" >
-            </json-editor>
-            <div class="tool" style="padding:6px 14px;">
+            <json-editor v-model="scheduleData.data" ></json-editor>
+            <div class="tool" style="padding:16px 0px;">
                 <el-button type='primary' @click="closeScheduleData">确定</el-button>
                 <el-button type='' @click="scheduleData.visible=false">取消</el-button>
             </div>

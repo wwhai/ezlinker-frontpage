@@ -196,18 +196,19 @@ export default {
         size: that.schedule.size,
       }
       that.schedule.visible = true
-      that.schedule.loading = true
-      that.$api.SCHEDULE_INFO(params)
-        .then(res=>{
-          that.schedule.list = res.records
-          that.schedule.total = res.total
-          that.schedule.loading = false
-        })
-        .catch(err=>{
-          console.log(err)
-          that.$message.error('拉取数据失败')
-          that.schedule.loading = false
-        })
+      //FIXME 接口请求出错
+      // that.schedule.loading = true
+      // that.$api.SCHEDULE_INFO(params)
+      //   .then(res=>{
+      //     that.schedule.list = res.records
+      //     that.schedule.total = res.total
+      //     that.schedule.loading = false
+      //   })
+      //   .catch(err=>{
+      //     console.log(err)
+      //     that.$message.error('拉取数据失败')
+      //     that.schedule.loading = false
+      //   })
     },
     newSchedule() {
       this.scheduleDetail.data = {

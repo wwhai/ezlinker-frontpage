@@ -1,12 +1,12 @@
 <template lang="html">
-  <div :val="value_">
-    <div>
+  <div class='list year-list' :val="value_">
+    <div class='item'>
       <el-radio v-model="type" label="1" size="mini" border>每年</el-radio>
     </div>
-    <div>
+    <div class='item'>
       <el-radio v-model="type" label="5" size="mini" border>不指定</el-radio>
     </div>
-    <div>
+    <div class='item'>
       <el-radio v-model="type" label="2" size="mini" border>周期</el-radio>
       <span style="margin-left: 10px; margin-right: 5px;">从</span>
       <el-input-number @change="type = '2'" v-model="cycle.start" :min="2000" size="mini" style="width: 100px;"></el-input-number>
