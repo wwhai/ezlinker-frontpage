@@ -19,7 +19,7 @@
 ```
 
 ### 2. 表数据规范
-下面给出一个基础模板，无比按照规范来实现
+下面给出一个基础模板，务必按照规范来实现
 ```js
 <template>
   <d2-container class="project-container">

@@ -53,7 +53,7 @@ const frameIn = [{
       },
       component: _import('resource/project')
     },
-    // -------------------------------------------------------------
+    // ------------------------------------.-------------------------
     // 编辑个人账户
     {
       path: 'account',
@@ -64,7 +64,7 @@ const frameIn = [{
       },
       component: _import('account')
     }, {
-      path: 'account/edit',
+      path: 'account/ edit',
       name: 'account-edit',
       hidden: true,
       component: _import('account/edit.vue')
