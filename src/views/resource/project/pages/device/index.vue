@@ -26,7 +26,7 @@
       <el-table
         class="device-table"
         :stripe="true"
-        :data="device.list"
+        :data="devicePage.data"
         border
         v-loading="device.loading"
       >
@@ -65,7 +65,7 @@
                     <span size="mini" plain type="primary">下载密钥</span>
                   </el-dropdown-item>
                   <el-dropdown-item icon="el-icon-phone-outline">
-                    <span @click="openSchedule(scope.row.id)">调度任务</span>
+                    <span @click="showScheduleDialog(scope.row.id)">调度任务</span>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -73,14 +73,14 @@
           </template>
         </el-table-column>
       </el-table>
-      <div style="margin-top:20px;">
+      <div style="margin-top:20px;text-align:right">
         <el-pagination
           background
           layout="total, prev, pager, next"
-          @current-change="deviceList"
-          :current-page.sync="device.current"
-          :page-size="device.size"
-          :total="device.total"
+          @current-change="onCurrentPageChange"
+          :current-page.sync="devicePage.current"
+          :page-size="devicePage.size"
+          :total="devicePage.total"
         ></el-pagination>
       </div>
     </el-card>
@@ -144,11 +144,12 @@
 </template>
 
 <script>
+// 注意：这里的路径
 import Schedule from "../../components/schedule/schedule.vue";
 import ScheduleEdit from "../../components/schedule/schedule_edit.vue";
 
 export default {
-  name: "project-device",
+  name: "DeviceIndex",
   components: {
     Schedule,
     ScheduleEdit,
@@ -158,22 +159,22 @@ export default {
       // 页面头部标题
       pageTitle: "设备管理",
       // 多个结果用XXXRecords
-      deviceRecords: {
+      devicePage: {
         current: 1,
         size: 10,
         total: 0,
         pages: 0,
-        tableData: [],
+        data: [],
       },
       //搜索条件
       searchParam: {
         productId: this.$route.params.projectId,
         current: 1,
         size: 10,
-        name: "",
-        sn: "",
-        model: "",
-        industry: "",
+        name: null,
+        sn: null,
+        model: null,
+        industry: null,
       },
       projectId: 0,
       device: {
@@ -199,67 +200,54 @@ export default {
       testCmdDialog: {
         show: false,
         cmd: "",
+        deviceId: -1,
       },
     };
   },
   created() {},
   mounted() {
-    this.projectId = this.$route.params.projectId;
-    this.deviceList();
+    const params = {
+      current: this.device.current,
+      size: this.device.size,
+    };
+    this.getDeviceData(params);
   },
   methods: {
     goBack() {
       this.$router.push({ name: "project" });
     },
-    deviceDetail(id) {},
-    // ------设备--------
-    deviceList() {
-      const that = this;
-      const params = {
-        current: that.device.current,
-        size: that.device.size,
-        projectId: this.projectId,
-      };
-      that.device.loading = true;
-      this.$api
-        .DEVICE_QUERY_FOR_PAGE(params)
-        .then((res) => {
-          that.device.list = res.records;
-          that.device.total = res.total;
-          that.device.loading = false;
-        })
-        .catch((err) => {
-          console.log(err);
-          that.device.loading = false;
-        });
+    //
+    deviceDetail(id) {
+      this.$router.push({
+        name: "deviceDetail",
+        params: { productId: this.productId, id: id },
+      });
     },
     // -----调度任务------
-    openSchedule(id) {
-      const that = this;
-      that.schedule.deviceId = id;
+    showScheduleDialog(id) {
+      this.schedule.deviceId = id;
       this.schedule.visible = false;
       this.scheduleList();
     },
     scheduleList() {
-      const that = this;
       const params = {
-        deviceId: that.schedule.deviceId,
-        current: that.schedule.current,
-        size: that.schedule.size,
+        deviceId: this.schedule.deviceId,
+        current: this.schedule.current,
+        size: this.schedule.size,
       };
-      that.schedule.visible = true;
-      that.schedule.loading = true;
-      that.$api
+      this.schedule.visible = true;
+      this.schedule.loading = true;
+      this.$api
         .SCHEDULE_QUERY_FOR_PAGE(params)
         .then((res) => {
-          that.schedule.list = res.records;
-          that.schedule.total = res.total;
-          that.schedule.loading = false;
+          this.schedule.list = res.records;
+          this.schedule.total = res.total;
+          this.schedule.loading = false;
         })
         .catch((err) => {
           console.log(err);
-          that.$message.error("拉取数据失败");
-          that.schedule.loading = false;
+          this.$message.error("拉取数据失败");
+          this.schedule.loading = false;
         });
     },
     newSchedule() {
@@ -277,15 +265,14 @@ export default {
 
     // },
     editScheduleSubmit(data) {
-      const that = this;
       if (data.id === undefined) {
         data.scheduleData = JSON.parse(data.scheduleData);
         console.log(data);
-        that.$api
+        this.$api
           .SCHEDULE_CREATE(data)
           .then((res) => {
-            that.$message.success("创建成功");
-            that.scheduleDetail.visible = false;
+            this.$message.success("创建成功");
+            this.scheduleDetail.visible = false;
           })
           .catch((err) => {
             console.log(err);
@@ -299,20 +286,19 @@ export default {
       this.getDeviceData(this.searchParam);
     },
     // 加载数据函数，命名规范：getXXXData(参数)
-    // ！！！ 注意：在lambda表达式，this统一叫thiz；
+    // ！！！ 注意：在lambda表达式，this统一叫this；
     getDeviceData(param) {
-      let thiz = this;
-      thiz.$api
+      this.$api
         .DEVICE_QUERY_FOR_PAGE(param)
         .then((res) => {
           //
-          thiz.deviceRecords.tableData = res.records;
-          thiz.deviceRecords.current = res.current;
-          thiz.deviceRecords.size = res.size;
-          thiz.deviceRecords.total = res.total;
-          thiz.deviceRecords.pages = res.pages;
+          this.devicePage.data = res.records;
+          this.devicePage.current = res.current;
+          this.devicePage.size = res.size;
+          this.devicePage.total = res.total;
+          this.devicePage.pages = res.pages;
           //
-          thiz.searchParam.size = res.size;
+          this.searchParam.size = res.size;
         })
         .catch((err) => {
           console.log(error);
@@ -323,7 +309,12 @@ export default {
       this.getDeviceData(this.searchParam);
     },
     //
-    testCmd() {},
+    testCmd(data) {
+      this.$message({
+        message: "测试成功",
+        type: "success",
+      });
+    },
   },
 };
 </script>
