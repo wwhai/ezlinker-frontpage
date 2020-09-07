@@ -7,67 +7,64 @@
           :key="`${item.type}${index}`"
           :class="['array-item', ]"
         >
-          <template v-if="item.type !== 'object' && item.type !== 'array'">
-            <el-input
-              type="text" size='mini'
-              v-model="item.remark"
-              class="val-input"
-              v-if="item.type === 'string'"
-              placeholder="string"
-            />
-            <el-input
-              type="number" size='mini'
-              v-model.number="item.remark"
-              class="val-input"
-              v-if="item.type == 'number'"
-              placeholder="number"
-              @input="numberInputChange(item)"
-            />
-            <el-select
-              name="value" size='mini'
-              v-model="item.remark"
-              class="val-select"
-              v-if="item.type == 'boolean'"
-            >
-              <el-option :label="true" :value="true"></el-option>
-              <el-option :label="false" :value="false"></el-option>
+          <div class="item-head">
+            <template v-if="item.type !== 'object' && item.type !== 'array'">
+              <el-input
+                type="text" size='mini'
+                v-model="item.remark"
+                class="val-input"
+                v-if="item.type === 'string'"
+                placeholder="string"
+              />
+              <el-input
+                type="number" size='mini'
+                v-model.number="item.remark"
+                class="val-input"
+                v-if="item.type == 'number'"
+                placeholder="number"
+                @input="numberInputChange(item)"
+              />
+              <el-select
+                name="value" size='mini'
+                v-model="item.remark"
+                class="val-select"
+                v-if="item.type == 'boolean'"
+              >
+                <el-option :label="true" :value="true"></el-option>
+                <el-option :label="false" :value="false"></el-option>
+              </el-select>
+            </template>
+            <!-- <div > -->
+              <span v-else :class="['json-key', 'json-desc']">
+                <i class="collapse-down el-icon-arrow-down"
+                  v-if="item.type == 'object' || item.type == 'array'"
+                  @click="closeBlock(index, $event)"
+                ></i>
+                {{item.type.toUpperCase()}}
+                <i v-if="item.type == 'object'">{{'{' + item.childParams.length + '}'}}</i>
+                <i v-if="item.type == 'array'">{{'[' + item.childParams.length + ']'}}</i>
+              </span>
+            <!-- </div> -->
+
+            <el-select size='mini' v-model="item.type" class="type-select" @change="itemTypeChange(item)">
+              <el-option v-for="(item, index) in formats" :value="item" :key="index">{{item}}</el-option>
             </el-select>
-          </template>
-          <div v-else>
-            <span :class="['json-key', 'json-desc']">
-              {{item.type.toUpperCase()}}
-              <i
-                class="collapse-down el-icon-arrow-down"
-                v-if="item.type == 'object' || item.type == 'array'"
-                @click="closeBlock(index, $event)"
-              ></i>
-              <i v-if="item.type == 'object'">{{'{' + item.childParams.length + '}'}}</i>
-              <i v-if="item.type == 'array'">{{'[' + item.childParams.length + ']'}}</i>
-            </span>
-
-            <span class="json-val" :class="{'hide-item': hideMyItem[index] == true}">
-              <template v-if="item.type == 'array'">
-                <array-view :parsedData="item.childParams || []" v-model="item.childParams"></array-view>
-              </template>
-
-              <template v-if="item.type == 'object'">
-                <json-view :parsedData="item.childParams || {}" v-model="item.childParams"></json-view>
-              </template>
-            </span>
+            <div class="tools">
+              <!-- 拖拽按钮 -->
+              <el-tooltip effect="dark" content="点住进行拖拽" placement="right-start">
+                <d2-icon name='align-justify' class="dragbar drag-bar"/>
+              </el-tooltip>
+              <!-- 删除按钮 -->
+              <el-tooltip effect="dark" content="点击删除该行" placement="top-start">
+                <i class="del-btn el-icon-delete" @click="delItem(value, item, index)"></i>
+              </el-tooltip>
+            </div>
           </div>
 
-          <el-select size='mini' v-model="item.type" class="type-select" @change="itemTypeChange(item)">
-            <el-option v-for="(item, index) in formats" :value="item" :key="index">{{item}}</el-option>
-          </el-select>
-          <div class="tools">
-            <!-- 拖拽按钮 -->
-            <el-tooltip effect="dark" content="点住进行拖拽" placement="right-start">
-              <d2-icon name='align-justify' class="dragbar drag-bar"/>
-            </el-tooltip>
-            <!-- 删除按钮 -->
-            <el-tooltip effect="dark" content="点击删除该行" placement="top-start">
-              <i class="del-btn el-icon-delete" @click="delItem(value, item, index)"></i>
-            </el-tooltip>
+          <div class="json-val" :class="{'hide-item': hideMyItem[index] == true}"
+            v-if="item.type == 'array' || item.type == 'object'">
+              <array-view v-if="item.type == 'array'" :parsedData="item.childParams || []" v-model="item.childParams"></array-view>
+              <json-view v-if="item.type == 'object'" :parsedData="item.childParams || {}" v-model="item.childParams"></json-view>
           </div>
         </li>
       </draggable>
@@ -186,8 +183,13 @@ export default {
   padding: 0;
   margin: 8px 0;
   .array-item{
-    margin: 4px 0;
-    display: flex;
+    // margin: 4px 0;
+    .item-head{
+      display: flex;
+      .json-desc{
+        line-height: 26px;
+      }
+    }
     .val-input{
       width: 140px;
     }
@@ -214,6 +216,13 @@ export default {
         cursor: pointer;
       }
     }
+    .json-val{
+      margin-top: 6px;
+      padding-left: 8px;
+    }
+  }
+  .array-item + .array-item{
+    margin-top: 10px ;
   }
 }
 </style>

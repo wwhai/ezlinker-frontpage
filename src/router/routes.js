@@ -7,164 +7,164 @@ const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
  * 在主框架内显示
  */
 const frameIn = [{
-        path: '/',
-        redirect: {
-            name: 'index'
-        },
-        component: layoutHeaderAside,
-        children: [
-            // -------------------------------------------------------------
-            // 刷新页面 必须保留
-            {
-                path: 'refresh',
-                name: 'refresh',
-                hidden: true,
-                component: _import('system/function/refresh')
-            },
-            // -------------------------------------------------------------
-            // 页面重定向 必须保留
-            {
-                path: 'redirect/:route*',
-                name: 'redirect',
-                hidden: true,
-                component: _import('system/function/redirect')
-            },
-            // -------------------------------------------------------------
-            // -------------------------------------------------------------
-            // -------------------------------------------------------------
-            // -------------------------------------------------------------
-            // -------------------------------------------------------------
-            // -------------------------------------------------------------
-            {
-                path: 'index',
-                name: 'index',
-                meta: {
-                    auth: true
-                },
-                component: _import('system/index')
-            },
-            // -------------------------------------------------------------
-            {
-                path: 'project',
-                name: 'project',
-                meta: {
-                    title: '项目管理',
-                    auth: true
-                },
-                component: _import('resource/project')
-            },
-            // ------------------------------------.-------------------------
-            // 编辑个人账户
-            {
-                path: 'account',
-                name: 'account',
-                meta: {
-                    title: '个人中心',
-                    auth: true
-                },
-                component: _import('account')
-            }, {
-                path: 'account/ edit',
-                name: 'account-edit',
-                hidden: true,
-                component: _import('account/edit.vue')
-            }, {
-                path: 'project/:projectId/product',
-                name: 'project-product',
-                hidden: true,
-                meta: {
-                    title: '产品管理',
-                    auth: true
-                },
-                component: _import('resource/project/pages/product')
-            }, {
-                path: 'product/:productId/design',
-                name: 'product-design',
-                hidden: true,
-                meta: {
-                    title: '产品设计',
-                    auth: true
-                },
-                component: _import('resource/project/pages/design')
-            }, {
-                path: 'product/:productId/detail',
-                name: 'product-detail',
-                hidden: true,
-                meta: {
-                    title: '产品详情',
-                    auth: true
-                },
-                component: _import('resource/project/pages/product/detail')
-            }, {
-                path: 'project/:projectId/device',
-                name: 'project-device',
-                hidden: true,
-                meta: {
-                    title: '设备管理',
-                    auth: true
-                },
-                component: _import('resource/project/pages/device')
-            },
-            // -=====================================================================
-            {
-                path: 'schedule',
-                name: 'schedule',
-                hidden: true,
-                meta: {
-                    title: '调度任务',
-                    auth: true
-                },
-                component: _import('resource/schedule/pages/index')
-            }, {
-                path: 'cloudfunc',
-                name: 'cloudfunc',
-                hidden: true,
-                meta: {
-                    title: '云端函数',
-                    auth: true
-                },
-                component: _import('resource/cloudfunc/pages/index')
-            }, {
-                path: 'rewriter',
-                name: 'rewriter',
-                hidden: true,
-                meta: {
-                    title: '分发引擎',
-                    auth: true
-                },
-                component: _import('resource/rewriter_engine/pages/index')
-            }, {
-                path: 'product',
-                name: 'product',
-                hidden: true,
-                meta: {
-                    title: '产品管理',
-                    auth: true
-                },
-                component: _import('resource/product/pages/index')
-            },
-            // /--------------------------------------------------------------------------
-            {
-                path: 'device',
-                name: 'device',
-                hidden: true,
-                meta: {
-                    title: '设备管理',
-                    auth: true
-                },
-                component: _import('resource/device/pages/index')
-            }, {
-                path: 'deviceDetail',
-                name: 'deviceDetail',
-                hidden: true,
-                meta: {
-                    title: '设备详情',
-                    auth: true
-                },
-                component: _import('resource/device/pages/detail')
-            }
-        ]
-    }]
+  path: '/',
+  redirect: {
+    name: 'index'
+  },
+  component: layoutHeaderAside,
+  children: [
+    // -------------------------------------------------------------
+    // 刷新页面 必须保留
+    {
+      path: 'refresh',
+      name: 'refresh',
+      hidden: true,
+      component: _import('system/function/refresh')
+    },
+    // -------------------------------------------------------------
+    // 页面重定向 必须保留
+    {
+      path: 'redirect/:route*',
+      name: 'redirect',
+      hidden: true,
+      component: _import('system/function/redirect')
+    },
+    // -------------------------------------------------------------
+    // -------------------------------------------------------------
+    // -------------------------------------------------------------
+    // -------------------------------------------------------------
+    // -------------------------------------------------------------
+    // -------------------------------------------------------------
+    {
+      path: 'index',
+      name: 'index',
+      meta: {
+        auth: true
+      },
+      component: _import('system/index')
+    },
+    // -------------------------------------------------------------
+    {
+      path: 'project',
+      name: 'project',
+      meta: {
+        title: '项目管理',
+        auth: true
+      },
+      component: _import('resource/project')
+    },
+    // ------------------------------------.-------------------------
+    // 编辑个人账户
+    {
+      path: 'account',
+      name: 'account',
+      meta: {
+        title: '个人中心',
+        auth: true
+      },
+      component: _import('account')
+    }, {
+      path: 'account/ edit',
+      name: 'account-edit',
+      hidden: true,
+      component: _import('account/edit.vue')
+    }, {
+      path: 'project/:projectId/product',
+      name: 'project-product',
+      hidden: true,
+      meta: {
+        title: '产品管理',
+        auth: true
+      },
+      component: _import('resource/project/pages/product')
+    }, {
+      path: 'product/:productId/design',
+      name: 'product-design',
+      hidden: true,
+      meta: {
+        title: '产品设计',
+        auth: true
+      },
+      component: _import('resource/project/pages/design')
+    }, {
+      path: 'product/:productId/detail',
+      name: 'product-detail',
+      hidden: true,
+      meta: {
+        title: '产品详情',
+        auth: true
+      },
+      component: _import('resource/project/pages/product/detail')
+    }, 
+    // -------------设备相关-----------------------
+    {
+      path: 'project/:projectId/device',
+      name: 'project-device',
+      hidden: true,
+      meta: {
+        title: '设备管理',
+        auth: true
+      },
+      component: _import('resource/project/pages/device')
+    },{
+      path: 'device/:deviceId/detail',
+      name: 'device-detail',
+      hidden: true,
+      meta: {
+        title: '设备详情',
+        auth: true
+      },
+      component: _import('resource/project/pages/device/detail')
+    },
+    // -=====================================================================
+    {
+      path: 'schedule',
+      name: 'schedule',
+      hidden: true,
+      meta: {
+        title: '调度任务',
+        auth: true
+      },
+      component: _import('resource/schedule/pages/index')
+    }, {
+      path: 'cloudfunc',
+      name: 'cloudfunc',
+      hidden: true,
+      meta: {
+        title: '云端函数',
+        auth: true
+      },
+      component: _import('resource/cloudfunc/pages/index')
+    }, {
+      path: 'rewriter',
+      name: 'rewriter',
+      hidden: true,
+      meta: {
+        title: '分发引擎',
+        auth: true
+      },
+      component: _import('resource/rewriter_engine/pages/index')
+    }, {
+      path: 'product',
+      name: 'product',
+      hidden: true,
+      meta: {
+        title: '产品管理',
+        auth: true
+      },
+      component: _import('resource/product/pages/index')
+    }, {
+      path: 'device',
+      name: 'device',
+      hidden: true,
+      meta: {
+        title: '设备管理',
+        auth: true
+      },
+      component: _import('resource/device/pages/index')
+    }
+  ]
+}]
 
 /**
  * 在主框架之外显示
