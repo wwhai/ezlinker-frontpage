@@ -1,5 +1,5 @@
 <template>
-  <json-view  :parsedData='parsedData' v-model="parsedData"></json-view>
+  <json-view  :parsedData='parsedData' v-model="parsedData" :top='true'></json-view>
 </template>
 
 <script>

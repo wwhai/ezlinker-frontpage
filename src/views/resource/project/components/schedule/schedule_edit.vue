@@ -22,6 +22,9 @@
         </el-form>
         <el-dialog title="编辑Cron表达式" :visible.sync="cron.visible" :modal='false' top="3vh" width='600px'>
             <cron v-model='data.cronExpression'></cron>
+            <div class="tool" style="margin-top: 20px; text-align: right;">
+                <el-button type='primary' @click="cron.visible = false" >确认</el-button>
+            </div>
         </el-dialog>
         <el-dialog title="编辑任务数据" :visible.sync="scheduleData.visible" :modal='false' top="3vh" width='600px'>
             <json-editor v-model="scheduleData.data" ></json-editor>

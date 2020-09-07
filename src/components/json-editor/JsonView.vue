@@ -84,9 +84,14 @@
     <!-- 建立新键值对 -->
     <item-add-form class="add add-item" v-if="toAddItem" @confirm="newItem" @cancel="cancelNewItem"></item-add-form>
     <!-- 添加按钮 -->
-    <el-button class="add add-btn" type='info' size='mini' @click="addItem" v-else>
-      <d2-icon name='plus'/>
-    </el-button>
+    <template v-else>
+      <el-button class="add add-btn" v-if="top" type='info' size='mini' @click="addItem" >
+        <d2-icon name='plus'/>
+      </el-button>
+      <div class="add add-btn" v-else @click="addItem">
+        <d2-icon name='plus' />
+      </div>
+    </template>
   </div>
 </template>
 
@@ -99,7 +104,13 @@ export default {
   components:{
     // Draggable,
   },
-  props: { parsedData: {} },
+  props: { 
+    parsedData: {},
+    top: {
+      type: Boolean,
+      default: false,
+    }
+  },
   data() {
     return {
       formats: ["string", "array", "object", "number", "boolean"],
@@ -206,6 +217,7 @@ export default {
 <style lang="scss" scoped>
 .json-view{
   .json-pair{
+    // margin: 4px 0;
     .json-main{
       display: flex;
       .json-key{
@@ -253,13 +265,13 @@ export default {
     }
   }
   .json-pair + .json-pair{
-    margin-top: 14px;
+    margin-top: 10px;
   }
   .hide-block{
     display: none;
   }
   .add{
-    margin-top: 16px;
+    margin-top: 10px;
   }
 }
 </style>

@@ -95,7 +95,9 @@ const frameIn = [{
         auth: true
       },
       component: _import('resource/project/pages/product/detail')
-    }, {
+    }, 
+    // -------------设备相关-----------------------
+    {
       path: 'project/:projectId/device',
       name: 'project-device',
       hidden: true,
@@ -104,6 +106,15 @@ const frameIn = [{
         auth: true
       },
       component: _import('resource/project/pages/device')
+    },{
+      path: 'device/:deviceId/detail',
+      name: 'device-detail',
+      hidden: true,
+      meta: {
+        title: '设备详情',
+        auth: true
+      },
+      component: _import('resource/project/pages/device/detail')
     },
     // -=====================================================================
     {

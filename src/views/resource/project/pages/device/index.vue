@@ -1,10 +1,7 @@
 <template>
   <d2-container class="project-device-container">
     <el-card class="box-card" style="min-height:99%">
-      <div slot="header" class="clearfix">
-        <el-page-header @back="goBack" :content='pageTitle'>
-        </el-page-header>
-      </div>
+      <el-page-header slot="header" @back="goBack" :content='pageTitle'/>
 
       <!-- 搜索条件 -->
       <el-form :inline="true" :model="searchParam" class="demo-form-inline" >
@@ -40,7 +37,7 @@
           <template slot-scope="scope">
             <div class="tool">
             <el-button class="item" size="mini" plain type="primary" 
-            @click="handle(scope.row)">详情</el-button>
+            @click="toDetail(scope.row.id)">详情</el-button>
             <!-- <el-button size="mini" plain type="primary">新建任务</el-button> -->
             <el-dropdown class="item">
               <span class="el-dropdown-link">
@@ -54,7 +51,7 @@
                   <span size="mini" plain type="primary">下载密钥</span>
                 </el-dropdown-item>
                 <el-dropdown-item icon="el-icon-phone-outline">
-                  <span @click="openSchedule(scope.row.id)">调度任务</span>
+                  <span @click="showSchedule(scope.row.id)">调度任务</span>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -65,10 +62,10 @@
       <div style="margin-top:20px;">
         <el-pagination background layout="total, prev, pager, next" 
           @current-change="deviceList" :current-page.sync='device.current'
-          :page-size="device.size"
-          :total="device.total"></el-pagination>
+          :page-size="device.size" :total="device.total"></el-pagination>
       </div>
     </el-card>
+
     <!-- 调度任务 -->
     <el-dialog title="调度任务" width="600px" class="schedule-edit-dialog"
       :visible.sync="schedule.visible">
@@ -76,6 +73,7 @@
         <el-button type="primary" @click="newSchedule">
           <d2-icon name='plus' style="margin-right:8px"/>添加任务
         </el-button>
+      </div>
         <el-table :data='schedule.list'>
           <el-table-column label='任务名' prop='jobName'></el-table-column>
             <el-table-column label='描述' prop='description'></el-table-column>
@@ -87,12 +85,17 @@
               </template>
             </el-table-column>
         </el-table>
-      </div>
+        <el-pagination style="margin-top:20px"
+          layout="prev, pager, next" v-if="schedule.total>schedule.size"
+          :current-page.sync='schedule.current'
+          :page-size='schedule.size' :total="schedule.total"
+          @current-change='scheduleList'>
+        </el-pagination>
     </el-dialog>
     <!-- 添加任务 -->
     <el-dialog title="添加任务" width="600px" class="schedule-edit-dialog"
       :visible.sync="scheduleDetail.visible">
-      <schedule-edit :data='scheduleDetail.data' :submit='editScheduleSubmit' :cancel='()=>{scheduleDetail.visible=false}'/>
+      <schedule-edit :data='scheduleDetail.data' :submit='submitSchedule' :cancel='()=>{scheduleDetail.visible=false}'/>
     </el-dialog>
   </d2-container>
 </template>
@@ -112,13 +115,13 @@ export default {
       // 页面头部标题
       pageTitle: "设备管理",
       // 多个结果用XXXRecords
-      deviceRecords: {
-        current: 1,
-        size: 10,
-        total: 0,
-        pages: 0,
-        tableData: [],
-      },
+      // deviceRecords: {
+      //   current: 1,
+      //   size: 10,
+      //   total: 0,
+      //   pages: 0,
+      //   tableData: [],
+      // },
       //搜索条件
       searchParam: {
         productId: this.$route.params.projectId,
@@ -161,6 +164,9 @@ export default {
     goBack() {
       this.$router.push({name:'project'})
     },
+    toDetail(id){
+      this.$router.push({name:'device-detail', params: { 'deviceId': id }})
+    },
     // ------设备--------
     deviceList(){
       const that = this
@@ -182,7 +188,7 @@ export default {
         });
     },
     // -----调度任务------
-    openSchedule(id){
+    showSchedule(id){
       const that = this
       that.schedule.deviceId = id
       this.schedule.visible = false
@@ -224,7 +230,7 @@ export default {
     // editSchedule() {
 
     // },
-    editScheduleSubmit(data){
+    submitSchedule(data){
       const that = this
       if(data.id===undefined) {
         data.scheduleData = JSON.parse(data.scheduleData)
@@ -241,30 +247,30 @@ export default {
       }
     },
        // 分页事件响应
-    onCurrentPageChange(currentPage) {
-      this.searchParam.current = currentPage;
-      this.getDeviceData(this.searchParam);
-    },
+    // onCurrentPageChange(currentPage) {
+    //   this.searchParam.current = currentPage;
+    //   this.getDeviceData(this.searchParam);
+    // },
     // 加载数据函数，命名规范：getXXXData(参数)
     // ！！！ 注意：在lambda表达式，this统一叫thiz；
-    getDeviceData(param) {
-      let thiz = this;
-      thiz.$api
-        .DEVICE_QUERY_FOR_PAGE(param)
-        .then((res) => {
-          //
-          thiz.deviceRecords.tableData = res.records;
-          thiz.deviceRecords.current = res.current;
-          thiz.deviceRecords.size = res.size;
-          thiz.deviceRecords.total = res.total;
-          thiz.deviceRecords.pages = res.pages;
-          //
-          thiz.searchParam.size = res.size;
-        })
-        .catch((err) => {
-          console.log(error);
-        });
-    },
+    // getDeviceData(param) {
+    //   let thiz = this;
+    //   thiz.$api
+    //     .DEVICE_QUERY_FOR_PAGE(param)
+    //     .then((res) => {
+    //       //
+    //       thiz.deviceRecords.tableData = res.records;
+    //       thiz.deviceRecords.current = res.current;
+    //       thiz.deviceRecords.size = res.size;
+    //       thiz.deviceRecords.total = res.total;
+    //       thiz.deviceRecords.pages = res.pages;
+    //       //
+    //       thiz.searchParam.size = res.size;
+    //     })
+    //     .catch((err) => {
+    //       console.log(error);
+    //     });
+    // },
     // 条件检索
     search() {
       this.getDeviceData(this.searchParam);
