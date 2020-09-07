@@ -171,3 +171,78 @@ export default {
 1. current，size不是必传参数，要求都要有默认值；
 2. 列表必须返回Page结果；
 3. 每次操作完以后，如有需要可返回数据，不强制；
+
+### 3.代码规范
+1. 表格
+```html
+<el-table border :data="cloudfuncPage.data">
+  <el-table-column prop="label" label="名称"></el-table-column>
+  <el-table-column width="80px" label="启用">
+    <template slot-scope="scope">
+      <el-switch v-model="scope.row.enable"></el-switch>
+    </template>
+  </el-table-column>
+  <el-table-column prop="description" label="描述"></el-table-column>
+  <el-table-column prop="createTime" label="创建时间"></el-table-column>
+  <el-table-column label="操作">
+    <template slot-scope="scope">
+      <el-button type="primary" @click="testCloudfunc(scope.row)" size="small" plain>测试</el-button>
+      <el-button @click="showDetailDialog(scope.row)" size="small" plain>详情</el-button>
+    </template>
+  </el-table-column>
+</el-table>
+```
+2. 后端请求
+```js
+// 注意，请求的时候要语义化，比如是GET请求的，一半前缀是get，然后后面是{XXX}List
+getCloudfuncList() {
+  const that = this;
+  const params = {
+    current: that.cloudfuncPage.current,
+    size: that.cloudfuncPage.size,
+  };
+  that.cloudfuncPage.loading = true;
+  that.$api
+    .CLOUDFUNC_LIST(params)
+    .then((res) => {
+      that.cloudfuncPage.data = res.records;
+      that.cloudfuncPage.total = res.total;
+      that.cloudfuncPage.loading = false;
+    })
+    .catch((err) => {
+      console.log(err);
+      that.cloudfuncPage.loading = false;
+    });
+}
+```
+3. Page翻页data
+```js
+// 注意：列表数据全部统一格式{XXX}Page
+// 字段必须严格按照以下格式
+cloudfuncPage: {
+  data: [],
+  current: 1,
+  size: 10,
+  total: 0,
+  loading: false,
+}
+```
+VUE
+```html
+<el-pagination
+  background
+  layout="prev, pager, next"
+  :page-sizes="cloudfuncPage.size"
+  :total="cloudfuncPage.total"
+></el-pagination>
+
+```
+处理翻页
+
+```js
+//格式 on{XXX}PageChange(改编后的页)
+onCurrentPageChange(currentPage) {
+  this.{XXX}Page.current = currentPage;
+  this.get{XXX}Data(this. 请求参数);
+}
+```

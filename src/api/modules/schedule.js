@@ -19,4 +19,11 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       method: 'delete',
     })
   },
+  SCHEDULE_QUERY_FOR_PAGE (params) {
+    return request({
+      url: 'scheduleInfos/',
+      method: 'get',
+      params: params
+    })
+  },
 })
