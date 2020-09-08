@@ -7,7 +7,7 @@
       <el-input v-model="data.description"></el-input>
     </el-form-item>
     <el-form-item label="属性" class="param">
-      <parameter v-model="data.dataAreas"/>
+      <parameter v-model="data.fieldParams"/>
     </el-form-item>
     <el-form-item >
       <el-button type="primary" @click="submit">提交</el-button>

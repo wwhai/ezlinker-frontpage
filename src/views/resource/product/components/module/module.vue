@@ -65,30 +65,32 @@ export default {
     // 获取所有module template
     moduleTemplateAll () {
       const that = this
-      this.$api.MODULE_TYPE_ALL().then(res => {
-        var data = []
-        for (const o of res) {
-          data.push({
-            icon: o.icon,
-            type: o.name,
-            name: o.label,
-            protocol: o.protocol,
-            model: o.model,
-            description: o.description,
-            dataAreas: []
-          })
-        }
-        that.template.data = data
-      })
+      this.$api.MODULE_TYPE_ALL()
+        .then(res => {
+          var data = []
+          for (const o of res) {
+            data.push({
+              icon: o.icon,
+              type: o.name,
+              name: o.label,
+              protocol: o.protocol,
+              model: o.model,
+              description: o.description,
+              fieldParams: []
+            })
+          }
+          that.template.data = data
+        })
     },
     newModule () {
       this.moduleTemplateAll()
       this.template.visible = true
     },
     editModule (item) {
-      this.detail.data = { ...item, dataAreas: [...item.dataAreas] }
-      this.template.visible = false
-      this.detail.visible = true
+      console.log(item)
+      // this.detail.data = { ...item, fieldParams: [...item.fieldParams] }
+      // this.template.visible = false
+      // this.detail.visible = true
     },
     submitModule (item) {
       const that = this

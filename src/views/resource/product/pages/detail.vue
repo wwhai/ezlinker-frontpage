@@ -57,7 +57,7 @@
                 <div class="wrapper param">
                     <div class="title">产品参数</div>
                     <div class="list param-list">
-                        <el-table :data="detail.data.parameters" size='medium'  max-height='100%'>
+                        <el-table :data="detail.data.fieldParams" size='medium'  max-height='100%'>
                             <el-table-column prop="field" label="字段" >
                             </el-table-column>
                             <el-table-column label="类型" >

@@ -10,7 +10,7 @@
     </el-form-item>
     <!-- 产品属性 -->
     <el-form-item label="属性" class="param">
-      <parameter v-model='data.parameters' ></parameter>
+      <parameter v-model='data.fieldParams' ></parameter>
     </el-form-item>
     <!-- 产品图标 -->
     <el-form-item label="图标" class="item icon">
