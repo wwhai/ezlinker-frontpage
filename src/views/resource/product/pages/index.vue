@@ -157,7 +157,7 @@ export default {
         logo: "",
         tags: "",
         protocol: 0,
-        parameters: [],
+        fieldParams: [],
         description: "",
       };
       this.detail.visible = true;
@@ -168,7 +168,7 @@ export default {
       }
       const data = {
         ...item,
-        parameters: [...item.parameters],
+        fieldParams: [...item.fieldParams],
       };
       this.detail.data = data;
       this.detail.visible = true;
@@ -183,7 +183,7 @@ export default {
         logo: item.logo,
         tags: item.tags,
         protocol: item.protocol,
-        parameters: item.parameters,
+        fieldParams: item.fieldParams,
         description: item.description,
       };
       if (id == undefined) {

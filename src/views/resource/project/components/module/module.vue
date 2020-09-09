@@ -75,7 +75,7 @@ export default {
             protocol: o.protocol,
             model: o.model,
             description: o.description,
-            dataAreas: []
+            fieldParams: []
           })
         }
         that.template.data = data
@@ -86,7 +86,8 @@ export default {
       this.template.visible = true
     },
     editModule (item) {
-      this.detail.data = { ...item, dataAreas: [...item.dataAreas] }
+      console.log(item)
+      this.detail.data = { ...item, fieldParams: [...item.fieldParams] }
       this.template.visible = false
       this.detail.visible = true
     },

@@ -45,7 +45,7 @@
                     </span>
                     <el-dropdown-menu slot="dropdown">
                       <el-dropdown-item icon="el-icon-setting">
-                        <span type="success" @click="openModule(scope.row.id)">模块管理</span>
+                        <span type="success" @click="showModule(scope.row.id)">模块管理</span>
                       </el-dropdown-item>
                       <el-dropdown-item icon="el-icon-mobile-phone">
                         <span type="warning" @click="newDevice(scope.row.id)">创建设备</span>
@@ -193,7 +193,7 @@ export default {
         logo: "",
         tags: "",
         protocol: 0,
-        parameters: [],
+        fieldParams: [],
         description: "",
       };
       this.detail.visible = true;
@@ -202,7 +202,7 @@ export default {
       if (item.type != 1) {
         item.type = "";
       }
-      const data = { ...item, parameters: [...item.parameters] };
+      const data = { ...item, fieldParams: [...item.fieldParams] };
       this.detail.data = data;
       this.detail.visible = true;
     },
@@ -216,7 +216,7 @@ export default {
         logo: item.logo,
         tags: item.tags,
         protocol: item.protocol,
-        parameters: item.parameters,
+        fieldParams: item.fieldParams,
         description: item.description,
       };
       if (id == undefined) {
@@ -233,13 +233,14 @@ export default {
     },
     // ------模块-------
     // 打开产品模块
-    openModule(id) {
+    showModule(id) {
       const that = this;
       const params = {
         productId: id,
         current: that.module.current,
         size: that.module.size,
       };
+      console.log('show module')
       that.loading = true;
       this.$api
         .MODULE_LIST(params)
