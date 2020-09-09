@@ -45,7 +45,7 @@
             <div slot="header" class="clearfix">
               <span>设备运行状态</span>
             </div>
-            <el-col v-for="item in device.state" :key="item" :span="8">
+            <el-col v-for="(item,index) in device.state" :key="index" :span="8">
               <el-card shadow="never" style="margin-bottom:10px;text-align:center;">
                 <div style>
                   <el-row>
@@ -75,10 +75,10 @@
               <span>模块列表</span>
             </div>
             <!-- 模块数据表 -->
-            <el-table :stripe="true" :data="device.modules" border>
+            <el-table :stripe="true" :data="modules.data" border>
               <el-table-column prop="name" width="120px" label="图标">
                 <template slot-scope="scope">
-                  <el-image style="width: 100px; height: 100px" :src="scope.row.icon" :fit="fit"></el-image>
+                  <el-image style="width: 100px; height: 100px" :src="scope.row.icon" ></el-image>
                 </template>
               </el-table-column>
 
@@ -114,7 +114,14 @@
               </el-table-column>
 
               <el-table-column prop="name" label="当前状态">
-                <template slot-scope="scope"></template>
+                <template slot-scope="scope">
+                  <div class="status" style="display:flex;">
+                  <el-card shadow="never" v-for="n in 4" :key="n" style="text-align:center;width: 200px;margin-right:10px;">
+                    <div class="" style="font-size:20px;color:#409EFF;">label{{n}}</div>
+                    <div class="" style="font-size:34px;color:#F56C6C;">value{{n}}</div>
+                  </el-card>
+                  </div>
+                </template>
               </el-table-column>
             </el-table>
             <!-- ---模块 end -->
@@ -122,6 +129,17 @@
         </div>
       </el-col>
     </el-row>
+
+    <el-card class="module-log">
+      <div slot="header">模块日志</div>
+      <el-table>
+        <el-table-column prop="sn" label="SN"></el-table-column>
+        <!-- <el-table-column prop="deviceName" label="SN"></el-table-column> -->
+        <el-table-column prop="moduleName" label="模块名"></el-table-column>
+        <el-table-column prop="type" label="模块类型"></el-table-column>
+        <el-table-column prop="createTime" label="创建时间"></el-table-column>
+      </el-table>
+    </el-card>
   </d2-container>
 </template>
 
@@ -165,15 +183,24 @@ export default {
           },
         ],
         loading: false,
-        //模块
-        modules: [],
       },
+      //模块
+      modules: {
+        data: [],
+      },
+      moduleLog: {
+        data: [],
+        current: 1,
+        size: 10,
+        total: 0,
+      }
     };
   },
   mounted() {
     this.deviceId = this.$route.params.deviceId;
     this.getDeviceInfo();
     this.getModules();
+    this.getModuleLogs()
   },
   methods: {
     goBack() {
@@ -184,7 +211,7 @@ export default {
       this.$api
         .MODULE_QUERY_FOR_PAGE({ deviceId: this.deviceId })
         .then((res) => {
-          this.device.modules = res.records;
+          this.modules.data = res.records;
         })
         .catch((err) => {
           console.log(err);
@@ -205,6 +232,27 @@ export default {
           console.log(err);
           this.device.loading = false;
         });
+    },
+
+    getModuleLogs(){
+      const params = {
+        current: this.moduleLog.current,
+        size: this.moduleLog.size,
+      }
+      this.moduleLog.loading = true
+      this.$api.MODULE_LOG(params)
+        .then(res=>{
+          this.moduleLog.data = res.records
+          this.moduleLog.total = res.total
+          this.moduleLog.loading = false
+        })
+        .catch(err=>{
+          console.log(err)
+          this.moduleLog.loading = false
+        })
+    },
+    getModuleStatus(){
+
     },
   },
 };

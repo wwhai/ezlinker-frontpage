@@ -33,6 +33,19 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
           method: 'get',
           params
         })
-    }
+    },
+    MODULE_LOG(params){
+      return request({
+        url: 'modules/logs',
+        method: 'get',
+        params,
+      })
+    },
+    MODULE_STATUS(projectId, moduleIds){
+      return request({
+        url: 'modules/'+moduleIds.join(',')+'/'+projectId+'/status',
+        method: 'get',        
+      })
+    },
   })
   
