@@ -1,3 +1,5 @@
+# 该项目从此以后再不维护,感谢大家关注
+
 # EZLINKER 前端项目
 ## 1.本地运行
 前端是个VUE项目，用的Elementui和D2admin.
